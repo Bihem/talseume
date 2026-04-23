@@ -141,16 +141,16 @@ nav.scrolled .cart-count{background:#080808;color:#fff}
 .ed-list{padding:0 40px}
 @media(max-width:768px){.ed-list{padding:0 24px}}
 
-.ed-row{display:grid;align-items:center;padding:72px 0;border-bottom:1px solid var(--line-l)}
-.ed-row.left{grid-template-columns:52% 1fr}
-.ed-row.right{grid-template-columns:1fr 50%}
-
-.ed-img a{display:block;overflow:hidden;background:#000}
-.ed-img img{width:100%;height:100%;object-fit:cover;padding:0;transition:transform .9s cubic-bezier(.16,1,.3,1)}
+.ed-row{display:flex;flex-direction:column;padding:64px 0;border-bottom:1px solid var(--line-l);gap:32px}
+.ed-img a{display:block;overflow:hidden;background:#000;aspect-ratio:3/4;width:100%}
+.ed-img img{width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.16,1,.3,1)}
 .ed-img a:hover img{transform:scale(1.03)}
-.ed-row.left .ed-img{padding-right:48px}.ed-row.left .ed-img a{aspect-ratio:3/4;height:auto}
-.ed-row.right .ed-info{order:-1;padding-right:48px}
-.ed-row.right .ed-img a{aspect-ratio:3/4;height:auto}
+.ed-info{padding:0}
+@media(min-width:768px){
+  .ed-row{flex-direction:row;align-items:flex-start;gap:56px}
+  .ed-img{flex:0 0 48%;max-width:48%}
+  .ed-info{flex:1;padding-top:16px}
+}
 
 .ed-num{font-size:11px;letter-spacing:.2em;color:rgba(0,0,0,.25);margin-bottom:20px;font-weight:300}
 .ed-name{font-size:clamp(28px,4vw,52px);font-weight:300;letter-spacing:-.025em;line-height:1;text-transform:uppercase;margin-bottom:12px}
@@ -166,25 +166,6 @@ nav.scrolled .cart-count{background:#080808;color:#fff}
 .ed-add{display:inline-flex;align-items:center;gap:12px;font-size:11px;font-weight:400;letter-spacing:.16em;text-transform:uppercase;background:var(--black);color:#fff;padding:14px 32px;transition:opacity .25s;cursor:none;border:none}
 .ed-add:hover{opacity:.8}
 
-@media(max-width:900px){
-  .ed-row.left{grid-template-columns:44% 1fr}
-  .ed-row.right{grid-template-columns:1fr 44%}
-  .ed-row.left .ed-img{padding-right:24px}
-  .ed-row.right .ed-info{padding-right:24px}
-}
-@media(max-width:580px){
-  .ed-row.left,.ed-row.right{grid-template-columns:44% 1fr;gap:16px;padding:40px 0}
-  .ed-row.left .ed-img{padding-right:0}
-  .ed-row.right .ed-info{order:1;padding-right:0}
-  .ed-row.right .ed-img{order:0}
-  .ed-row.left .ed-img a,.ed-row.right .ed-img a{aspect-ratio:3/4;height:auto;width:100%}
-  .ed-name{font-size:18px}
-  .ed-desc{display:none}
-  .ed-variants{gap:6px}
-  .vpill{padding:5px 10px;font-size:9px}
-  .ed-add{font-size:9px;padding:11px 16px}
-  .ed-price{font-size:16px;margin-bottom:16px}
-}
 
 /* ══ PRODUCT GRID ══ */
 .pgrid-wrap{padding:0 40px 80px}
@@ -364,7 +345,12 @@ footer{background:#080808;border-top:1px solid rgba(255,255,255,.07);padding:60p
   <div class="ed-list" id="editorial">
 
     <!-- 01 Sweat Oversize -->
-    <div class="ed-row right rv d1" data-col="sweats">
+    <div class="ed-row rv d1" data-col="sweats">
+      <div class="ed-img">
+        <a href="#produits">
+          <img src="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg" alt="Sweat Talseume Oversize"/>
+        </a>
+      </div>
       <div class="ed-info">
         <div class="ed-num">01 — Sweats</div>
         <h3 class="ed-name">Sweat<br>Oversize</h3>
@@ -375,11 +361,6 @@ footer{background:#080808;border-top:1px solid rgba(255,255,255,.07);padding:60p
         </div>
         <div class="ed-price">90,00 €</div>
         <button class="ed-add" onclick="addToCart('Sweat Talseume Oversize','S','90.00','images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg')">Ajouter au panier →</button>
-      </div>
-      <div class="ed-img">
-        <a href="#produits">
-          <img src="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg" alt="Sweat Talseume Oversize"/>
-        </a>
       </div>
     </div>
 
@@ -405,7 +386,12 @@ footer{background:#080808;border-top:1px solid rgba(255,255,255,.07);padding:60p
     </div>
 
     <!-- 04 Sweat Bikelife -->
-    <div class="ed-row right rv d2" data-col="sweats">
+    <div class="ed-row rv d2" data-col="sweats">
+      <div class="ed-img">
+        <a href="#produits">
+          <img src="images/products/sweat-talseume-bikelife-devant.jpg" alt="Sweat Bikelife"/>
+        </a>
+      </div>
       <div class="ed-info">
         <div class="ed-num">04 — Sweats</div>
         <h3 class="ed-name">Sweat<br>Tls × Bikelife</h3>
@@ -416,11 +402,6 @@ footer{background:#080808;border-top:1px solid rgba(255,255,255,.07);padding:60p
         </div>
         <div class="ed-price">68,99 €</div>
         <button class="ed-add" onclick="addToCart('Sweat Tls × Bikelife','S','68.99','images/products/sweat-talseume-bikelife-devant.jpg')">Ajouter au panier →</button>
-      </div>
-      <div class="ed-img">
-        <a href="#produits">
-          <img src="images/products/sweat-talseume-bikelife-devant.jpg" alt="Sweat Bikelife"/>
-        </a>
       </div>
     </div>
 
