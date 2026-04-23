@@ -107,9 +107,9 @@ nav.scrolled .cart-count{background:#080808;color:#fff}
 @keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
 /* ══ SEUM STATEMENT ══ */
-.seum-statement{padding:100px 40px;border-bottom:1px solid var(--line-l)}
+.seum-statement{padding:100px 40px;border-bottom:1px solid var(--line-l);text-align:center;display:flex;flex-direction:column;align-items:center}
 .seum-eyebrow{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.25);font-weight:300;margin-bottom:40px}
-.seum-text{font-size:clamp(28px,4.5vw,72px);font-weight:300;line-height:1.2;letter-spacing:-.03em;color:rgba(0,0,0,.82);max-width:1300px}
+.seum-text{font-size:clamp(28px,4.5vw,72px);font-weight:300;line-height:1.2;letter-spacing:-.03em;color:rgba(0,0,0,.82);max-width:900px;text-align:center}
 .seum-text em{font-style:normal;color:#080808;font-weight:400}
 @media(max-width:768px){.seum-statement{padding:72px 24px}.seum-text{font-size:clamp(24px,6vw,40px)}}
 
@@ -169,8 +169,9 @@ nav.scrolled .cart-count{background:#080808;color:#fff}
 @media(max-width:900px){
   .ed-row.left,.ed-row.right{grid-template-columns:1fr;gap:32px}
   .ed-row.left .ed-img{padding-right:0}
-  .ed-row.right .ed-info{order:0;padding-right:0}
-  .ed-row.left .ed-img a,.ed-row.right .ed-img a{height:55vw}
+  .ed-row.right .ed-info{order:1;padding-right:0}
+  .ed-row.right .ed-img{order:0}
+  .ed-row.left .ed-img a,.ed-row.right .ed-img a{height:75vw}
 }
 
 /* ══ PRODUCT GRID ══ */
@@ -218,22 +219,22 @@ nav.scrolled .cart-count{background:#080808;color:#fff}
 @media(max-width:600px){.manifesto{padding:64px 20px 80px}.m-header{flex-direction:column;gap:8px;margin-bottom:36px}.m-line{font-size:clamp(28px,11vw,56px);letter-spacing:-.03em}.m-sub{font-size:11px;max-width:260px}}
 
 /* ══ FOOTER ══ */
-footer{background:#fff;border-top:1px solid var(--line-l);padding:60px 40px 40px}
+footer{background:#080808;border-top:1px solid rgba(255,255,255,.07);padding:60px 40px 40px}
 .f-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
-.f-logo{font-size:13px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;margin-bottom:10px}
-.f-sub{font-size:12px;font-weight:300;color:rgba(0,0,0,.4);line-height:1.7}
-.f-col-title{font-size:9px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.25);margin-bottom:14px}
+.f-logo{font-size:13px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;margin-bottom:10px;color:#fff}
+.f-sub{font-size:12px;font-weight:300;color:rgba(255,255,255,.3);line-height:1.7}
+.f-col-title{font-size:9px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:14px}
 .f-col ul{list-style:none}
 .f-col li{margin-bottom:9px}
-.f-col a{font-size:12px;font-weight:300;color:rgba(0,0,0,.45);transition:color .2s}
-.f-col a:hover{color:#080808}
-.f-bottom{border-top:1px solid var(--line-l);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
-.f-copy{font-size:10px;font-weight:300;color:rgba(0,0,0,.25);letter-spacing:.08em}
+.f-col a{font-size:12px;font-weight:300;color:rgba(255,255,255,.35);transition:color .2s}
+.f-col a:hover{color:#fff}
+.f-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.f-copy{font-size:10px;font-weight:300;color:rgba(255,255,255,.2);letter-spacing:.08em}
 .f-pay{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .f-pay svg{height:24px;width:auto}
 .f-soc{display:flex;gap:20px}
-.f-soc a{font-size:10px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:rgba(0,0,0,.35);transition:color .2s}
-.f-soc a:hover{color:#080808}
+.f-soc a{font-size:10px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.25);transition:color .2s}
+.f-soc a:hover{color:#fff}
 @media(max-width:900px){footer{padding:40px 24px 32px}.f-grid{grid-template-columns:1fr 1fr;gap:32px}.f-bottom{flex-direction:column;align-items:flex-start}}
 @media(max-width:480px){.f-grid{grid-template-columns:1fr}}
 
@@ -537,24 +538,6 @@ footer{background:#fff;border-top:1px solid var(--line-l);padding:60px 40px 40px
 
 </div><!-- /white -->
 
-<!-- MANIFESTO -->
-<section class="manifesto" id="about">
-  <div class="m-header rv">
-    <span class="m-label">Notre vision</span>
-    <span class="m-year">©2026 Talseume</span>
-  </div>
-  <div class="m-lines rv">
-    <div class="m-line"><span>Pas une</span></div>
-    <div class="m-line outline"><span>marque</span></div>
-    <div class="m-line"><span>de mode.</span></div>
-    <div class="m-line dim"><span>Un état</span></div>
-    <div class="m-line dim"><span>d'esprit.</span></div>
-  </div>
-  <div class="m-foot rv">
-    <p class="m-sub">Chaque pièce pensée pour durer, pour marquer,<br>pour ceux qui savent qui ils sont.</p>
-    <a href="#collection" class="m-cta-link">Voir la collection →</a>
-  </div>
-</section>
 
 <!-- FOOTER -->
 <footer>
