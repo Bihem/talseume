@@ -147,6 +147,11 @@ nav.scrolled .cart-count{background:#080808;color:#fff}
 .ed-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.16,1,.3,1)}
 .ed-img:hover img{transform:scale(1.03)}
 .ed-info{order:1;padding:0}
+@media(max-width:767px){
+  .ed-row{flex-direction:column}
+  .ed-img{order:0;padding-bottom:100%;width:100%}
+  .ed-info{order:1}
+}
 @media(min-width:768px){
   .ed-row{flex-direction:row;align-items:flex-start;gap:56px}
   .ed-img{flex:0 0 48%;max-width:48%;padding-bottom:calc(48% * 1.333)}
