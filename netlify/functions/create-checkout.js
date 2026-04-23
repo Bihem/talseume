@@ -21,7 +21,7 @@ exports.handler = async (event) => {
     }));
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card', 'klarna', 'paypal'],
+      payment_method_types: ['card', 'klarna'],
       line_items: lineItems,
       mode: 'payment',
       success_url: successUrl || 'https://talseume.fr?commande=ok',
