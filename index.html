@@ -8,6 +8,7 @@
 <style>
 @font-face{font-family:'Suisse Intl';src:url('https://cdn.prod.website-files.com/6772f6efe246aaaa73ad2a98/67784f5e4c3068c2e2f22e60_SuisseIntl-Regular.otf')format('opentype');font-weight:400;font-display:swap}
 @font-face{font-family:'Suisse Intl';src:url('https://cdn.prod.website-files.com/6772f6efe246aaaa73ad2a98/67784f815ee57b4c18bdae11_SuisseIntl-Light.otf')format('opentype');font-weight:300;font-display:swap}
+@font-face{font-family:'HelveticaNowDisplay';src:url('https://locomotive.ca/assets/fonts/HelveticaNowDisplay-Regular.woff2')format('woff2'),url('https://locomotive.ca/assets/fonts/HelveticaNowDisplay-Regular.woff')format('woff');font-weight:400;font-display:swap}
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--black:#080808;--white:#fff;--off:#f2f1ef;--line-d:rgba(255,255,255,.08);--line-l:rgba(0,0,0,.08);--F:'Suisse Intl','Helvetica Neue',Helvetica,Arial,sans-serif}
@@ -143,7 +144,8 @@ nav.scrolled .cart-count{background:#080808;color:#fff}
 .ed-info{order:1;padding:0}
 @media(max-width:767px){
   .ed-row{flex-direction:column}
-  .ed-img{order:0;padding-bottom:100%;width:100%}
+  .ed-img{order:0;padding-bottom:110%;width:100%;background:#fff}
+  .ed-img img{object-fit:contain}
   .ed-info{order:1}
 }
 @media(min-width:768px){
@@ -166,6 +168,14 @@ nav.scrolled .cart-count{background:#080808;color:#fff}
 .ed-add{display:inline-flex;align-items:center;gap:12px;font-size:11px;font-weight:400;letter-spacing:.16em;text-transform:uppercase;background:var(--black);color:#fff;padding:14px 32px;transition:opacity .25s;cursor:none;border:none}
 .ed-add:hover{opacity:.8}
 
+
+/* ══ SEUM TEXT ══ */
+.seum-block{display:flex;flex-direction:row;align-items:flex-start;gap:56px;padding:56px 40px;background:#000;border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07)}
+.seum-label{flex:0 0 160px;padding-top:6px}
+.seum-label span{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.3);font-weight:300}
+.seum-text{flex:1;font-size:clamp(22px,3vw,42px);font-weight:300;line-height:1.45;color:#fff;font-family:var(--F);text-transform:uppercase}
+.seum-text b{font-weight:500;color:#fff}
+@media(max-width:768px){.seum-block{flex-direction:column;padding:48px 24px;gap:20px}.seum-text{font-size:clamp(20px,5.5vw,30px)}}
 
 /* ══ PRODUCT GRID ══ */
 .pgrid-wrap{padding:0 40px 80px}
@@ -215,19 +225,19 @@ nav.scrolled .cart-count{background:#080808;color:#fff}
 footer{background:#000;border-top:1px solid rgba(255,255,255,.07);padding:60px 40px 40px}
 .f-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
 .f-logo{font-size:13px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;margin-bottom:10px;color:#fff}
-.f-sub{font-size:12px;font-weight:300;color:rgba(255,255,255,.3);line-height:1.7}
-.f-col-title{font-size:9px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:14px}
+.f-sub{font-size:12px;font-weight:300;color:rgba(255,255,255,.7);line-height:1.7}
+.f-col-title{font-size:9px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:14px}
 .f-col ul{list-style:none}
 .f-col li{margin-bottom:9px}
-.f-col a{font-size:12px;font-weight:300;color:rgba(255,255,255,.35);transition:color .2s}
-.f-col a:hover{color:#fff}
-.f-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
-.f-copy{font-size:10px;font-weight:300;color:rgba(255,255,255,.2);letter-spacing:.08em}
+.f-col a{font-size:12px;font-weight:300;color:#fff;transition:color .2s}
+.f-col a:hover{color:rgba(255,255,255,.6)}
+.f-bottom{border-top:1px solid rgba(255,255,255,.15);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.f-copy{font-size:10px;font-weight:300;color:rgba(255,255,255,.5);letter-spacing:.08em}
 .f-pay{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .f-pay svg{height:24px;width:auto}
 .f-soc{display:flex;gap:20px}
-.f-soc a{font-size:10px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.25);transition:color .2s}
-.f-soc a:hover{color:#fff}
+.f-soc a{font-size:10px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:#fff;transition:color .2s}
+.f-soc a:hover{color:rgba(255,255,255,.6)}
 @media(max-width:900px){footer{padding:40px 24px 32px}.f-grid{grid-template-columns:1fr 1fr;gap:32px}.f-bottom{flex-direction:column;align-items:flex-start}}
 @media(max-width:480px){.f-grid{grid-template-columns:1fr}}
 
@@ -286,11 +296,6 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.07);padding:60px 4
 <!-- NAV -->
 <nav>
   <a href="#" class="nav-logo"><img src="images/talseume-logo.png" alt="TALSEUME"/></a>
-  <ul class="nav-center">
-    <li><a href="#collection">Collection</a></li>
-    <li><a href="#shop">Boutique</a></li>
-    <li><a href="#about">About</a></li>
-  </ul>
   <div class="nav-right">
     <button class="nav-cart-btn" onclick="openCart()" aria-label="Panier">
       <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
@@ -326,13 +331,10 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.07);padding:60px 4
 <!-- WHITE SECTION -->
 <div class="white">
 
-  <!-- Collection nav -->
-  <div class="coll-nav">
-    <button class="coll-btn active" data-col="all" onclick="filterCol('all',this)">Tout</button>
-    <button class="coll-btn" data-col="tshirts" onclick="filterCol('tshirts',this)">T-shirts & Débardeurs</button>
-    <button class="coll-btn" data-col="sweats" onclick="filterCol('sweats',this)">Sweats & Hoodies</button>
-    <button class="coll-btn" data-col="vestes" onclick="filterCol('vestes',this)">Vestes & Manteaux</button>
-    <button class="coll-btn" data-col="accessoires" onclick="filterCol('accessoires',this)">Accessoires</button>
+  <!-- Brand intro -->
+  <div class="brand-intro rv">
+    <div class="brand-eyebrow">Talseume — Paris</div>
+    <p class="brand-text">Vêtements éco-responsables, modernes avec du coton 100% organique vegan certifié GOTS et des matériaux recyclés tels que le modal et le polyester recyclé.</p>
   </div>
 
   <!-- Section head -->
@@ -354,13 +356,16 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.07);padding:60px 4
       <div class="ed-info">
         <div class="ed-num">01 — Sweats</div>
         <h3 class="ed-name">Sweat<br>Oversize</h3>
-        <div class="ed-cat">Molleton coton bio GOTS · Unisexe</div>
+        <div class="ed-cat">Coton bio GOTS · Unisexe · 5 coloris</div>
         <p class="ed-desc">Le sweat qui ne cherche pas à plaire — il s'impose. Coupe boxy assumée, matière dense, conscience tranquille. Molleton non brossé 100% coton biologique certifié GOTS.</p>
         <div class="ed-variants">
-          <button class="vpill sel" onclick="selectPill(this)">S</button><button class="vpill" onclick="selectPill(this)">M</button><button class="vpill" onclick="selectPill(this)">L</button><button class="vpill" onclick="selectPill(this)">XL</button>
+          <button class="vpill sel" data-group="size" onclick="selectPill(this)">S</button><button class="vpill" data-group="size" onclick="selectPill(this)">M</button><button class="vpill" data-group="size" onclick="selectPill(this)">L</button><button class="vpill" data-group="size" onclick="selectPill(this)">XL</button><button class="vpill" data-group="size" onclick="selectPill(this)">XXXL</button>
+        </div>
+        <div class="ed-variants">
+          <button class="vpill sel" data-group="color" data-img="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg" onclick="selectPill(this)">ROUGE</button><button class="vpill" data-group="color" data-img="images/products/sweat-a-acapuche-talseume-dos.jpg" onclick="selectPill(this)">BLANC</button><button class="vpill" data-group="color" data-img="images/products/SWEAT-TALSEUME-NOIR-OVERSIZE01.jpg" onclick="selectPill(this)">NOIR</button><button class="vpill" data-group="color" data-img="images/products/SWEAT-TALSEUME-ACAPUCHE-BLEU.jpg" onclick="selectPill(this)">BLEUE</button><button class="vpill" data-group="color" onclick="selectPill(this)">BEIGE</button>
         </div>
         <div class="ed-price">90,00 €</div>
-        <button class="ed-add" onclick="addToCart('Sweat Talseume Oversize','S','90.00','images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg')">Ajouter au panier →</button>
+        <button class="ed-add" onclick="addToCartRow(this,'Sweat Talseume Oversize','90.00','images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg')">Ajouter au panier →</button>
       </div>
     </div>
 
@@ -375,13 +380,16 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.07);padding:60px 4
       <div class="ed-info">
         <div class="ed-num">03 — T-shirts</div>
         <h3 class="ed-name">Tee-Shirt<br>Oversize Bio</h3>
-        <div class="ed-cat">Coton bio GOTS · Tissu lavé</div>
+        <div class="ed-cat">Coton bio GOTS · Tissu lavé · 2 coloris</div>
         <p class="ed-desc">Le totem du streetwear. Pas de fioritures — juste de la présence. Coupe XXL assumée, tissu lavé jersey simple certifié GOTS. Visuel qui reste dans les mémoires.</p>
         <div class="ed-variants">
-          <button class="vpill sel" onclick="selectPill(this)">XS</button><button class="vpill" onclick="selectPill(this)">S</button><button class="vpill" onclick="selectPill(this)">M</button><button class="vpill" onclick="selectPill(this)">L</button>
+          <button class="vpill sel" data-group="size" onclick="selectPill(this)">XS</button><button class="vpill" data-group="size" onclick="selectPill(this)">S</button><button class="vpill" data-group="size" onclick="selectPill(this)">M</button><button class="vpill" data-group="size" onclick="selectPill(this)">L</button><button class="vpill" data-group="size" onclick="selectPill(this)">XL</button>
+        </div>
+        <div class="ed-variants">
+          <button class="vpill sel" data-group="color" data-img="images/products/tee-shirt-talseume-noir-oversise.jpg" onclick="selectPill(this)">NOIR</button><button class="vpill" data-group="color" onclick="selectPill(this)">BLANC</button>
         </div>
         <div class="ed-price">60,00 €</div>
-        <button class="ed-add" onclick="addToCart('Tee-Shirt Talseume Oversize','XS','60.00','images/products/tee-shirt-talseume-noir-oversise.jpg')">Ajouter au panier →</button>
+        <button class="ed-add" onclick="addToCartRow(this,'Tee-Shirt Talseume Oversize','60.00','images/products/tee-shirt-talseume-noir-oversise.jpg')">Ajouter au panier →</button>
       </div>
     </div>
 
@@ -395,17 +403,23 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.07);padding:60px 4
       <div class="ed-info">
         <div class="ed-num">04 — Sweats</div>
         <h3 class="ed-name">Sweat<br>Tls × Bikelife</h3>
-        <div class="ed-cat">Coton bio GOTS 100% · Collab</div>
+        <div class="ed-cat">Coton bio GOTS 100% · Collab · Coloris Noir</div>
         <p class="ed-desc">Taillé pour la Bike life et les rues, pensé pour durer. Style brut, confort total, conscience libre. Coton biologique filé et peigné certifié GOTS, oversize par nature.</p>
         <div class="ed-variants">
-          <button class="vpill sel" onclick="selectPill(this)">2XS</button><button class="vpill" onclick="selectPill(this)">S</button><button class="vpill" onclick="selectPill(this)">M</button><button class="vpill" onclick="selectPill(this)">L</button>
+          <button class="vpill sel" data-group="size" onclick="selectPill(this)">2XS</button><button class="vpill" data-group="size" onclick="selectPill(this)">S</button><button class="vpill" data-group="size" onclick="selectPill(this)">M</button><button class="vpill" data-group="size" onclick="selectPill(this)">L</button><button class="vpill" data-group="size" onclick="selectPill(this)">XL</button><button class="vpill" data-group="size" onclick="selectPill(this)">2XL</button><button class="vpill" data-group="size" onclick="selectPill(this)">3XL</button>
         </div>
         <div class="ed-price">68,99 €</div>
-        <button class="ed-add" onclick="addToCart('Sweat Tls × Bikelife','S','68.99','images/products/sweat-talseume-bikelife-devant.jpg')">Ajouter au panier →</button>
+        <button class="ed-add" onclick="addToCartRow(this,'Sweat Tls × Bikelife','68.99','images/products/sweat-talseume-bikelife-devant.jpg')">Ajouter au panier →</button>
       </div>
     </div>
 
   </div><!-- /ed-list -->
+
+  <!-- SEUM ORIGIN TEXT -->
+  <div class="seum-block rv">
+    <div class="seum-label"><span>Origine</span></div>
+    <p class="seum-text">Le terme <b>"SEUM"</b> trouve ses racines dans <b>"sèmm"</b>, un mot d'origine orientale signifiant <b>"venin de serpent"</b>. Chez l'humain, ce venin se manifeste par la rage, une énergie vibrante qui peut se traduire en puissance, à condition d'être en phase avec une fréquence positive. C'est une force qui, lorsqu'elle est canalisée correctement, peut mener à des résultats extraordinaires.</p>
+  </div>
 
   <!-- ALL PRODUCTS GRID -->
   <div class="pgrid-wrap" id="shop">
@@ -423,11 +437,17 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.07);padding:60px 4
         </div>
         <div class="pcard-info">
           <div class="pcard-name">T-Shirt Manches Longues</div>
-          <div class="pcard-type">T-shirt</div>
-          <p class="pcard-desc">Poids lourd, 240g. 70% coton biologique + 30% coton recyclé. Seul ou en layering, sans jamais passer pour un compromis.</p>
+          <div class="pcard-type">T-shirt · XS→XXL · 3 coloris</div>
+          <p class="pcard-desc">240g, 70% coton bio + 30% recyclé. Natural Raw, Stargazer, Noir. Seul ou en layering, sans jamais passer pour un compromis.</p>
+          <div class="ed-variants" style="margin:8px 0 4px;gap:4px">
+            <button class="vpill sel" data-group="size" onclick="selectPill(this)" style="padding:4px 10px;font-size:9px">S</button><button class="vpill" data-group="size" onclick="selectPill(this)" style="padding:4px 10px;font-size:9px">M</button><button class="vpill" data-group="size" onclick="selectPill(this)" style="padding:4px 10px;font-size:9px">L</button><button class="vpill" data-group="size" onclick="selectPill(this)" style="padding:4px 10px;font-size:9px">XL</button>
+          </div>
+          <div class="ed-variants" style="margin:0 0 8px;gap:4px">
+            <button class="vpill sel" data-group="color" data-img="images/products/tshirt-talseume-mancheslongue-creme.jpg" onclick="selectPill(this)" style="padding:4px 10px;font-size:9px">Natural Raw</button><button class="vpill" data-group="color" data-img="images/products/tee-shirt-talseume-mancheslongue-star.jpg" onclick="selectPill(this)" style="padding:4px 10px;font-size:9px">Stargazer</button><button class="vpill" data-group="color" data-img="images/products/tee-shirt-talseume-mancheslongue.jpg" onclick="selectPill(this)" style="padding:4px 10px;font-size:9px">Noir</button>
+          </div>
           <div class="pcard-foot">
             <span class="pcard-price">75,00 €</span>
-            <button class="pcard-add" onclick="addToCart('T-Shirt Manches Longues','S','75.00','images/products/tee-shirt-talseume-mancheslongue-star.jpg')">+ Panier</button>
+            <button class="pcard-add" onclick="addToCartRow(this,'T-Shirt Manches Longues','75.00','images/products/tee-shirt-talseume-mancheslongue-star.jpg')">+ Panier</button>
           </div>
         </div>
       </div>
@@ -478,7 +498,7 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.07);padding:60px 4
           <p class="pcard-desc">Pensé pour rester en place, conçu pour être vu. Épouse la tête sans serrer, garde la chaleur sans étouffer.</p>
           <div class="pcard-foot">
             <span class="pcard-price">17,99 €</span>
-            <button class="pcard-add" onclick="addToCart('Sport Beanie','Unique','17.99','images/products/Bonnet_talseume.jpg')">+ Panier</button>
+            <button class="pcard-add" onclick="addToCart('Sport Beanie','NOIR','17.99','images/products/Bonnet_talseume.jpg')">+ Panier</button>
           </div>
         </div>
       </div>
@@ -605,12 +625,6 @@ window.addEventListener('scroll',()=>{
 const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in');}),{threshold:.06});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 
-/* ── VARIANT PILLS ── */
-function selectPill(btn){
-  btn.closest('.ed-variants').querySelectorAll('.vpill').forEach(p=>p.classList.remove('sel'));
-  btn.classList.add('sel');
-}
-
 /* ── COLLECTION FILTER ── */
 function filterCol(col,btn){
   document.querySelectorAll('.coll-btn').forEach(b=>b.classList.remove('active'));
@@ -622,13 +636,32 @@ function filterCol(col,btn){
 
 /* ── SHOPIFY VARIANT MAP ── */
 const VARIANTS={
-  'Sweat Talseume Oversize':{S:'56265118515535',M:'56265118581071',L:'56265118646607',XL:'56265118712143',XXXL:'55928100782415'},
-  'Tee-Shirt Talseume Oversize':{XS:'47061212266831',S:'47061212365135',M:'47061212397903',L:'47061212430671',XL:'47061212463439'},
-  'Sweat Tls × Bikelife':{'2XS':'57365782561103',S:'57365782593871',M:'57365782626639',L:'57365782659407',XL:'57365782692175'},
-  'T-Shirt Manches Longues':{XS:'57357212811599',S:'57357212909903',M:'57357213008207',L:'57357213106511',XL:'57357213204815'},
-  'Sport Beanie':{Unique:'55982800404815'},
-  'Casquette Trucker':{Unique:'57358757888335'},
-  'Talseume Bag':{Unique:''},
+  'Sweat Talseume Oversize':{
+    'S/BLANC':'48072654160207','S/NOIR':'55928100651343','S/ROUGE':'56265118515535','S/BLEUE':'56265118548303','S/BEIGE':'56317806903631',
+    'M/BLANC':'48072654192975','M/NOIR':'55928100684111','M/ROUGE':'56265118581071','M/BLEUE':'56265118613839','M/BEIGE':'56317806936399',
+    'L/BLANC':'48072654225743','L/NOIR':'55928100716879','L/ROUGE':'56265118646607','L/BLEUE':'56265118679375','L/BEIGE':'56317806969167',
+    'XL/BLANC':'48072654258511','XL/NOIR':'55928100749647','XL/ROUGE':'56265118712143','XL/BLEUE':'56265118744911','XL/BEIGE':'56317807001935',
+    'XXXL/BLANC':'48072654291279','XXXL/NOIR':'55928100782415','XXXL/ROUGE':'56265118777679','XXXL/BLEUE':'56265118810447','XXXL/BEIGE':'56317807034703'
+  },
+  'Tee-Shirt Talseume Oversize':{
+    'XS/NOIR':'47061212266831','XS/BLANC':'56369337729359',
+    'S/NOIR':'47061212365135','S/BLANC':'56369337762127',
+    'M/NOIR':'47061212397903','M/BLANC':'56369337794895',
+    'L/NOIR':'47061212430671','L/BLANC':'56369337827663',
+    'XL/NOIR':'47061212463439','XL/BLANC':'56369337860431'
+  },
+  'Sweat Tls × Bikelife':{'2XS':'57365782561103','S':'57365782593871','M':'57365782626639','L':'57365782659407','XL':'57365782692175','2XL':'57365782724943','3XL':'57365782757711'},
+  'T-Shirt Manches Longues':{
+    'XS/Natural Raw':'57357212811599','XS/Stargazer':'57357212844367','XS/Noir':'57357212877135',
+    'S/Natural Raw':'57357212909903','S/Stargazer':'57357212942671','S/Noir':'57357212975439',
+    'M/Natural Raw':'57357213008207','M/Stargazer':'57357213040975','M/Noir':'57357213073743',
+    'L/Natural Raw':'57357213106511','L/Stargazer':'57357213139279','L/Noir':'57357213172047',
+    'XL/Natural Raw':'57357213204815','XL/Stargazer':'57357213237583','XL/Noir':'57357213270351',
+    'XXL/Natural Raw':'57357213303119','XXL/Stargazer':'57357213335887','XXL/Noir':'57357213368655'
+  },
+  'Sport Beanie':{'NOIR':'55982800404815'},
+  'Casquette Trucker':{'Unique':'57358757888335'},
+  'Talseume Bag':{'Unique':''},
 };
 
 /* ── CART ── */
@@ -636,8 +669,23 @@ let cart=JSON.parse(localStorage.getItem('tls-cart')||'[]');
 function saveCart(){localStorage.setItem('tls-cart',JSON.stringify(cart));}
 
 function selectPill(btn){
-  btn.closest('.ed-variants,.pcard-variants')?.querySelectorAll('.vpill').forEach(b=>b.classList.remove('sel'));
+  const grp=btn.dataset.group||'size';
+  let container=btn.closest('.ed-row');
+  if(!container) container=btn.closest('.pcard');
+  if(!container) container=btn.parentElement;
+  container.querySelectorAll('.vpill[data-group="'+grp+'"]').forEach(b=>b.classList.remove('sel'));
   btn.classList.add('sel');
+  if(grp==='color'&&btn.dataset.img){
+    const target=container.querySelector('.ed-img img')||container.querySelector('.pcard-img>img');
+    if(target){target.src=btn.dataset.img;}
+  }
+}
+function addToCartRow(btn,name,price,img){
+  const c=btn.closest('.ed-row,.pcard');
+  const size=c?.querySelector('.vpill.sel[data-group="size"]')?.textContent.trim()||'';
+  const color=c?.querySelector('.vpill.sel[data-group="color"]')?.textContent.trim()||'';
+  const key=color?size+'/'+color:size;
+  addToCart(name,key,price,img);
 }
 
 function addToCart(name,variant,price,img){
@@ -678,7 +726,8 @@ function openCart(){document.getElementById('cartSidebar').classList.add('open')
 function closeCart(){document.getElementById('cartSidebar').classList.remove('open');document.getElementById('cartOverlay').classList.remove('open');}
 function goCheckout(){
   if(!cart.length)return;
-  showPayModal();
+  closeCart();
+  setTimeout(showPayModal,450);
 }
 
 renderCart();
