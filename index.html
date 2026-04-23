@@ -142,9 +142,9 @@ nav.scrolled .cart-count{background:#080808;color:#fff}
 @media(max-width:768px){.ed-list{padding:0 24px}}
 
 .ed-row{display:flex;flex-direction:column;padding:64px 0;border-bottom:1px solid var(--line-l);gap:32px}
-.ed-img{aspect-ratio:3/4;overflow:hidden;background:#000;position:relative;width:100%}
-.ed-img a{display:block;position:absolute;inset:0}
-.ed-img img{width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.16,1,.3,1)}
+.ed-img{position:relative;aspect-ratio:3/4;overflow:hidden;background:#000;width:100%;flex-shrink:0}
+.ed-img a{display:block;width:100%;height:100%}
+.ed-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.16,1,.3,1)}
 .ed-img:hover img{transform:scale(1.03)}
 .ed-info{padding:0}
 @media(min-width:768px){
