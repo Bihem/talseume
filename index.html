@@ -689,81 +689,136 @@ function openCart(){document.getElementById('cartSidebar').classList.add('open')
 function closeCart(){document.getElementById('cartSidebar').classList.remove('open');document.getElementById('cartOverlay').classList.remove('open');}
 function goCheckout(){
   if(!cart.length)return;
-  const withId=cart.filter(i=>i.variantId);
-  if(withId.length){
-    const items=withId.map(i=>`${i.variantId}:${i.qty}`).join(',');
-    showStripeModal(cart);
-  } else {
-    showStripeModal(cart);
-  }
+  showPayModal();
 }
 
 renderCart();
 
-/* ── PAIEMENT MODAL ── */
-function showStripeModal(cartItems){
-  const total=cartItems.reduce((s,i)=>s+i.price*i.qty,0).toFixed(2);
-  const lines=cartItems.map(i=>`<div class="pm-line"><span>${i.name} — ${i.variant} × ${i.qty}</span><span>${(i.price*i.qty).toFixed(2).replace('.',',')} €</span></div>`).join('');
+/* ── MODAL RÉCAPITULATIF ── */
+function showPayModal(){
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0).toFixed(2);
+  const lines=cart.map(i=>`
+    <div class="pm-line">
+      <span>${i.name} — ${i.variant} × ${i.qty}</span>
+      <span>${(i.price*i.qty).toFixed(2).replace('.',',')} €</span>
+    </div>`).join('');
   document.getElementById('pm-lines').innerHTML=lines;
-  document.getElementById('pm-total').textContent=total.replace('.',',')+' €';
+  document.getElementById('pm-total').textContent=parseFloat(total).toLocaleString('fr-FR',{minimumFractionDigits:2})+' €';
   document.getElementById('payModal').classList.add('open');
 }
 function closePayModal(){document.getElementById('payModal').classList.remove('open');}
 
-document.getElementById('pm-paypal-btn').addEventListener('click',function(){
-  alert('Intégration PayPal : ajoute ton PayPal.Me ou lien de paiement PayPal Business ici.');
-});
-document.getElementById('pm-stripe-btn').addEventListener('click',function(){
-  alert('Intégration Stripe : ajoute ta clé publique Stripe et crée un Payment Link ici.');
-});
+async function stripeCheckout(mode){
+  const btn = document.getElementById(mode==='3x'?'pm-klarna-btn':'pm-card-btn');
+  btn.disabled=true;
+  btn.textContent='Chargement…';
+  try{
+    const res = await fetch('/.netlify/functions/create-checkout',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        items: cart.map(i=>({name:i.name,variant:i.variant,price:i.price,qty:i.qty,img:window.location.origin+'/'+i.img})),
+        successUrl: window.location.origin+'/?commande=ok',
+        cancelUrl: window.location.href,
+      })
+    });
+    const data = await res.json();
+    if(data.url) window.location.href=data.url;
+    else throw new Error(data.error||'Erreur');
+  }catch(e){
+    alert('Erreur paiement : '+e.message);
+    btn.disabled=false;
+    btn.textContent=mode==='3x'?'Payer en 3× sans frais →':'Payer par carte →';
+  }
+}
+
 document.getElementById('pm-vir-btn').addEventListener('click',function(){
-  document.getElementById('pm-vir-info').style.display='block';
+  document.getElementById('pm-vir-info').style.display=
+    document.getElementById('pm-vir-info').style.display==='block'?'none':'block';
 });
 </script>
 
+<!-- STRIPE SDK -->
+<script src="https://js.stripe.com/v3/"></script>
+
 <!-- MODAL PAIEMENT -->
-<div id="payModal" style="display:none;position:fixed;inset:0;z-index:2000;align-items:center;justify-content:center">
-  <div style="position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)" onclick="closePayModal()"></div>
-  <div style="position:relative;background:#fff;width:min(520px,95vw);max-height:90vh;overflow-y:auto;padding:48px 40px;font-family:'Suisse Intl','Helvetica Neue',sans-serif">
-    <button onclick="closePayModal()" style="position:absolute;top:20px;right:24px;font-size:22px;font-weight:300;color:#999;background:none;border:none;cursor:pointer">×</button>
-    <p style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#999;margin-bottom:8px">Récapitulatif</p>
-    <div id="pm-lines" style="border-top:1px solid #eee;padding-top:16px;margin-bottom:16px;font-size:13px;display:flex;flex-direction:column;gap:10px"></div>
-    <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:600;border-top:1px solid #eee;padding-top:16px;margin-bottom:32px">
+<div id="payModal">
+  <div class="pm-backdrop" onclick="closePayModal()"></div>
+  <div class="pm-box">
+    <button class="pm-close" onclick="closePayModal()">×</button>
+
+    <p class="pm-label">Récapitulatif</p>
+    <div id="pm-lines" class="pm-lines"></div>
+    <div class="pm-total-row">
       <span>Total</span><span id="pm-total"></span>
     </div>
-    <p style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#999;margin-bottom:16px">Mode de paiement</p>
-    <div style="display:flex;flex-direction:column;gap:12px">
-      <button id="pm-stripe-btn" style="display:flex;align-items:center;justify-content:space-between;border:1px solid #e0e0e0;background:#fff;padding:16px 20px;cursor:pointer;font-size:13px;font-family:inherit;transition:border-color .2s" onmouseover="this.style.borderColor='#080808'" onmouseout="this.style.borderColor='#e0e0e0'">
+
+    <p class="pm-label" style="margin-bottom:14px">Mode de paiement</p>
+
+    <!-- Carte -->
+    <button id="pm-card-btn" class="pm-method-btn" onclick="stripeCheckout('card')">
+      <span class="pm-method-label">
         <span>Carte bancaire</span>
-        <span style="display:flex;gap:8px;align-items:center">
-          <svg width="34" height="22" viewBox="0 0 34 22" fill="none"><rect width="34" height="22" rx="3" fill="#1A1F71"/><rect y="7" width="34" height="6" fill="#F7B600"/></svg>
-          <svg width="34" height="22" viewBox="0 0 34 22" fill="none"><rect width="34" height="22" rx="3" fill="#EB001B" fill-opacity=".1"/><circle cx="13" cy="11" r="7" fill="#EB001B"/><circle cx="21" cy="11" r="7" fill="#F79E1B"/><path d="M17 6.2a7 7 0 0 1 0 9.6A7 7 0 0 1 17 6.2Z" fill="#FF5F00"/></svg>
-        </span>
-      </button>
-      <button id="pm-paypal-btn" style="display:flex;align-items:center;justify-content:space-between;border:1px solid #e0e0e0;background:#fff;padding:16px 20px;cursor:pointer;font-size:13px;font-family:inherit;transition:border-color .2s" onmouseover="this.style.borderColor='#003087'" onmouseout="this.style.borderColor='#e0e0e0'">
-        <span>PayPal</span>
-        <svg width="60" height="16" viewBox="0 0 60 16" fill="none"><text y="13" font-size="13" font-weight="700" fill="#003087">Pay</text><text x="22" y="13" font-size="13" font-weight="700" fill="#009CDE">Pal</text></svg>
-      </button>
-      <button id="pm-vir-btn" style="display:flex;align-items:center;justify-content:space-between;border:1px solid #e0e0e0;background:#fff;padding:16px 20px;cursor:pointer;font-size:13px;font-family:inherit;transition:border-color .2s" onmouseover="this.style.borderColor='#080808'" onmouseout="this.style.borderColor='#e0e0e0'">
+        <span class="pm-method-sub">Visa, Mastercard, Apple Pay</span>
+      </span>
+      <span class="pm-method-icons">
+        <svg width="34" height="22" viewBox="0 0 34 22" fill="none"><rect width="34" height="22" rx="3" fill="#1A1F71"/><rect y="7" width="34" height="6" fill="#F7B600"/></svg>
+        <svg width="34" height="22" viewBox="0 0 34 22" fill="none"><rect width="34" height="22" rx="3" fill="#f2f2f2"/><circle cx="13" cy="11" r="7" fill="#EB001B"/><circle cx="21" cy="11" r="7" fill="#F79E1B"/><path d="M17 6.2a7 7 0 0 1 0 9.6A7 7 0 0 1 17 6.2Z" fill="#FF5F00"/></svg>
+      </span>
+    </button>
+
+    <!-- Klarna 3x -->
+    <button id="pm-klarna-btn" class="pm-method-btn pm-klarna" onclick="stripeCheckout('3x')">
+      <span class="pm-method-label">
+        <span>Payer en 3× sans frais</span>
+        <span class="pm-method-sub">Klarna — Divisé en 3 paiements égaux</span>
+      </span>
+      <svg width="52" height="20" viewBox="0 0 52 20" fill="none">
+        <rect width="52" height="20" rx="4" fill="#FFB3C7"/>
+        <text x="8" y="14" font-size="11" font-weight="700" fill="#17120E" font-family="sans-serif">klarna</text>
+      </svg>
+    </button>
+
+    <!-- Virement -->
+    <button id="pm-vir-btn" class="pm-method-btn">
+      <span class="pm-method-label">
         <span>Virement bancaire</span>
-        <svg width="20" height="20" fill="none" stroke="#888" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-      </button>
-      <div id="pm-vir-info" style="display:none;background:#f7f7f5;padding:16px 20px;font-size:12px;line-height:1.8;color:#444">
-        <strong>Coordonnées bancaires Talseume</strong><br>
-        IBAN : FR76 XXXX XXXX XXXX XXXX XXXX XXX<br>
-        BIC : XXXXXXXX<br>
-        Référence : commande + nom<br>
-        <span style="color:#999;font-size:11px">Commande traitée dès réception du virement (1-3 jours ouvrés)</span>
-      </div>
+        <span class="pm-method-sub">Traitement sous 1-3 jours ouvrés</span>
+      </span>
+      <svg width="20" height="20" fill="none" stroke="#888" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+    </button>
+    <div id="pm-vir-info" class="pm-vir-info">
+      <strong>Coordonnées bancaires Talseume</strong><br>
+      IBAN : FR76 XXXX XXXX XXXX XXXX XXXX XXX<br>
+      BIC : XXXXXXXX<br>
+      Référence : ta commande + ton nom
     </div>
-    <p style="margin-top:20px;font-size:11px;color:#bbb;text-align:center">Paiement 100% sécurisé · SSL · Données chiffrées</p>
+
+    <p class="pm-secure">🔒 Paiement 100% sécurisé · SSL · Données chiffrées par Stripe</p>
   </div>
 </div>
 
 <style>
-#payModal{display:flex!important;opacity:0;pointer-events:none;transition:opacity .3s}
+#payModal{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
 #payModal.open{opacity:1;pointer-events:all}
-.pm-line{display:flex;justify-content:space-between;gap:16px}
+.pm-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
+.pm-box{position:relative;background:#fff;width:min(500px,95vw);max-height:90vh;overflow-y:auto;padding:44px 36px;font-family:'Suisse Intl','Helvetica Neue',sans-serif}
+.pm-close{position:absolute;top:18px;right:22px;font-size:24px;font-weight:300;color:#bbb;background:none;border:none;cursor:pointer;line-height:1}
+.pm-close:hover{color:#080808}
+.pm-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#aaa;margin-bottom:12px}
+.pm-lines{border-top:1px solid #f0f0f0;padding-top:14px;margin-bottom:14px;display:flex;flex-direction:column;gap:10px}
+.pm-line{display:flex;justify-content:space-between;gap:16px;font-size:13px;color:#333}
+.pm-total-row{display:flex;justify-content:space-between;font-size:14px;font-weight:600;border-top:1px solid #f0f0f0;padding-top:14px;margin-bottom:28px;color:#080808}
+.pm-method-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;border:1.5px solid #e8e8e8;background:#fff;padding:16px 18px;cursor:pointer;font-family:inherit;margin-bottom:10px;transition:border-color .2s,background .2s;text-align:left}
+.pm-method-btn:hover{border-color:#080808}
+.pm-method-label{display:flex;flex-direction:column;gap:3px}
+.pm-method-label>span:first-child{font-size:13px;font-weight:500;color:#080808}
+.pm-method-sub{font-size:11px;color:#aaa}
+.pm-method-icons{display:flex;gap:6px;align-items:center}
+.pm-klarna{border-color:#FFB3C7}
+.pm-klarna:hover{border-color:#ff80a0;background:#fff8fa}
+.pm-vir-info{display:none;background:#f7f7f5;padding:14px 18px;font-size:12px;line-height:1.9;color:#555;margin-top:-4px;margin-bottom:10px}
+.pm-secure{margin-top:18px;font-size:11px;color:#ccc;text-align:center}
 </style>
 </body>
 </html>
