@@ -106,6 +106,13 @@ nav.scrolled .cart-count{background:#080808;color:#fff}
 .ti b{color:rgba(255,255,255,.6);font-weight:400}
 @keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
+/* ══ SEUM STATEMENT ══ */
+.seum-statement{padding:100px 40px;border-bottom:1px solid var(--line-l)}
+.seum-eyebrow{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.25);font-weight:300;margin-bottom:40px}
+.seum-text{font-size:clamp(28px,4.5vw,72px);font-weight:300;line-height:1.2;letter-spacing:-.03em;color:rgba(0,0,0,.82);max-width:1300px}
+.seum-text em{font-style:normal;color:#080808;font-weight:400}
+@media(max-width:768px){.seum-statement{padding:72px 24px}.seum-text{font-size:clamp(24px,6vw,40px)}}
+
 /* ══ WHITE SECTION ══ */
 .white{background:#fff}
 
@@ -194,11 +201,20 @@ nav.scrolled .cart-count{background:#080808;color:#fff}
 .pcard-add:hover{background:#080808;border-color:#080808;color:#fff}
 
 /* ══ MANIFESTO ══ */
-.manifesto{background:var(--black);color:#fff;padding:140px 40px}
-.m-label{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:40px;font-weight:300}
-.m-text{font-size:clamp(30px,5vw,64px);font-weight:300;line-height:1.12;letter-spacing:-.02em;max-width:1000px}
-.m-text strong{font-weight:400}
-@media(max-width:768px){.manifesto{padding:80px 24px}}
+.manifesto{background:var(--black);color:#fff;padding:120px 40px 140px;overflow:hidden}
+.m-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:80px;border-top:1px solid rgba(255,255,255,.1);padding-top:24px}
+.m-label{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.3);font-weight:400}
+.m-year{font-size:10px;letter-spacing:.14em;color:rgba(255,255,255,.2);font-weight:400}
+.m-lines{display:flex;flex-direction:column;gap:0}
+.m-line{font-size:clamp(52px,9vw,140px);font-weight:700;line-height:.9;letter-spacing:-.04em;text-transform:uppercase;overflow:hidden}
+.m-line span{display:block}
+.m-line.dim span{color:rgba(255,255,255,.18)}
+.m-line.outline span{-webkit-text-stroke:1px rgba(255,255,255,.35);color:transparent}
+.m-foot{margin-top:64px;display:flex;align-items:center;gap:24px}
+.m-sub{font-size:12px;font-weight:300;color:rgba(255,255,255,.35);letter-spacing:.08em;line-height:1.7;max-width:320px}
+.m-cta-link{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);border-bottom:1px solid rgba(255,255,255,.2);padding-bottom:2px;transition:color .25s,border-color .25s;white-space:nowrap}
+.m-cta-link:hover{color:#fff;border-color:#fff}
+@media(max-width:768px){.manifesto{padding:72px 24px 96px}.m-line{font-size:clamp(42px,12vw,80px)}.m-header{margin-bottom:48px}}
 
 /* ══ FOOTER ══ */
 footer{background:#fff;border-top:1px solid var(--line-l);padding:60px 40px 40px}
@@ -315,12 +331,6 @@ footer{background:#fff;border-top:1px solid var(--line-l);padding:60px 40px 40px
 <!-- WHITE SECTION -->
 <div class="white">
 
-  <!-- Brand intro -->
-  <div class="brand-intro rv" id="collection">
-    <p class="brand-eyebrow">Streetwear 100% éco-responsable · Coton bio GOTS · Livraison offerte</p>
-    <p class="brand-text">Vêtements éco-responsables, modernes, en coton 100% organique vegan certifié GOTS et matériaux recyclés — modal, polyester recyclé. Fabriqués pour durer bien au-delà d'une saison.</p>
-  </div>
-
   <!-- Collection nav -->
   <div class="coll-nav">
     <button class="coll-btn active" data-col="all" onclick="filterCol('all',this)">Tout</button>
@@ -401,6 +411,17 @@ footer{background:#fff;border-top:1px solid var(--line-l);padding:60px 40px 40px
     </div>
 
   </div><!-- /ed-list -->
+
+  <!-- SEUM STATEMENT -->
+  <div class="seum-statement rv">
+    <p class="seum-eyebrow">Manifeste · Talseume</p>
+    <p class="seum-text"><em>Talseume</em> n'est pas une marque de mode.<br>
+    C'est un état d'esprit. Une façon d'habiter<br>
+    l'espace <em>sans demander la permission.</em><br><br>
+    Chaque pièce est pensée pour durer,<br>
+    pour marquer, pour appartenir<br>
+    à ceux qui savent <em>qui ils sont.</em></p>
+  </div>
 
   <!-- ALL PRODUCTS GRID -->
   <div class="pgrid-wrap" id="shop">
@@ -517,16 +538,20 @@ footer{background:#fff;border-top:1px solid var(--line-l);padding:60px 40px 40px
 
 <!-- MANIFESTO -->
 <section class="manifesto" id="about">
-  <div class="rv">
-    <p class="m-label">Notre vision</p>
-    <p class="m-text">
-      <strong>Talseume</strong> n'est pas une marque de mode.<br>
-      C'est un état d'esprit. Une façon d'habiter<br>
-      l'espace <strong>sans demander la permission.</strong><br><br>
-      Chaque pièce est pensée pour durer,<br>
-      pour marquer, pour appartenir<br>
-      à ceux qui savent <strong>qui ils sont.</strong>
-    </p>
+  <div class="m-header rv">
+    <span class="m-label">Notre vision</span>
+    <span class="m-year">©2026 Talseume</span>
+  </div>
+  <div class="m-lines rv">
+    <div class="m-line"><span>Pas une</span></div>
+    <div class="m-line outline"><span>marque</span></div>
+    <div class="m-line"><span>de mode.</span></div>
+    <div class="m-line dim"><span>Un état</span></div>
+    <div class="m-line dim"><span>d'esprit.</span></div>
+  </div>
+  <div class="m-foot rv">
+    <p class="m-sub">Chaque pièce pensée pour durer, pour marquer,<br>pour ceux qui savent qui ils sont.</p>
+    <a href="#collection" class="m-cta-link">Voir la collection →</a>
   </div>
 </section>
 
@@ -535,8 +560,6 @@ footer{background:#fff;border-top:1px solid var(--line-l);padding:60px 40px 40px
   <div class="f-grid">
     <div>
       <div class="f-logo">Talseume</div>
-      <div class="f-col-title" style="margin-top:16px">Notre vision</div>
-      <p class="f-sub">Le terme "SEUM" trouve ses racines dans "sèmm", un mot d'origine orientale signifiant "venin de serpent". Chez l'humain, ce venin se manifeste par la rage, une énergie vibrante qui peut se traduire en puissance, à condition d'être en phase avec une fréquence positive. C'est une force qui, lorsqu'elle est canalisée correctement, peut mener à des résultats extraordinaires.</p>
     </div>
     <div class="f-col">
       <div class="f-col-title">Collections</div>
