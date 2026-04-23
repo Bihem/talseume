@@ -167,15 +167,23 @@ nav.scrolled .cart-count{background:#080808;color:#fff}
 .ed-add:hover{opacity:.8}
 
 @media(max-width:900px){
-  .ed-row.left{grid-template-columns:45% 1fr}
-  .ed-row.right{grid-template-columns:1fr 45%}
+  .ed-row.left{grid-template-columns:44% 1fr}
+  .ed-row.right{grid-template-columns:1fr 44%}
+  .ed-row.left .ed-img{padding-right:24px}
+  .ed-row.right .ed-info{padding-right:24px}
 }
 @media(max-width:580px){
-  .ed-row.left,.ed-row.right{grid-template-columns:1fr;gap:24px}
+  .ed-row.left,.ed-row.right{grid-template-columns:44% 1fr;gap:16px;padding:40px 0}
   .ed-row.left .ed-img{padding-right:0}
   .ed-row.right .ed-info{order:1;padding-right:0}
   .ed-row.right .ed-img{order:0}
-  .ed-row.left .ed-img a,.ed-row.right .ed-img a{height:auto;aspect-ratio:3/4}
+  .ed-row.left .ed-img a,.ed-row.right .ed-img a{aspect-ratio:3/4;height:auto;width:100%}
+  .ed-name{font-size:18px}
+  .ed-desc{display:none}
+  .ed-variants{gap:6px}
+  .vpill{padding:5px 10px;font-size:9px}
+  .ed-add{font-size:9px;padding:11px 16px}
+  .ed-price{font-size:16px;margin-bottom:16px}
 }
 
 /* ══ PRODUCT GRID ══ */
