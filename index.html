@@ -142,11 +142,11 @@ nav.scrolled .cart-count{background:#080808;color:#fff}
 @media(max-width:768px){.ed-list{padding:0 24px}}
 
 .ed-row{display:flex;flex-direction:column;padding:64px 0;border-bottom:1px solid var(--line-l);gap:32px}
-.ed-img{width:100%;height:0;padding-bottom:133.33%;position:relative;overflow:hidden;background:#f4f4f2;flex-shrink:0}
+.ed-img{order:-1;width:100%;height:0;padding-bottom:133.33%;position:relative;overflow:hidden;background:#f4f4f2;flex-shrink:0}
 .ed-img a{position:absolute;inset:0;display:block}
 .ed-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.16,1,.3,1)}
 .ed-img:hover img{transform:scale(1.03)}
-.ed-info{padding:0}
+.ed-info{order:1;padding:0}
 @media(min-width:768px){
   .ed-row{flex-direction:row;align-items:flex-start;gap:56px}
   .ed-img{flex:0 0 48%;max-width:48%;padding-bottom:calc(48% * 1.333)}
