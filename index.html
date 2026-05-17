@@ -279,42 +279,83 @@ footer{background:var(--black);color:#fff;padding:80px 48px 30px}
 .mm-mobile-section a{display:block;font-size:18px;font-weight:400;padding:10px 0;color:var(--black)}
 
 /* ══ RESPONSIVE ══ */
+@media(max-width:1200px){
+  .s-head{padding:90px 40px 32px}
+  .carousel-wrap,.pgrid-wrap{padding-left:40px;padding-right:40px}
+  .brand-band,.newsletter{padding:110px 40px}
+  .manifesto{padding:140px 40px 160px}
+  .stl{padding:90px 40px}
+  .benefits{padding:70px 40px}
+  footer{padding:70px 40px 28px}
+}
 @media(max-width:1024px){
-  .catgrid,.pgrid,.benefits,.f-top,.carousel{grid-template-columns:repeat(2,1fr)}
-  .carousel{grid-auto-columns:calc((100% - 14px)/2)}
+  .pgrid,.benefits,.carousel{grid-template-columns:repeat(2,1fr)}
+  .carousel{grid-auto-columns:calc((100% - 18px)/2)}
   .f-top{grid-template-columns:1fr 1fr;gap:32px}
   .megamenu{grid-template-columns:repeat(3,1fr);padding:28px}
   .mm-feat{grid-column:span 3;flex-wrap:wrap}
+  .nav-menu{gap:24px}
+  .nav-menu>li>a,.nav-menu>li>button{font-size:10px;letter-spacing:.18em}
+  .s-title{font-size:clamp(30px,4.8vw,48px)}
+  .hero-content{padding:0 40px 56px}
+  .stl-grid{grid-template-columns:1fr;gap:24px}
 }
 @media(max-width:768px){
   nav{padding:0 16px;height:62px}
   .nav-menu,.nav-cc{display:none}
   .burger{display:flex}
   .nav-logo img{height:32px}
-  .nav-right{gap:8px;flex:0}
+  .nav-right{gap:6px;flex:0}
   .nav-left{flex:0}
-  .promo-bar{font-size:10px}
-  .hero{height:calc(100svh - 98px);min-height:480px}
-  .hero-content{padding:0 24px 44px}
-  .hero-foot{flex-direction:column;align-items:flex-start;gap:20px}
-  .s-head{padding:60px 24px 24px}
-  .carousel-wrap{padding:0 24px 60px}
+  .hero{height:100svh;min-height:540px}
+  .hero-content{padding:0 22px 40px}
+  .hero-tag{font-size:9px;letter-spacing:.24em;margin-bottom:14px}
+  .hero-title{font-size:clamp(56px,16vw,110px);line-height:.88}
+  .hero-foot{flex-direction:column;align-items:flex-start;gap:18px;margin-top:24px}
+  .hero-desc{font-size:12px;max-width:none}
+  .hero-ctas{width:100%;gap:8px}
+  .btn-primary,.btn-ghost{flex:1;padding:14px 18px;font-size:10px;letter-spacing:.18em;justify-content:center}
+  .s-head{padding:64px 22px 22px;flex-direction:column;align-items:flex-start;gap:12px}
+  .s-eyebrow{margin-bottom:10px}
+  .s-title{font-size:clamp(28px,8vw,40px)}
+  .carousel-wrap{padding:0 22px 60px}
   .car-controls{display:none}
-  .carousel{grid-auto-columns:calc((100% - 10px)/2);gap:10px}
-  .catgrid,.pgrid-wrap{padding:0 24px 60px}
-  .catgrid,.pgrid{grid-template-columns:repeat(2,1fr);gap:10px}
-  .brand-band,.stl,.manifesto,.newsletter{padding:60px 24px}
-  .stl-grid{grid-template-columns:1fr}
-  .benefits{grid-template-columns:repeat(2,1fr);gap:24px;padding:48px 24px}
-  footer{padding:60px 24px 24px}
-  .f-top{grid-template-columns:1fr;gap:32px;padding-bottom:32px;margin-bottom:32px}
-  .nl-form{flex-direction:column}
-  .nl-form button{padding:16px}
-  .m-line{font-size:clamp(30px,10vw,60px)}
+  .carousel{grid-auto-columns:calc((100% - 12px)/2);gap:12px}
+  .pgrid-wrap{padding:0 22px 60px}
+  .pgrid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .pcard-info{padding:14px 2px 6px}
+  .pcard-name{font-size:12px}
+  .pcard-price{font-size:12px}
+  .brand-band{padding:80px 22px}
+  .brand-text{font-size:18px;line-height:1.5}
+  .stl{padding:70px 22px}
+  .stl-items{grid-template-columns:1fr 1fr;gap:10px}
+  .manifesto{padding:90px 22px 100px}
+  .m-content{gap:32px}
+  .m-eyebrow{font-size:10px;letter-spacing:.32em;gap:12px}
+  .m-eyebrow::before,.m-eyebrow::after{width:22px}
+  .m-body{font-size:16px;line-height:1.7}
+  .newsletter{padding:80px 22px}
+  .nl-title{font-size:clamp(24px,7vw,36px)}
+  .nl-sub{font-size:13px}
+  .nl-form{flex-direction:column;border:none;gap:10px}
+  .nl-form input{border-bottom:1px solid var(--black);padding:14px 0}
+  .nl-form button{background:var(--black);color:#fff;padding:16px}
+  .benefits{grid-template-columns:repeat(2,1fr);gap:28px 16px;padding:48px 22px}
+  .bn-sub{font-size:11px}
+  footer{padding:56px 22px 24px}
+  .f-top{grid-template-columns:1fr 1fr;gap:32px;padding-bottom:32px;margin-bottom:32px}
+  .f-brand{grid-column:span 2}
+  .f-bottom{flex-direction:column;align-items:flex-start;gap:14px}
+  .f-pay svg{height:18px}
 }
 @media(max-width:480px){
-  .benefits{grid-template-columns:1fr}
-  .pcard-quick{font-size:9px;padding:9px}
+  .benefits{grid-template-columns:1fr;gap:24px}
+  .f-top{grid-template-columns:1fr;gap:28px}
+  .f-brand{grid-column:span 1}
+  #back-top{width:42px;height:42px;bottom:18px;right:18px}
+  .hero-ctas{flex-direction:column}
+  .btn-primary,.btn-ghost{width:100%}
 }
 
 /* ══ COOKIE BANNER ══ */

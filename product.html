@@ -213,12 +213,60 @@ footer{background:var(--black);color:#fff;padding:80px 56px 30px;margin-top:0}
 @media(max-width:1024px){.f-top{grid-template-columns:1fr 1fr;gap:32px}}
 @media(max-width:768px){footer{padding:60px 24px 24px}.f-top{grid-template-columns:1fr;gap:32px;padding-bottom:32px;margin-bottom:32px}.f-bottom{flex-direction:column;align-items:flex-start}}
 
+@media(max-width:1200px){
+  .product-page{padding:24px 40px 50px}
+  .related{padding:90px 40px 80px}
+}
+@media(max-width:1024px){
+  .nav-menu{gap:24px}
+  .nav-menu>li>a,.nav-menu>li>button{font-size:10px;letter-spacing:.18em}
+  .related-grid{grid-template-columns:repeat(2,1fr)}
+  .engagements{gap:18px 24px}
+}
 @media(max-width:768px){
   nav{padding:0 16px;height:62px}
   .nav-menu{display:none}
   .burger{display:flex}
   .nav-logo img{height:32px}
-  .breadcrumb{padding:80px 24px 0}
+  .nav-right{gap:6px}
+  .nav-back{display:none}
+  .breadcrumb{padding:78px 20px 0;font-size:9px;letter-spacing:.18em;gap:6px}
+  .product-page{padding:16px 0 40px}
+  .prod-info-side{padding:28px 20px 0}
+  .prod-eyebrow{font-size:9px;letter-spacing:.24em;margin-bottom:14px}
+  .prod-name{font-size:clamp(24px,7vw,34px);margin-bottom:18px}
+  .prod-price{font-size:20px}
+  .prod-klarna-hint{font-size:12px;margin-bottom:28px}
+  .variant-section{margin-bottom:24px}
+  .variant-label{font-size:10px;letter-spacing:.22em;margin-bottom:12px}
+  .cswatch{width:28px;height:28px}
+  .pill{padding:11px 0;font-size:10px;letter-spacing:.14em;min-width:48px}
+  .action-row{flex-direction:column;gap:8px}
+  .qty-stepper{align-self:flex-start}
+  .add-btn{width:100%;height:52px}
+  .engagements{padding:20px 0;gap:14px 20px;margin-bottom:24px}
+  .eng span{font-size:10px;letter-spacing:.12em}
+  .acc-head{padding:16px 0;font-size:10px;letter-spacing:.18em}
+  .acc-content{font-size:12px}
+  .payment-row{margin-top:28px;padding-top:20px}
+  .related{padding:60px 20px 50px}
+  .related-eyebrow{font-size:10px;letter-spacing:.28em;margin-bottom:14px}
+  .related-title{font-size:clamp(26px,8vw,38px)}
+  .related-head{margin-bottom:28px}
+  .related-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .pcard-name{font-size:12px}
+  .pcard-price{font-size:12px}
+  footer{padding:56px 20px 22px}
+  .f-top{grid-template-columns:1fr 1fr;gap:28px}
+  .f-brand{grid-column:span 2}
+  .toast{bottom:20px;font-size:11px;padding:12px 22px}
+}
+@media(max-width:480px){
+  .related-grid{grid-template-columns:1fr 1fr}
+  .f-top{grid-template-columns:1fr;gap:24px}
+  .f-brand{grid-column:span 1}
+  .engagements{flex-direction:column;align-items:flex-start;gap:12px}
+  .eng{width:100%}
 }
 
 /* ══ COOKIE BANNER ══ */
