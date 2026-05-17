@@ -200,14 +200,15 @@ nav.scrolled .nav-logo img{filter:none}
 .brand-text b{font-weight:400;color:var(--black);border-bottom:1px solid rgba(0,0,0,.15);padding-bottom:1px}
 
 /* ══ SHOP TON PRODUIT SECTION ══ */
-.shop-ton-produit{background:#fff;padding:90px 0 100px;border-top:1px solid var(--line-l);overflow:hidden}
-.shop-ton-produit .s-head{padding:0 56px 36px}
-.shop-ton-produit-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.shop-ton-produit{background:#fff;padding:90px 56px 100px;border-top:1px solid var(--line-l);overflow:hidden}
+.shop-ton-produit .s-head{padding:0 0 36px}
+.shop-ton-produit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .shop-ton-produit-tile{aspect-ratio:3/4;overflow:hidden;background:var(--cream);position:relative;cursor:pointer}
-.shop-ton-produit-tile img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.6s cubic-bezier(.16,1,.3,1)}
-.shop-ton-produit-tile:hover img{transform:scale(1.03)}
-@media(max-width:1200px){.shop-ton-produit{padding:70px 0 80px}.shop-ton-produit .s-head{padding:0 40px 28px}}
-@media(max-width:768px){.shop-ton-produit{padding:56px 0 60px}.shop-ton-produit .s-head{padding:0 22px 22px}.shop-ton-produit-grid{grid-template-columns:1fr}}
+.shop-ton-produit-tile img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.4s cubic-bezier(.16,1,.3,1)}
+.shop-ton-produit-tile:hover img{transform:scale(1.04)}
+@media(max-width:1200px){.shop-ton-produit{padding:70px 40px 80px}}
+@media(max-width:1024px){.shop-ton-produit-grid{grid-template-columns:repeat(2,1fr);gap:12px}}
+@media(max-width:768px){.shop-ton-produit{padding:56px 22px 60px}.shop-ton-produit-grid{grid-template-columns:1fr;gap:10px}}
 
 
 /* ══ EDITORIAL HERO PAIR ══ */
@@ -845,6 +846,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   <div class="shop-ton-produit-grid rv">
     <div class="shop-ton-produit-tile"><img src="images/lookbook/shop-01-cap-homme-bmx.png" alt="Casquette Talseume — BMX Skatepark" loading="lazy"/></div>
     <div class="shop-ton-produit-tile"><img src="images/lookbook/shop-02-sacoche-asiat-bmx.png" alt="Sacoche Talseume — BMX Paris" loading="lazy"/></div>
+    <div class="shop-ton-produit-tile"><img src="images/lookbook/shop-03-orange-tank.png" alt="Débardeur Orange Talseume" loading="lazy"/></div>
   </div>
 </section>
 
