@@ -216,18 +216,19 @@ nav.scrolled .nav-logo img{filter:none}
 .lookbook .s-head{padding:0 0 44px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:32px}
 .lookbook .s-eyebrow{color:rgba(255,255,255,.5)}
 .lookbook .s-title{color:#fff}
-.look-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.look-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;grid-auto-flow:dense}
 .look-tile{position:relative;overflow:hidden;background:#1a1a1a;cursor:pointer;aspect-ratio:3/4}
+.look-tile.wide{grid-column:span 2;aspect-ratio:16/9}
 .look-tile img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s cubic-bezier(.16,1,.3,1)}
 .look-tile:hover img{transform:scale(1.03)}
-.look-tile::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.55) 100%);pointer-events:none;z-index:1;opacity:.7;transition:opacity .3s}
+.look-tile::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.55) 100%);pointer-events:none;z-index:1;opacity:.65;transition:opacity .3s}
 .look-tile:hover::after{opacity:1}
-.look-caption{position:absolute;left:22px;bottom:20px;display:flex;align-items:center;gap:12px;z-index:2;color:#fff}
-.look-num{font-size:10px;letter-spacing:.34em;font-weight:500;opacity:.7}
-.look-title{font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:400}
+.look-caption{position:absolute;left:18px;bottom:16px;display:flex;align-items:center;gap:10px;z-index:2;color:#fff}
+.look-num{font-size:9px;letter-spacing:.34em;font-weight:500;opacity:.7}
+.look-title{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:400}
 @media(max-width:1200px){.lookbook{padding:100px 40px}}
-@media(max-width:1024px){.look-grid{grid-template-columns:repeat(2,1fr);gap:14px}}
-@media(max-width:768px){.lookbook{padding:70px 22px}.look-grid{grid-template-columns:1fr;gap:12px}.look-caption{left:18px;bottom:16px}}
+@media(max-width:1024px){.look-grid{grid-template-columns:repeat(2,1fr);gap:12px}.look-tile.wide{grid-column:span 2}}
+@media(max-width:768px){.lookbook{padding:70px 22px}.look-grid{gap:10px}.look-caption{left:14px;bottom:12px;gap:8px}}
 
 /* ══ MANIFESTO ══ */
 .manifesto{color:#fff;padding:120px 48px 130px;overflow:hidden;text-align:center;position:relative;background:#0a0a0a}
@@ -699,18 +700,22 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     </div>
   </div>
   <div class="look-grid rv">
-    <div class="look-tile">
-      <img src="images/lookbook/01-sweat-noir.png" alt="Sweat Talseume Oversize" loading="lazy"/>
-      <div class="look-caption"><span class="look-num">01</span><span class="look-title">Sweat Oversize</span></div>
-    </div>
-    <div class="look-tile">
-      <img src="images/lookbook/femme-01-orange.png" alt="Débardeur Femme Talseume" loading="lazy"/>
-      <div class="look-caption"><span class="look-num">02</span><span class="look-title">Débardeur Femme</span></div>
-    </div>
-    <div class="look-tile">
-      <img src="images/lookbook/femme-02-longsleeve.png" alt="Manches Longues Talseume" loading="lazy"/>
-      <div class="look-caption"><span class="look-num">03</span><span class="look-title">Manches Longues</span></div>
-    </div>
+    <div class="look-tile"><img src="images/lookbook/01-sweat-noir.png" alt="Sweat Oversize" loading="lazy"/><div class="look-caption"><span class="look-num">01</span><span class="look-title">Sweat Oversize</span></div></div>
+    <div class="look-tile wide"><img src="images/lookbook/bike-01-dirt-sweat.png" alt="Dirt Bike — Sweat" loading="lazy"/><div class="look-caption"><span class="look-num">02</span><span class="look-title">Dirt Bike</span></div></div>
+    <div class="look-tile"><img src="images/lookbook/15-cagoule-homme.png" alt="Cagoule" loading="lazy"/><div class="look-caption"><span class="look-num">03</span><span class="look-title">Cagoule</span></div></div>
+    <div class="look-tile"><img src="images/lookbook/bike-04-bmx-tee.png" alt="BMX Tee" loading="lazy"/><div class="look-caption"><span class="look-num">04</span><span class="look-title">BMX — Tee</span></div></div>
+    <div class="look-tile"><img src="images/lookbook/femme-01-orange.png" alt="Débardeur Orange" loading="lazy"/><div class="look-caption"><span class="look-num">05</span><span class="look-title">Débardeur</span></div></div>
+    <div class="look-tile"><img src="images/lookbook/bike-02-bmx-femme.png" alt="BMX Femme" loading="lazy"/><div class="look-caption"><span class="look-num">06</span><span class="look-title">BMX Femme</span></div></div>
+    <div class="look-tile"><img src="images/lookbook/14-tee-blanc-skater.png" alt="Tee Blanc" loading="lazy"/><div class="look-caption"><span class="look-num">07</span><span class="look-title">Tee Blanc</span></div></div>
+    <div class="look-tile wide"><img src="images/lookbook/13-duo-canal-rouge.png" alt="Duo Canal" loading="lazy"/><div class="look-caption"><span class="look-num">08</span><span class="look-title">Duo — Canal</span></div></div>
+    <div class="look-tile"><img src="images/lookbook/16-cagoule-femme.png" alt="Cagoule Femme" loading="lazy"/><div class="look-caption"><span class="look-num">09</span><span class="look-title">Cagoule Femme</span></div></div>
+    <div class="look-tile"><img src="images/lookbook/06-beanie-femme.png" alt="Beanie" loading="lazy"/><div class="look-caption"><span class="look-num">10</span><span class="look-title">Beanie</span></div></div>
+    <div class="look-tile"><img src="images/lookbook/12-sweat-bleu-femme.png" alt="Sweat Bleu" loading="lazy"/><div class="look-caption"><span class="look-num">11</span><span class="look-title">Sweat Bleu</span></div></div>
+    <div class="look-tile wide"><img src="images/lookbook/08-coach-noir-bike.png" alt="Coach Jacket" loading="lazy"/><div class="look-caption"><span class="look-num">12</span><span class="look-title">Coach Jacket</span></div></div>
+    <div class="look-tile"><img src="images/lookbook/femme-02-longsleeve.png" alt="Manches Longues Rooftop" loading="lazy"/><div class="look-caption"><span class="look-num">13</span><span class="look-title">Rooftop</span></div></div>
+    <div class="look-tile"><img src="images/lookbook/11-mancheslongues-creme.png" alt="Manches Longues Crème" loading="lazy"/><div class="look-caption"><span class="look-num">14</span><span class="look-title">Crème</span></div></div>
+    <div class="look-tile wide"><img src="images/lookbook/bike-03-duo-canal.png" alt="Duo Bike Canal" loading="lazy"/><div class="look-caption"><span class="look-num">15</span><span class="look-title">Bike — Canal</span></div></div>
+    <div class="look-tile"><img src="images/lookbook/09-femme-retry.png" alt="Femme Editorial" loading="lazy"/><div class="look-caption"><span class="look-num">16</span><span class="look-title">Editorial</span></div></div>
   </div>
 </section>
 
