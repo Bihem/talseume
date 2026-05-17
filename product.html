@@ -58,8 +58,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;background:rgba(255,255,255,
 .prod-thumb:hover{opacity:1}
 .prod-thumb.sel{border-color:var(--black);opacity:1}
 .prod-thumb img{width:100%;height:100%;object-fit:cover}
-.prod-main-img-wrap{flex:1;background:var(--off);overflow:hidden;aspect-ratio:4/5;position:sticky;top:104px;max-height:calc(100vh - 130px)}
-.prod-main-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center;transition:opacity .35s}
+.prod-main-img-wrap{flex:1;background:var(--off);overflow:hidden;aspect-ratio:4/5;position:sticky;top:104px;max-height:calc(100vh - 130px);display:flex;align-items:center;justify-content:center;padding:20px}
+.prod-main-img-wrap img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;transition:opacity .35s}
 @media(max-width:768px){
   .prod-img-side{flex-direction:column;padding:0 0;gap:0}
   .prod-thumbs{flex-direction:row;order:2;padding:14px 20px 0;position:static;overflow-x:auto;width:100%}
@@ -93,13 +93,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;background:rgba(255,255,255,
 .pill.sel{background:var(--black);border-color:var(--black);color:#fff}
 
 /* Quantity + add */
-.action-row{display:flex;gap:10px;margin-bottom:28px;align-items:stretch}
-.qty-stepper{display:flex;align-items:center;border:1px solid rgba(0,0,0,.18);flex-shrink:0}
-.qty-btn{width:46px;height:54px;font-size:16px;font-weight:300;display:flex;align-items:center;justify-content:center;color:var(--black);transition:opacity .2s}
+.action-row{display:flex;flex-direction:column;gap:16px;margin-bottom:28px;align-items:stretch}
+.qty-stepper{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;border:none}
+.qty-label-inline{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:rgba(0,0,0,.45);font-weight:400;margin-right:14px}
+.qty-btn{width:32px;height:32px;font-size:18px;font-weight:300;display:flex;align-items:center;justify-content:center;color:var(--black);transition:opacity .2s;border:none;background:none;cursor:pointer}
 .qty-btn:hover{opacity:.5}
-.qty-val{width:42px;height:54px;text-align:center;font-size:13px;font-weight:500;border:none;border-left:1px solid rgba(0,0,0,.12);border-right:1px solid rgba(0,0,0,.12);outline:none;font-family:inherit}
-.add-btn{flex:1;background:var(--black);color:#fff;font-size:11px;font-weight:400;letter-spacing:.24em;text-transform:uppercase;padding:0 24px;height:54px;transition:opacity .2s}
-.add-btn:hover{opacity:.82}
+.qty-val{width:32px;height:32px;text-align:center;font-size:14px;font-weight:500;border:none;outline:none;font-family:inherit;background:transparent;color:var(--black)}
+.add-btn{width:100%;background:var(--black);color:#fff;font-size:12px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;padding:0;height:60px;transition:opacity .2s}
+.add-btn:hover{opacity:.85}
 
 /* Engagements (replaces colored eco labels) */
 .engagements{padding:24px 0;border-top:1px solid var(--line-l);border-bottom:1px solid var(--line-l);margin-bottom:28px;display:flex;flex-wrap:wrap;gap:24px 32px}
@@ -361,9 +362,10 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     <!-- ACTION ROW -->
     <div class="action-row">
       <div class="qty-stepper">
-        <button class="qty-btn" onclick="changeQty(-1)">−</button>
+        <span class="qty-label-inline">Quantité</span>
+        <button class="qty-btn" onclick="changeQty(-1)" aria-label="Diminuer">−</button>
         <input class="qty-val" id="qty-val" type="number" value="1" min="1" max="10" readonly/>
-        <button class="qty-btn" onclick="changeQty(1)">+</button>
+        <button class="qty-btn" onclick="changeQty(1)" aria-label="Augmenter">+</button>
       </div>
       <button class="add-btn" onclick="addProductToCart()">Ajouter au panier</button>
     </div>
