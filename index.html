@@ -212,9 +212,10 @@ nav.scrolled .nav-logo img{filter:none}
 .stl-items .pcard-img{aspect-ratio:1/1}
 
 /* ══ MANIFESTO ══ */
-.manifesto{background:var(--black);color:#fff;padding:180px 48px 200px;overflow:hidden;text-align:center;position:relative}
-.manifesto-serpent{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(1400px,160%);height:auto;pointer-events:none;z-index:0;opacity:1}
-.m-content{position:relative;z-index:1;max-width:920px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:46px}
+.manifesto{color:#fff;padding:200px 48px 220px;overflow:hidden;text-align:center;position:relative;background:#0a0a0a}
+.manifesto-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.55;filter:grayscale(.4) contrast(1.1)}
+.manifesto::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(10,10,10,.55) 0%,rgba(10,10,10,.85) 60%,rgba(10,10,10,.95) 100%);z-index:1;pointer-events:none}
+.m-content{position:relative;z-index:2;max-width:920px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:46px}
 .m-eyebrow{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:400;display:flex;align-items:center;gap:18px}
 .m-eyebrow::before,.m-eyebrow::after{content:'';width:34px;height:1px;background:rgba(255,255,255,.28)}
 .m-body{font-size:clamp(20px,2.4vw,30px);font-weight:300;line-height:1.6;color:rgba(255,255,255,.95);letter-spacing:-.005em}
@@ -864,62 +865,7 @@ footer{background:var(--black);color:#fff;padding:80px 48px 30px}
 
 <!-- MANIFESTO -->
 <section class="manifesto" id="manifesto">
-  <svg class="manifesto-serpent" viewBox="0 0 1000 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-    <defs>
-      <radialGradient id="sg" cx="50%" cy="50%" r="60%">
-        <stop offset="0%" stop-color="rgba(255,255,255,.55)"/>
-        <stop offset="65%" stop-color="rgba(255,255,255,.32)"/>
-        <stop offset="100%" stop-color="rgba(255,255,255,.12)"/>
-      </radialGradient>
-    </defs>
-    <g fill="none" stroke="url(#sg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <!-- Outer coil -->
-      <path d="M 500 80 C 720 80 880 250 880 430 C 880 580 760 660 620 660 C 500 660 410 580 410 480 C 410 400 470 340 560 340 C 630 340 680 390 680 450 C 680 495 645 530 600 530 C 565 530 540 505 540 475 C 540 455 555 440 575 440"/>
-      <!-- Inner faint coil echo -->
-      <path d="M 500 120 C 690 120 850 280 850 440 C 850 565 745 635 625 635" stroke-width=".8" opacity=".55"/>
-      <!-- Tail extending out -->
-      <path d="M 500 80 C 430 70 360 110 320 180 C 280 250 240 340 180 410 C 140 460 100 500 70 540" stroke-width="1.3"/>
-      <path d="M 70 540 C 55 555 45 575 50 595" stroke-width="1"/>
-      <!-- Head shape near 575,440 (tail being approached) -->
-      <path d="M 575 440 C 583 440 590 444 593 451 L 608 444 L 614 458 L 600 467 L 597 480 C 590 482 582 478 577 470 Z" fill="rgba(255,255,255,.16)" stroke-width=".8"/>
-      <!-- Tongue forked -->
-      <path d="M 614 458 L 632 463 M 632 463 L 627 458 M 632 463 L 627 469" stroke-width="1"/>
-      <!-- Eye -->
-      <circle cx="588" cy="455" r="2" fill="rgba(255,255,255,.6)" stroke="none"/>
-      <!-- Scale ticks along body -->
-      <g opacity=".55" stroke-width="1">
-        <path d="M 540 110 L 545 102"/>
-        <path d="M 600 130 L 607 124"/>
-        <path d="M 660 160 L 668 156"/>
-        <path d="M 720 200 L 728 198"/>
-        <path d="M 770 250 L 778 250"/>
-        <path d="M 810 310 L 818 312"/>
-        <path d="M 840 370 L 848 374"/>
-        <path d="M 845 440 L 853 444"/>
-        <path d="M 830 500 L 836 508"/>
-        <path d="M 800 555 L 805 564"/>
-        <path d="M 750 600 L 754 610"/>
-        <path d="M 680 635 L 682 645"/>
-        <path d="M 600 645 L 600 655"/>
-        <path d="M 520 625 L 518 635"/>
-        <path d="M 460 580 L 454 588"/>
-        <path d="M 425 510 L 418 514"/>
-        <path d="M 425 430 L 417 428"/>
-        <path d="M 455 380 L 449 374"/>
-      </g>
-      <!-- Scale ticks along tail -->
-      <g opacity=".5" stroke-width=".9">
-        <path d="M 440 80 L 438 70"/>
-        <path d="M 380 100 L 376 92"/>
-        <path d="M 335 160 L 328 156"/>
-        <path d="M 300 230 L 292 228"/>
-        <path d="M 265 300 L 258 298"/>
-        <path d="M 220 370 L 213 368"/>
-        <path d="M 175 430 L 168 428"/>
-        <path d="M 130 485 L 124 482"/>
-      </g>
-    </g>
-  </svg>
+  <img class="manifesto-bg" src="https://images.unsplash.com/photo-1539389004540-770367e1bccb?w=2000&q=80&auto=format&fit=crop" alt="" aria-hidden="true" loading="lazy"/>
   <div class="m-content">
     <div class="m-eyebrow">Origine · Seum</div>
     <p class="m-body">Le terme <b>« SEUM »</b> trouve ses racines dans <b>« sèmm »</b>, un mot d'origine orientale signifiant <b>« venin de serpent »</b>. Chez l'humain, ce venin se manifeste par la rage, une énergie vibrante qui peut se traduire en puissance, à condition d'être en phase avec une fréquence positive. C'est une force qui, lorsqu'elle est canalisée correctement, peut mener à des résultats extraordinaires.</p>
