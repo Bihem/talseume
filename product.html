@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talseume</title>
+<link rel="icon" href="images/talseume-logo.png">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--black:#080808;--F:'Space Grotesk',system-ui,sans-serif;--line:#e8e8e8;--gold:#C8A96E}
+body{font-family:var(--F);background:#fff;color:var(--black);min-height:100vh}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:64px;background:#fff;border-bottom:1px solid var(--line)}
+.nav-logo img{height:64px;display:block}
+.nav-right{display:flex;align-items:center;gap:20px}
+.nav-back{font-size:12px;letter-spacing:.08em;color:rgba(0,0,0,.4);text-decoration:none;transition:.15s}
+.nav-back:hover{color:var(--black)}
+.nav-cart-btn{background:none;border:none;cursor:pointer;position:relative;display:flex;align-items:center;padding:4px}
+.nav-cart-btn svg{width:20px;height:20px;stroke:var(--black);fill:none;stroke-width:1.5}
+.cart-count{position:absolute;top:-4px;right:-4px;background:var(--black);color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:.2s}
+.cart-count.show{opacity:1}
+@media(max-width:600px){nav{padding:0 20px}}
+
+/* LAYOUT */
+.product-page{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 64px)}
+@media(max-width:768px){.product-page{grid-template-columns:1fr}}
+
+/* IMAGE */
+.prod-img-side{position:sticky;top:64px;height:calc(100vh - 64px);overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center}
+@media(max-width:768px){.prod-img-side{position:relative;height:80vw;top:0}}
+.prod-img-side img{width:100%;height:100%;object-fit:contain;transition:.4s}
+
+/* INFO */
+.prod-info-side{padding:48px 52px 80px;overflow-y:auto}
+@media(max-width:900px){.prod-info-side{padding:36px 28px 60px}}
+@media(max-width:600px){.prod-info-side{padding:24px 18px 48px}}
+
+.prod-badge{display:inline-block;background:var(--black);color:#fff;font-size:9px;letter-spacing:.16em;text-transform:uppercase;padding:5px 12px;margin-bottom:18px}
+.prod-name{font-size:clamp(24px,3.5vw,42px);font-weight:300;letter-spacing:-.02em;line-height:1.05;text-transform:uppercase;margin-bottom:10px}
+
+/* RATING */
+.prod-price-row{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
+.prod-price{font-size:24px;font-weight:400}
+.prod-klarna-hint{font-size:11px;color:rgba(0,0,0,.4)}
+.prod-klarna-hint strong{color:#17120E;background:#FFB3C7;padding:1px 6px;border-radius:3px;font-size:10px}
+
+/* VARIANTS */
+.variant-section{margin-bottom:22px}
+.variant-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(0,0,0,.4);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.variant-sel{color:var(--black);font-weight:600;font-size:11px}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;border:1px solid rgba(0,0,0,.2);padding:8px 16px;cursor:pointer;transition:background .15s,border-color .15s,color .15s;background:none;color:var(--black);font-family:var(--F);-webkit-tap-highlight-color:transparent}
+.pill:hover{border-color:var(--black)}
+.pill.sel{background:var(--black);border-color:var(--black);color:#fff}
+
+/* COLOR SWATCHES */
+.color-swatches{display:flex;flex-wrap:wrap;gap:10px}
+.cswatch{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:.2s;position:relative;flex-shrink:0}
+.cswatch:hover{transform:scale(1.1)}
+.cswatch.sel{border-color:var(--black)}
+.cswatch.sel::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1.5px solid var(--black)}
+.cswatch.white-swatch{border-color:rgba(0,0,0,.2)}
+
+/* QUANTITY */
+.qty-section{margin-bottom:22px}
+.qty-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(0,0,0,.4);margin-bottom:10px}
+.qty-stepper{display:flex;align-items:center;gap:0;border:1px solid rgba(0,0,0,.2);width:fit-content}
+.qty-btn{width:40px;height:40px;background:none;border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--black);transition:.15s}
+.qty-btn:hover{background:#f5f5f5}
+.qty-val{width:48px;height:40px;text-align:center;font-size:14px;font-weight:500;font-family:var(--F);border:none;border-left:1px solid rgba(0,0,0,.12);border-right:1px solid rgba(0,0,0,.12);outline:none}
+
+/* BUTTONS */
+.add-btn{width:100%;background:var(--black);color:#fff;border:none;font-family:var(--F);font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:18px;cursor:pointer;transition:opacity .2s;margin-bottom:20px}
+.add-btn:hover{opacity:.8}
+
+/* PAYMENT ICONS */
+.payment-row{display:flex;align-items:center;gap:10px;margin-bottom:28px;flex-wrap:wrap}
+.payment-label{font-size:10px;color:rgba(0,0,0,.35);letter-spacing:.06em;text-transform:uppercase;width:100%;margin-bottom:4px}
+.pay-icon{height:24px;border-radius:3px}
+.klarna-strip{display:flex;align-items:center;gap:8px;background:#FFF5F7;border:1px solid #FFB3C7;padding:10px 14px;margin-bottom:24px}
+.klarna-strip-text{font-size:12px;color:var(--black)}
+.klarna-strip-text strong{font-weight:600}
+
+/* ECO LABELS */
+.eco-labels{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.eco-label{display:flex;align-items:center;gap:5px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(0,0,0,.55);background:#F5F9F2;border:1px solid #D4EAC8;padding:6px 12px;border-radius:20px}
+.eco-check{color:#16A34A;font-weight:700}
+.eco-recycle{color:#16A34A}
+.eco-star{color:#C8A96E}
+
+/* DESC */
+.prod-desc{font-size:13px;line-height:1.85;color:rgba(0,0,0,.55);font-weight:300;margin-bottom:16px;border-top:1px solid var(--line);padding-top:22px}
+.prod-material{font-size:10px;letter-spacing:.08em;color:rgba(0,0,0,.35);text-transform:uppercase;margin-bottom:28px}
+
+/* ACCORDION */
+.accordion{border-top:1px solid var(--line);margin-top:8px}
+.acc-item{border-bottom:1px solid var(--line)}
+.acc-head{display:flex;justify-content:space-between;align-items:center;padding:16px 0;cursor:pointer;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,0,0,.5)}
+.acc-head:hover{color:var(--black)}
+.acc-icon{font-size:18px;font-weight:300}
+.acc-body{max-height:0;overflow:hidden;transition:.3s}
+.acc-body.open{max-height:600px}
+.acc-content{font-size:13px;line-height:1.8;color:rgba(0,0,0,.55);padding-bottom:16px}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--black);color:#fff;padding:13px 24px;font-size:13px;z-index:500;transition:.3s;opacity:0;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+/* CART */
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;opacity:0;pointer-events:none;transition:.3s}
+.cart-overlay.open{opacity:1;pointer-events:all}
+#cartSidebar{position:fixed;top:0;right:0;bottom:0;width:min(420px,100vw);background:#fff;z-index:201;transform:translateX(100%);transition:.35s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column}
+#cartSidebar.open{transform:none}
+.cart-hd{display:flex;align-items:center;justify-content:space-between;padding:24px 24px 16px;border-bottom:1px solid var(--line)}
+.cart-hd-title{font-size:13px;letter-spacing:.16em;text-transform:uppercase;font-weight:400}
+.cart-close{background:none;border:none;font-size:22px;cursor:pointer;color:#aaa;line-height:1}
+.cart-close:hover{color:var(--black)}
+#cartItems{flex:1;overflow-y:auto;padding:16px 24px}
+.cart-empty{font-size:13px;color:#aaa;text-align:center;padding:40px 0}
+.cart-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.cart-item-img{width:64px;height:80px;background:#f5f4f2;flex-shrink:0;overflow:hidden}
+.cart-item-img img{width:100%;height:100%;object-fit:contain;padding:4px}
+.cart-item-info{flex:1;display:flex;flex-direction:column;gap:4px}
+.cart-item-name{font-size:13px;font-weight:400}
+.cart-item-variant{font-size:11px;color:#aaa}
+.cart-item-row{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
+.cart-item-price{font-size:13px;font-weight:500}
+.cart-item-remove{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#aaa;background:none;border:none;cursor:pointer}
+.cart-item-remove:hover{color:var(--black)}
+#cartFoot{padding:16px 24px 24px;border-top:1px solid var(--line)}
+.cart-total-row{display:flex;justify-content:space-between;font-size:14px;font-weight:500;margin-bottom:14px}
+.cart-checkout-btn{width:100%;background:var(--black);color:#fff;border:none;font-family:var(--F);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:16px;cursor:pointer;transition:opacity .2s}
+.cart-checkout-btn:hover{opacity:.8}
+
+/* PAYMENT MODAL */
+#payModal{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+#payModal.open{opacity:1;pointer-events:all}
+.pm-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
+.pm-box{position:relative;background:#fff;width:min(500px,95vw);max-height:90vh;overflow-y:auto;padding:44px 36px}
+.pm-close{position:absolute;top:18px;right:22px;font-size:24px;font-weight:300;color:#bbb;background:none;border:none;cursor:pointer;line-height:1}
+.pm-close:hover{color:var(--black)}
+.pm-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#aaa;margin-bottom:12px}
+.pm-lines{border-top:1px solid #f0f0f0;padding-top:14px;margin-bottom:14px;display:flex;flex-direction:column;gap:10px}
+.pm-line{display:flex;justify-content:space-between;gap:16px;font-size:13px;color:#333}
+.pm-total-row{display:flex;justify-content:space-between;font-size:14px;font-weight:600;border-top:1px solid #f0f0f0;padding-top:14px;margin-bottom:28px}
+.pm-method-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;border:1.5px solid #e8e8e8;background:#fff;padding:16px 18px;cursor:pointer;font-family:inherit;margin-bottom:10px;transition:border-color .2s;text-align:left}
+.pm-method-btn:hover{border-color:var(--black)}
+.pm-method-label{display:flex;flex-direction:column;gap:3px}
+.pm-method-label>span:first-child{font-size:13px;font-weight:500}
+.pm-method-sub{font-size:11px;color:#aaa}
+.pm-method-icons{display:flex;gap:6px;align-items:center}
+.pm-klarna{border-color:#FFB3C7}
+.pm-klarna:hover{border-color:#ff80a0;background:#fff8fa}
+.pm-vir-info{display:none;background:#f7f7f5;padding:14px 18px;font-size:12px;line-height:1.9;color:#555;margin-top:-4px;margin-bottom:10px}
+.pm-secure{margin-top:18px;font-size:11px;color:#ccc;text-align:center}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo"><img src="images/talseume-logo.png" alt="TALSEUME"/></a>
+  <div class="nav-right">
+    <a href="/" class="nav-back">← Retour</a>
+    <button class="nav-cart-btn" onclick="openCart()">
+      <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span id="cartCount" class="cart-count">0</span>
+    </button>
+  </div>
+</nav>
+
+<div class="product-page">
+  <div class="prod-img-side">
+    <img id="prod-main-img" src="" alt=""/>
+  </div>
+  <div class="prod-info-side">
+    <div id="prod-badge" class="prod-badge" style="display:none"></div>
+    <h1 class="prod-name" id="prod-name"></h1>
+    <div class="prod-price-row">
+      <div class="prod-price" id="prod-price"></div>
+    </div>
+    <div class="prod-klarna-hint" id="prod-klarna-hint"></div>
+
+    <div style="height:24px"></div>
+
+    <!-- COLORS -->
+    <div id="prod-colors" style="display:none">
+      <div class="variant-section">
+        <div class="variant-label">Couleur — <span class="variant-sel" id="selected-color"></span></div>
+        <div class="color-swatches" id="color-pills"></div>
+      </div>
+    </div>
+
+    <!-- SIZES -->
+    <div id="prod-sizes" style="display:none">
+      <div class="variant-section">
+        <div class="variant-label">Taille — <span class="variant-sel" id="selected-size"></span></div>
+        <div class="pills" id="size-pills"></div>
+      </div>
+    </div>
+
+    <!-- QUANTITY -->
+    <div class="qty-section">
+      <div class="qty-label">Quantité</div>
+      <div class="qty-stepper">
+        <button class="qty-btn" onclick="changeQty(-1)">−</button>
+        <input class="qty-val" id="qty-val" type="number" value="1" min="1" max="10" readonly/>
+        <button class="qty-btn" onclick="changeQty(1)">+</button>
+      </div>
+    </div>
+
+    <button class="add-btn" onclick="addProductToCart()">Ajouter au panier</button>
+
+
+    <!-- ECO LABELS -->
+    <div class="eco-labels">
+      <div class="eco-label"><span class="eco-check">✓</span> Certifié GOTS</div>
+      <div class="eco-label"><span class="eco-check">✓</span> 100% Vegan</div>
+      <div class="eco-label"><span class="eco-recycle">♻</span> Matières éco-responsables</div>
+      <div class="eco-label"><span class="eco-star">✦</span> Production éthique</div>
+    </div>
+
+    <!-- PAYMENT METHODS -->
+    <div class="payment-row">
+      <div class="payment-label">Paiement sécurisé accepté</div>
+      <svg width="44" height="28" viewBox="0 0 44 28"><rect width="44" height="28" rx="4" fill="#1A1F71"/><text x="7" y="20" font-family="Arial" font-size="13" font-weight="bold" fill="white">VISA</text></svg>
+      <svg width="44" height="28" viewBox="0 0 44 28"><rect width="44" height="28" rx="4" fill="#fff" stroke="#ddd"/><circle cx="17" cy="14" r="9" fill="#EB001B"/><circle cx="27" cy="14" r="9" fill="#F79E1B"/><path d="M22 6.8a9 9 0 010 14.4A9 9 0 0122 6.8Z" fill="#FF5F00"/></svg>
+      <svg width="44" height="28" viewBox="0 0 44 28"><rect width="44" height="28" rx="4" fill="#000"/><text x="5" y="16" font-family="Arial" font-size="9" fill="white">Apple</text><text x="5" y="24" font-family="Arial" font-size="8" fill="white">Pay</text></svg>
+      <svg width="44" height="28" viewBox="0 0 44 28"><rect width="44" height="28" rx="4" fill="#FFB3C7"/><text x="6" y="18" font-size="11" font-weight="700" fill="#17120E" font-family="sans-serif">klarna</text></svg>
+      <svg width="44" height="28" viewBox="0 0 44 28"><rect width="44" height="28" rx="4" fill="#2E77BC"/><text x="4" y="18" font-family="Arial" font-size="9" font-weight="bold" fill="white">AMEX</text></svg>
+    </div>
+
+    <div class="klarna-strip">
+      <svg width="40" height="16" viewBox="0 0 52 20"><rect width="52" height="20" rx="4" fill="#FFB3C7"/><text x="8" y="14" font-size="11" font-weight="700" fill="#17120E" font-family="sans-serif">klarna</text></svg>
+      <div class="klarna-strip-text">Payez en <strong>3× sans frais</strong> — à partir de <span id="klarna-price"></span>/mois</div>
+    </div>
+
+    <p class="prod-desc" id="prod-desc"></p>
+    <p class="prod-material" id="prod-material"></p>
+
+    <div class="accordion">
+      <div class="acc-item">
+        <div class="acc-head" onclick="toggleAcc(this)"><span>Matières & Composition</span><span class="acc-icon">+</span></div>
+        <div class="acc-body"><div class="acc-content" id="acc-materials"></div></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head" onclick="toggleAcc(this)"><span>Livraison & Retours</span><span class="acc-icon">+</span></div>
+        <div class="acc-body"><div class="acc-content">Livraison offerte dès 80€ · Livraison standard 5-7 jours ouvrés · Retours gratuits sous 30 jours · Remboursement intégral garanti.</div></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head" onclick="toggleAcc(this)"><span>Guide des tailles</span><span class="acc-icon">+</span></div>
+        <div class="acc-body"><div class="acc-content" id="acc-sizes"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div id="cartSidebar">
+  <div class="cart-hd"><span class="cart-hd-title">Mon Panier</span><button class="cart-close" onclick="closeCart()">×</button></div>
+  <div id="cartItems"></div>
+  <div id="cartFoot" style="display:none">
+    <div class="cart-total-row"><span>Total</span><span id="cartTotal"></span></div>
+    <button class="cart-checkout-btn" onclick="goCheckout()">Commander →</button>
+  </div>
+</div>
+
+<div id="payModal">
+  <div class="pm-backdrop" onclick="closePayModal()"></div>
+  <div class="pm-box">
+    <button class="pm-close" onclick="closePayModal()">×</button>
+    <p class="pm-label">Récapitulatif</p>
+    <div id="pm-lines" class="pm-lines"></div>
+    <div class="pm-total-row"><span>Total</span><span id="pm-total"></span></div>
+    <p class="pm-label" style="margin-bottom:14px">Mode de paiement</p>
+    <button id="pm-card-btn" class="pm-method-btn" onclick="stripeCheckout('card')">
+      <span class="pm-method-label"><span>Carte bancaire</span><span class="pm-method-sub">Visa, Mastercard, Apple Pay</span></span>
+      <span class="pm-method-icons">
+        <svg width="34" height="22" viewBox="0 0 34 22"><rect width="34" height="22" rx="3" fill="#1A1F71"/><rect y="7" width="34" height="6" fill="#F7B600"/></svg>
+        <svg width="34" height="22" viewBox="0 0 34 22"><rect width="34" height="22" rx="3" fill="#f2f2f2"/><circle cx="13" cy="11" r="7" fill="#EB001B"/><circle cx="21" cy="11" r="7" fill="#F79E1B"/></svg>
+      </span>
+    </button>
+    <button id="pm-klarna-btn" class="pm-method-btn pm-klarna" onclick="stripeCheckout('3x')">
+      <span class="pm-method-label"><span>Payer en 3× sans frais</span><span class="pm-method-sub">Klarna — Divisé en 3 paiements égaux</span></span>
+      <svg width="52" height="20" viewBox="0 0 52 20"><rect width="52" height="20" rx="4" fill="#FFB3C7"/><text x="8" y="14" font-size="11" font-weight="700" fill="#17120E" font-family="sans-serif">klarna</text></svg>
+    </button>
+    <button id="pm-vir-btn" class="pm-method-btn">
+      <span class="pm-method-label"><span>Virement bancaire</span><span class="pm-method-sub">Traitement sous 1-3 jours ouvrés</span></span>
+      <svg width="20" height="20" fill="none" stroke="#888" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+    </button>
+    <div id="pm-vir-info" class="pm-vir-info"><strong>Coordonnées bancaires Talseume</strong><br>IBAN : FR76 XXXX XXXX XXXX XXXX XXXX XXX<br>BIC : XXXXXXXX<br>Référence : commande + ton nom</div>
+    <p class="pm-secure">🔒 Paiement 100% sécurisé · SSL · Stripe</p>
+  </div>
+</div>
+
+<script>
+const COLOR_HEX = {
+  'ROUGE':'#C0392B','BLANC':'#FFFFFF','NOIR':'#1A1A1A','BLEUE':'#2C5F8A',
+  'BEIGE':'#D4B896','Natural Raw':'#E8D5B0','Stargazer':'#2C3E50','Noir':'#1A1A1A',
+  'Bleu':'#2C5F8A','Blanc':'#FFFFFF','Orange':'#E8621A','Jaune':'#F0D020',
+  'FRENCH NAVY':'#1B2A6B','KAKI':'#6B7C3B','Rouge':'#C0392B'
+};
+
+const PRODUCTS = {
+  'sweat-talseume-oversize':{
+    name:'Sweat Talseume Oversize',price:90,badge:'GOTS',rating:{score:4.9,count:38,sold:124},
+    desc:'Le sweat qui ne cherche pas à plaire — il s\'impose. Coupe boxy assumée, matière dense, conscience tranquille. Molleton non brossé 100% coton biologique certifié GOTS.',
+    material:'Coton bio GOTS 100% · Unisexe · Oversize',
+    materials:'100% coton biologique certifié GOTS. Molleton non brossé 350g/m². Coupe oversize unisexe.',
+    sizeGuide:'S (88-92cm) · M (92-96cm) · L (96-100cm) · XL (100-104cm) · XXXL (112-116cm). Coupe oversize — prendre sa taille habituelle.',
+    sizes:['S','M','L','XL','XXXL'],
+    colors:[{name:'ROUGE',img:'images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg'},{name:'BLANC',img:'images/products/sweat-a-acapuche-talseume-dos.jpg'},{name:'NOIR',img:'images/products/SWEAT-TALSEUME-NOIR-OVERSIZE01.jpg'},{name:'BLEUE',img:'images/products/SWEAT-TALSEUME-ACAPUCHE-BLEU.jpg'},{name:'BEIGE',img:'images/products/B18BC283-4899-40C1-9F96-34ED3F8DD9FF_38ab9d91-6208-4e33-a9b8-3a0a4e4cd56b.jpg'}]
+  },
+  'tee-shirt-oversize':{
+    name:'Tee-Shirt Talseume Oversize',price:60,badge:'Bio',rating:{score:4.8,count:22,sold:87},
+    desc:'Le totem du streetwear. Pas de fioritures — juste de la présence. Coupe XXL assumée, tissu lavé jersey simple certifié GOTS.',
+    material:'Coton bio GOTS · Tissu lavé · Unisexe',
+    materials:'100% coton biologique certifié GOTS. Jersey simple tissu lavé 180g/m². Coupe oversize unisexe.',
+    sizeGuide:'XS · S · M · L · XL. Coupe XXL assumée.',
+    sizes:['XS','S','M','L','XL'],
+    colors:[{name:'NOIR',img:'images/products/tee-shirt-talseume-noir-oversise.jpg'},{name:'BLANC',img:'images/products/IMG_7520_e3dbdd17-a9be-4adb-b256-4159034c7b0d.jpg'}]
+  },
+  'sweat-bikelife':{
+    name:'Sweat Tls × Bikelife',price:68.99,badge:'Collab',rating:{score:5.0,count:14,sold:56},
+    desc:'Taillé pour la Bike life et les rues, pensé pour durer. Coton biologique filé et peigné certifié GOTS, oversize par nature.',
+    material:'Coton bio GOTS 100% · Édition limitée · Coloris Noir',
+    materials:'100% coton biologique certifié GOTS, filé et peigné. Molleton 380g/m². Édition limitée.',
+    sizeGuide:'2XS · S · M · L · XL · 2XL · 3XL. Coupe oversize.',
+    sizes:['2XS','S','M','L','XL','2XL','3XL'],
+    colors:[{name:'NOIR',img:'images/products/sweat-talseume-bikelife-devant.jpg'}]
+  },
+  'tshirt-manches-longues':{
+    name:'T-Shirt Manches Longues',price:75,badge:'Bio 240g',rating:{score:4.9,count:19,sold:63},
+    desc:'240g, 70% coton bio + 30% polyester recyclé. Natural Raw, Stargazer, Noir. Seul ou en layering.',
+    material:'70% coton bio · 30% polyester recyclé · 3 coloris',
+    materials:'70% coton biologique, 30% polyester recyclé. 240g/m². Certifié GOTS.',
+    sizeGuide:'XS · S · M · L · XL · XXL. Coupe ajustée.',
+    sizes:['XS','S','M','L','XL','XXL'],
+    colors:[{name:'Natural Raw',img:'images/products/tshirt-talseume-mancheslongue-creme.jpg'},{name:'Stargazer',img:'images/products/tee-shirt-talseume-mancheslongue-star.jpg'},{name:'Noir',img:'images/products/tee-shirt-talseume-mancheslongue.jpg'}]
+  },
+  'veste-coach':{
+    name:'Veste Coach Unisexe Talseume',price:90,badge:'Recyclé',rating:{score:4.8,count:16,sold:48},
+    desc:'La veste coach redéfinie. Matière recyclée premium, coupe unisexe intemporelle. Entre la rue et le vestiaire.',
+    material:'Polyester recyclé · Unisexe · 3 coloris',
+    materials:'Polyester recyclé. Coupe unisexe. Disponible en NOIR, FRENCH NAVY et KAKI.',
+    sizeGuide:'S · M · L · XL · XXL. Coupe ajustée — prendre sa taille habituelle.',
+    sizes:['S','M','L','XL','XXL'],
+    colors:[{name:'NOIR',img:'images/products/Coach-Jacket-By-talseumecopie2.jpg'},{name:'FRENCH NAVY',img:'images/products/Coach-Jacket-By-talseumecopie3.jpg'},{name:'KAKI',img:'images/products/Coach-Jacket-By-talseumecopie.jpg'}]
+  },
+  'veste-coach-ultra':{
+    name:'Veste Coach Talseume Ultra',price:130,badge:'Ultra',rating:{score:4.9,count:12,sold:35},
+    desc:'Ultra légère. Ultra propre. Ultra Talseume. 75g/m² en plain weave 100% polyester recyclé — se glisse partout, se porte toujours.',
+    material:'100% polyester recyclé · 75g/m² · Unisexe',
+    materials:'100% polyester recyclé plain weave 75g/m². Ultra légère et compressible.',
+    sizeGuide:'XS · S · M · L. Coupe ajustée.',
+    sizes:['XS','S','M','L'],
+    colors:[{name:'NOIR',img:'images/products/Jacket-By-TALSEUMENWAR.jpg'}]
+  },
+  'debardeur-femme':{
+    name:'Débardeur Talseume Femme',price:24.99,badge:'Femme',rating:{score:4.8,count:9,sold:27},
+    desc:'Le débardeur éco-responsable pensé pour elle. 100% coton biologique filé et peigné 155g. Coupe normale, col rond, sans manches.',
+    material:'100% coton bio · 155g/m² · XS → 3XL',
+    materials:'100% coton biologique filé et peigné. 155g/m². Coupe normale, col rond.',
+    sizeGuide:'XS · S · M · L · XL · 2XL · 3XL. Coupe normale.',
+    sizes:['XS','S','M','L','XL','2XL','3XL'],
+    colors:[{name:'Orange',img:'images/products/debardeur-femme-talseume-090.jpg'},{name:'Noir',img:'images/products/debardeur-femme-talseume.jpg'},{name:'Jaune',img:'images/products/debardeur-talseume-femme-0987.jpg'}]
+  },
+  'tshirt-femme':{
+    name:'T-shirt Talseume Femme',price:29,badge:'Femme',rating:{score:4.9,count:8,sold:21},
+    desc:'Le t-shirt féminin qui ne fait aucune concession. 50% coton bio / 50% polyester recyclé. Côte 1×1 au col, surpiqûres doubles, coupe ajustée.',
+    material:'50% coton bio · 50% polyester recyclé · XS → 3XL',
+    materials:'50% coton biologique, 50% polyester recyclé. Côte 1×1 au col. Surpiqûre double large.',
+    sizeGuide:'XS · S · M · L · XL · 2XL · 3XL. Coupe légèrement ajustée.',
+    sizes:['XS','S','M','L','XL','2XL','3XL'],
+    colors:[{name:'Bleu',img:'images/products/tshirt-femme-talseume-009.jpg'},{name:'Noir',img:'images/products/tshirt-talseume-femme.jpg'},{name:'Blanc',img:'images/products/tshirt-femme-talseume-009.jpg'}]
+  },
+  'cagoule':{
+    name:'Cagoule Talseume',price:18,badge:null,rating:{score:4.9,count:6,sold:19},
+    desc:'La cagoule, c\'était l\'accessoire des ombres. Talseume en a fait l\'accessoire du mouvement. Chaude, graphique, identitaire.',
+    material:'Polyester · Streetwear · Taille unique',
+    materials:'Polyester. Taille unique, s\'adapte à toutes morphologies.',
+    sizeGuide:'Taille unique.',
+    sizes:[],
+    colors:[{name:'NOIR',img:'images/products/IMG_7578.jpg'}]
+  },
+  'sport-beanie':{
+    name:'Talseume Sport Beanie',price:17.99,badge:null,rating:{score:4.7,count:11,sold:42},
+    desc:'Pensé pour rester en place, conçu pour être vu. Épouse la tête sans serrer, garde la chaleur sans étouffer.',
+    material:'85% Polyester · 15% Élasthanne · Taille unique',
+    materials:'85% polyester, 15% élasthanne. Taille unique.',
+    sizeGuide:'Taille unique, s\'adapte à toutes les morphologies.',
+    sizes:[],colors:[{name:'NOIR',img:'images/products/Bonnet_talseume.jpg'}]
+  },
+  'casquette-trucker':{
+    name:'Casquette Trucker',price:19.99,badge:null,rating:{score:4.6,count:9,sold:31},
+    desc:'Devant structuré 100% coton, résille 100% polyester. Sérigraphie nette. Fermeture snapback ajustable.',
+    material:'Coton / Polyester · Snapback ajustable',
+    materials:'Devant 100% coton. Résille 100% polyester. Fermeture snapback.',
+    sizeGuide:'Taille unique, ajustable de 54 à 60cm.',
+    sizes:[],colors:[{name:'Rouge',img:'images/products/IMG_7199.png'}]
+  },
+  'talseume-bag':{
+    name:'Talseume Bag',price:25.99,badge:null,rating:{score:4.8,count:7,sold:28},
+    desc:'Extérieur tissu lavé recyclé, intérieur doublé coton bio ring-spun. Fonctionnel et responsable.',
+    material:'80% coton recyclé · 20% polyester recyclé',
+    materials:'Extérieur 80% coton recyclé + 20% polyester recyclé. Intérieur coton bio ring-spun.',
+    sizeGuide:'40 × 35 × 12cm. Capacité 20L environ.',
+    sizes:[],colors:[{name:'NOIR',img:'images/products/sactalseume.jpg'}]
+  }
+};
+
+const params = new URLSearchParams(window.location.search);
+const id = params.get('id') || 'sweat-talseume-oversize';
+const p = PRODUCTS[id];
+if (!p) { window.location.href = '/'; }
+document.title = 'Talseume — ' + p.name;
+
+let selectedSize = p.sizes[0] || '';
+let selectedColor = p.colors[0]?.name || '';
+let qty = 1;
+
+function render() {
+  const img = p.colors.find(c=>c.name===selectedColor)?.img || p.colors[0]?.img || '';
+  document.getElementById('prod-main-img').src = img;
+  document.getElementById('prod-name').textContent = p.name;
+  document.getElementById('prod-price').textContent = p.price.toLocaleString('fr-FR',{style:'currency',currency:'EUR'});
+  document.getElementById('prod-desc').textContent = p.desc;
+  document.getElementById('prod-material').textContent = p.material;
+  document.getElementById('acc-materials').textContent = p.materials;
+  document.getElementById('acc-sizes').textContent = p.sizeGuide;
+
+  // Klarna hint
+  const monthly = (p.price / 3).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});
+  document.getElementById('prod-klarna-hint').innerHTML = `<svg width="40" height="14" viewBox="0 0 52 20" style="vertical-align:middle;margin-right:5px"><rect width="52" height="20" rx="4" fill="#FFB3C7"/><text x="8" y="14" font-size="11" font-weight="700" fill="#17120E" font-family="sans-serif">klarna</text></svg> Ou 3× <strong>${monthly}</strong> sans frais`;
+  document.getElementById('klarna-price').textContent = monthly;
+
+  // Badge
+  if (p.badge) { const b=document.getElementById('prod-badge'); b.textContent=p.badge; b.style.display='inline-block'; }
+
+  // Colors
+  if (p.colors.length > 1) {
+    document.getElementById('prod-colors').style.display = 'block';
+    document.getElementById('selected-color').textContent = selectedColor;
+    document.getElementById('color-pills').innerHTML = p.colors.map(c => {
+      const hex = COLOR_HEX[c.name] || '#888';
+      const isWhite = hex === '#FFFFFF';
+      return `<div class="cswatch${c.name===selectedColor?' sel':''}${isWhite?' white-swatch':''}" style="background:${hex}" title="${c.name}" onclick="selectColor('${c.name}')"></div>`;
+    }).join('');
+  }
+
+  // Sizes
+  if (p.sizes.length > 0) {
+    document.getElementById('prod-sizes').style.display = 'block';
+    document.getElementById('selected-size').textContent = selectedSize;
+    document.getElementById('size-pills').innerHTML = p.sizes.map(s =>
+      `<button class="pill${s===selectedSize?' sel':''}" onclick="selectSize('${s}')">${s}</button>`
+    ).join('');
+  }
+}
+
+function selectColor(name) {
+  selectedColor = name;
+  const img = p.colors.find(c=>c.name===name)?.img;
+  if (img) document.getElementById('prod-main-img').src = img;
+  document.getElementById('selected-color').textContent = name;
+  document.querySelectorAll('.cswatch').forEach(b => b.classList.toggle('sel', b.title===name));
+}
+
+function selectSize(s) {
+  selectedSize = s;
+  document.getElementById('selected-size').textContent = s;
+  document.querySelectorAll('#size-pills .pill').forEach(b => b.classList.toggle('sel', b.textContent.trim()===s));
+}
+
+function changeQty(d) {
+  qty = Math.max(1, Math.min(10, qty + d));
+  document.getElementById('qty-val').value = qty;
+}
+
+function toggleAcc(head) {
+  const body = head.nextElementSibling;
+  body.classList.toggle('open');
+  head.querySelector('.acc-icon').textContent = body.classList.contains('open') ? '−' : '+';
+}
+
+render();
+
+/* CART */
+let cart = JSON.parse(localStorage.getItem('tls-cart') || '[]');
+function saveCart() { localStorage.setItem('tls-cart', JSON.stringify(cart)); }
+
+function getVariant() {
+  if (p.sizes.length > 0 && p.colors.length > 1) return selectedSize + ' / ' + selectedColor;
+  if (p.sizes.length > 0) return selectedSize;
+  if (p.colors.length > 1) return selectedColor;
+  return 'Taille unique';
+}
+
+function addProductToCart() {
+  const variant = getVariant();
+  const img = p.colors.find(c=>c.name===selectedColor)?.img || p.colors[0]?.img || '';
+  const ex = cart.find(i => i.name===p.name && i.variant===variant);
+  if (ex) { ex.qty += qty; } else { cart.push({name:p.name, variant, price:p.price, img, qty}); }
+  saveCart(); renderCart();
+  showToast(`${qty}× ajouté au panier ✓`);
+  setTimeout(openCart, 300);
+}
+
+function buyNow() {
+  addProductToCart();
+  setTimeout(() => { closeCart(); setTimeout(showPayModal, 450); }, 400);
+}
+
+function removeFromCart(idx) { cart.splice(idx,1); saveCart(); renderCart(); }
+
+function renderCart() {
+  const el = document.getElementById('cartItems');
+  const foot = document.getElementById('cartFoot');
+  const cnt = document.getElementById('cartCount');
+  const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+  cnt.textContent = cart.reduce((s,i)=>s+i.qty,0);
+  cnt.className = 'cart-count' + (cart.length>0?' show':'');
+  if (!cart.length) { el.innerHTML='<p class="cart-empty">Votre panier est vide.</p>'; foot.style.display='none'; return; }
+  foot.style.display = 'block';
+  document.getElementById('cartTotal').textContent = total.toFixed(2).replace('.',',') + ' €';
+  el.innerHTML = cart.map((item,i) => `
+    <div class="cart-item">
+      <div class="cart-item-img"><img src="${item.img}" alt="${item.name}"/></div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-variant">${item.variant} · Qté ${item.qty}</div>
+        <div class="cart-item-row">
+          <span class="cart-item-price">${(item.price*item.qty).toFixed(2).replace('.',',')} €</span>
+          <button class="cart-item-remove" onclick="removeFromCart(${i})">Retirer</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function openCart() { document.getElementById('cartSidebar').classList.add('open'); document.getElementById('cartOverlay').classList.add('open'); }
+function closeCart() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('cartOverlay').classList.remove('open'); }
+function goCheckout() { if(!cart.length)return; closeCart(); setTimeout(showPayModal,450); }
+
+renderCart();
+
+function showPayModal() {
+  const total = cart.reduce((s,i)=>s+i.price*i.qty,0).toFixed(2);
+  document.getElementById('pm-lines').innerHTML = cart.map(i=>`<div class="pm-line"><span>${i.name} — ${i.variant} × ${i.qty}</span><span>${(i.price*i.qty).toFixed(2).replace('.',',')} €</span></div>`).join('');
+  document.getElementById('pm-total').textContent = parseFloat(total).toLocaleString('fr-FR',{minimumFractionDigits:2}) + ' €';
+  document.getElementById('payModal').classList.add('open');
+}
+function closePayModal() { document.getElementById('payModal').classList.remove('open'); }
+
+async function stripeCheckout(mode) {
+  const btn = document.getElementById(mode==='3x'?'pm-klarna-btn':'pm-card-btn');
+  btn.disabled=true; btn.textContent='Chargement…';
+  try {
+    const res = await fetch('/.netlify/functions/create-checkout',{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        items: cart.map(i=>({name:i.name,variant:i.variant,price:i.price,qty:i.qty,img:window.location.origin+'/'+i.img})),
+        successUrl: window.location.origin+'/?commande=ok',
+        cancelUrl: window.location.href,
+      })
+    });
+    const data = await res.json();
+    if (data.url) window.location.href = data.url;
+    else throw new Error(data.error||'Erreur');
+  } catch(e) {
+    alert('Erreur paiement : '+e.message);
+    btn.disabled=false;
+    btn.textContent=mode==='3x'?'Payer en 3× sans frais →':'Payer par carte →';
+  }
+}
+
+document.getElementById('pm-vir-btn').addEventListener('click',function(){
+  const el=document.getElementById('pm-vir-info');
+  el.style.display=el.style.display==='block'?'none':'block';
+});
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+</script>
+</body>
+</html>
