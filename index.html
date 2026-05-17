@@ -209,17 +209,6 @@ nav.scrolled .nav-logo img{filter:none}
 @media(max-width:1200px){.shop-ton-produit{padding:70px 0 80px}.shop-ton-produit .s-head{padding:0 40px 28px}}
 @media(max-width:768px){.shop-ton-produit{padding:56px 0 60px}.shop-ton-produit .s-head{padding:0 22px 22px}.shop-ton-produit-grid{grid-template-columns:1fr}}
 
-/* ══ SHOP THE LOOK ══ */
-.stl{padding:90px 48px;background:#fff;border-top:1px solid var(--line-l)}
-.stl-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;margin-top:40px}
-.stl-hero{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--cream)}
-.stl-hero img{width:100%;height:100%;object-fit:cover}
-.stl-dot{position:absolute;width:28px;height:28px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--black);cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.2);animation:dotPulse 2.4s infinite}
-.stl-dot::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(255,255,255,.6);animation:dotRing 2.4s infinite}
-@keyframes dotPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
-@keyframes dotRing{0%{transform:scale(.8);opacity:1}100%{transform:scale(1.6);opacity:0}}
-.stl-items{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.stl-items .pcard-img{aspect-ratio:1/1}
 
 /* ══ EDITORIAL HERO PAIR ══ */
 .editorial-pair{background:#0a0a0a;padding:0;overflow:hidden}
@@ -856,53 +845,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   <div class="shop-ton-produit-grid rv">
     <div class="shop-ton-produit-tile"><img src="images/lookbook/shop-01-cap-homme-bmx.png" alt="Casquette Talseume — BMX Skatepark" loading="lazy"/></div>
     <div class="shop-ton-produit-tile"><img src="images/lookbook/shop-02-sacoche-asiat-bmx.png" alt="Sacoche Talseume — BMX Paris" loading="lazy"/></div>
-  </div>
-</section>
-
-<!-- SHOP THE LOOK -->
-<section class="stl">
-  <div class="s-head" style="padding:0 0 0 0">
-    <div>
-      <div class="s-eyebrow">Shop the Look</div>
-      <h2 class="s-title">Le look complet</h2>
-    </div>
-  </div>
-  <div class="stl-grid rv">
-    <div class="stl-hero">
-      <img src="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg" alt="Shop the look"/>
-      <div class="stl-dot" style="top:32%;left:48%" onclick="location='product.html?id=sweat-talseume-oversize'">1</div>
-      <div class="stl-dot" style="top:72%;left:42%" onclick="location='product.html?id=talseume-bag'">2</div>
-    </div>
-    <div class="stl-items">
-      <div class="pcard" onclick="location='product.html?id=sweat-talseume-oversize'">
-        <div class="pcard-img"><img src="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg" alt="Sweat"/></div>
-        <div class="pcard-info">
-          <div class="pcard-name">Sweat Talseume Oversize</div>
-          <div class="pcard-footer"><span class="pcard-price">90,00 €</span></div>
-        </div>
-      </div>
-      <div class="pcard" onclick="location='product.html?id=tee-shirt-oversize'">
-        <div class="pcard-img"><img src="images/products/tee-shirt-talseume-noir-oversise.jpg" alt="T-shirt"/></div>
-        <div class="pcard-info">
-          <div class="pcard-name">Tee-Shirt Oversize</div>
-          <div class="pcard-footer"><span class="pcard-price">60,00 €</span></div>
-        </div>
-      </div>
-      <div class="pcard" onclick="location='product.html?id=sport-beanie'">
-        <div class="pcard-img"><img src="images/products/Bonnet_talseume.jpg" alt="Beanie"/></div>
-        <div class="pcard-info">
-          <div class="pcard-name">Sport Beanie</div>
-          <div class="pcard-footer"><span class="pcard-price">17,99 €</span></div>
-        </div>
-      </div>
-      <div class="pcard" onclick="location='product.html?id=talseume-bag'">
-        <div class="pcard-img"><img src="images/products/sactalseume.jpg" alt="Bag"/></div>
-        <div class="pcard-info">
-          <div class="pcard-name">Talseume Bag</div>
-          <div class="pcard-footer"><span class="pcard-price">25,99 €</span></div>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
 
