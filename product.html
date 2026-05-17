@@ -220,6 +220,36 @@ footer{background:var(--black);color:#fff;padding:80px 56px 30px;margin-top:0}
   .nav-logo img{height:32px}
   .breadcrumb{padding:80px 24px 0}
 }
+
+/* ══ COOKIE BANNER ══ */
+#cookie-wrap{position:fixed;inset:0;z-index:8000;pointer-events:none;opacity:0;transition:opacity .35s}
+#cookie-wrap.show{opacity:1}
+#cookie-wrap.show .cookie-mini,#cookie-wrap.show .cookie-modal,#cookie-wrap.show .cookie-backdrop{pointer-events:auto}
+.cookie-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.32);backdrop-filter:blur(4px)}
+.cookie-mini{position:absolute;left:24px;bottom:24px;width:340px;max-width:calc(100vw - 48px);background:rgba(10,10,10,.96);backdrop-filter:blur(14px);color:#fff;padding:24px 22px;z-index:2}
+.cookie-mini-head{font-size:11px;letter-spacing:.28em;text-transform:uppercase;font-weight:500;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.cookie-mini-text{font-size:12px;line-height:1.7;color:rgba(255,255,255,.7);font-weight:300;margin-bottom:18px}
+.cookie-mini-links{display:flex;gap:18px}
+.cookie-mini-links a{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#fff;border-bottom:1px solid rgba(255,255,255,.45);padding-bottom:2px;cursor:pointer;transition:border-color .2s}
+.cookie-mini-links a.cookie-link-muted{color:rgba(255,255,255,.55);border-bottom-color:transparent}
+.cookie-mini-links a:hover{border-bottom-color:#fff;color:#fff}
+.cookie-modal{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(580px,calc(100vw - 48px));background:#fff;padding:44px 44px 36px;z-index:3;box-shadow:0 24px 60px rgba(0,0,0,.18)}
+.cookie-title{font-size:22px;font-weight:400;letter-spacing:-.01em;color:var(--black);margin-bottom:18px}
+.cookie-desc{font-size:13px;line-height:1.75;color:rgba(0,0,0,.65);font-weight:300;margin-bottom:30px}
+.cookie-desc a{color:var(--black);border-bottom:1px solid var(--black);padding-bottom:1px}
+.cookie-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.cookie-prefs{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--black);border-bottom:1px solid var(--black);padding-bottom:2px;margin-right:auto;cursor:pointer;transition:opacity .2s}
+.cookie-prefs:hover{opacity:.6}
+.cookie-btn{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:400;padding:14px 28px;border:1px solid var(--black);background:transparent;color:var(--black);transition:.25s;font-family:inherit;cursor:pointer}
+.cookie-btn:hover{background:var(--black);color:#fff}
+@media(max-width:600px){
+  .cookie-mini{left:16px;right:16px;bottom:16px;width:auto;padding:20px}
+  .cookie-modal{padding:32px 24px 28px}
+  .cookie-title{font-size:18px}
+  .cookie-actions{flex-direction:column-reverse;align-items:stretch;gap:10px}
+  .cookie-prefs{margin:8px auto 0;text-align:center}
+  .cookie-btn{width:100%;padding:14px}
+}
 </style>
 </head>
 <body>
@@ -752,6 +782,40 @@ function showToast(msg){
   t.textContent=msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2500);
 }
+
+/* ── COOKIE BANNER ── */
+function cookieDecide(choice){
+  localStorage.setItem('tls-cookies', choice);
+  document.getElementById('cookie-wrap').classList.remove('show');
+  setTimeout(()=>document.getElementById('cookie-wrap').remove(), 400);
+}
+if(!localStorage.getItem('tls-cookies')){
+  requestAnimationFrame(()=>document.getElementById('cookie-wrap').classList.add('show'));
+}else{
+  document.getElementById('cookie-wrap').remove();
+}
 </script>
+
+<!-- COOKIE BANNER -->
+<div id="cookie-wrap">
+  <div class="cookie-backdrop"></div>
+  <div class="cookie-mini">
+    <div class="cookie-mini-head">🍪 Cookie Policy</div>
+    <p class="cookie-mini-text">Nous utilisons des cookies et technologies similaires pour vous offrir la meilleure expérience possible. Pour en savoir plus, consultez notre politique de confidentialité.</p>
+    <div class="cookie-mini-links">
+      <a onclick="cookieDecide('accept')">Accepter</a>
+      <a class="cookie-link-muted" onclick="cookieDecide('refuse')">Refuser</a>
+    </div>
+  </div>
+  <div class="cookie-modal">
+    <h3 class="cookie-title">Consentement aux cookies</h3>
+    <p class="cookie-desc">Talseume et ses partenaires utilisent des cookies et d'autres technologies pour personnaliser votre expérience, vous afficher des publicités et effectuer des analyses. Nous n'utiliserons pas de cookies à ces fins sans votre consentement. En savoir plus dans notre <a href="#">Politique de confidentialité</a>.</p>
+    <div class="cookie-actions">
+      <a class="cookie-prefs" onclick="cookieDecide('prefs')">Gérer vos préférences</a>
+      <button class="cookie-btn" onclick="cookieDecide('refuse')">Refuser</button>
+      <button class="cookie-btn" onclick="cookieDecide('accept')" style="background:var(--black);color:#fff">Accepter</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
