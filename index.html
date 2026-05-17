@@ -219,6 +219,18 @@ nav.scrolled .nav-logo img{filter:none}
 .editorial-img:hover img{transform:scale(1.03)}
 @media(max-width:768px){.editorial-pair-grid{grid-template-columns:1fr}}
 
+/* ══ LOOK SECTION ══ */
+.look-section{background:#0a0a0a;color:#fff;padding:0;overflow:hidden}
+.look-section .s-head{padding:80px 56px 36px}
+.look-section .s-eyebrow{color:rgba(255,255,255,.5)}
+.look-section .s-title{color:#fff}
+.look-grid-4{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:#0a0a0a}
+.look-tile-4{aspect-ratio:3/4;overflow:hidden;position:relative;background:#1a1a1a;cursor:pointer}
+.look-tile-4 img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.6s cubic-bezier(.16,1,.3,1)}
+.look-tile-4:hover img{transform:scale(1.03)}
+@media(max-width:1200px){.look-section .s-head{padding:60px 40px 28px}}
+@media(max-width:768px){.look-section .s-head{padding:50px 22px 22px}.look-grid-4{grid-template-columns:1fr;gap:1px}}
+
 /* ══ MANIFESTO ══ */
 .manifesto{color:#fff;padding:120px 48px 130px;overflow:hidden;text-align:center;position:relative;background:#0a0a0a}
 .manifesto-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.55;filter:grayscale(.4) contrast(1.1)}
@@ -685,6 +697,22 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   <div class="editorial-pair-grid">
     <div class="editorial-img"><img src="images/lookbook/01-sweat-noir.png" alt="Sweat Talseume Oversize" loading="lazy"/></div>
     <div class="editorial-img"><img src="images/lookbook/16-cagoule-femme.png" alt="Cagoule Talseume" loading="lazy"/></div>
+  </div>
+</section>
+
+<!-- LOOK SECTION -->
+<section class="look-section" id="look">
+  <div class="s-head rv">
+    <div>
+      <div class="s-eyebrow">Campagne · SS26</div>
+      <h2 class="s-title">Look</h2>
+    </div>
+  </div>
+  <div class="look-grid-4 rv">
+    <div class="look-tile-4"><img src="images/lookbook/look-01-mockneck-rooftop.png" alt="Mockneck — Rooftop" loading="lazy"/></div>
+    <div class="look-tile-4"><img src="images/lookbook/look-02-sacoche-bmx.png" alt="Sacoche — BMX" loading="lazy"/></div>
+    <div class="look-tile-4"><img src="images/lookbook/look-03-cap-bmx.png" alt="Cap — BMX" loading="lazy"/></div>
+    <div class="look-tile-4"><img src="images/lookbook/look-04-orange-tank.png" alt="Orange Tank" loading="lazy"/></div>
   </div>
 </section>
 
