@@ -6,187 +6,268 @@
 <title>Talseume</title>
 <link rel="icon" href="images/talseume-logo.png">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--black:#080808;--F:'Space Grotesk',system-ui,sans-serif;--line:#e8e8e8;--gold:#C8A96E}
-body{font-family:var(--F);background:#fff;color:var(--black);min-height:100vh}
+@font-face{font-family:'Suisse Intl';src:url('https://cdn.prod.website-files.com/6772f6efe246aaaa73ad2a98/67784f5e4c3068c2e2f22e60_SuisseIntl-Regular.otf')format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Suisse Intl';src:url('https://cdn.prod.website-files.com/6772f6efe246aaaa73ad2a98/67784f815ee57b4c18bdae11_SuisseIntl-Light.otf')format('opentype');font-weight:300;font-display:swap}
 
-/* NAV */
-nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:64px;background:#fff;border-bottom:1px solid var(--line)}
-.nav-logo img{height:64px;display:block}
-.nav-right{display:flex;align-items:center;gap:20px}
-.nav-back{font-size:12px;letter-spacing:.08em;color:rgba(0,0,0,.4);text-decoration:none;transition:.15s}
-.nav-back:hover{color:var(--black)}
-.nav-cart-btn{background:none;border:none;cursor:pointer;position:relative;display:flex;align-items:center;padding:4px}
-.nav-cart-btn svg{width:20px;height:20px;stroke:var(--black);fill:none;stroke-width:1.5}
-.cart-count{position:absolute;top:-4px;right:-4px;background:var(--black);color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:.2s}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0a0a0a;--white:#fff;--off:#faf9f6;--cream:#f4f2ec;
+  --gold:#a8916a;--line-l:rgba(0,0,0,.08);--line-d:rgba(255,255,255,.08);
+  --F:'Suisse Intl','Helvetica Neue',Helvetica,Arial,sans-serif
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--F);-webkit-font-smoothing:antialiased;background:#fff;color:var(--black)}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+img{display:block;max-width:100%}
+
+/* ══ NAV (copie de la home) ══ */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;background:rgba(255,255,255,.96);backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line-l);height:82px;display:flex;align-items:center;padding:0 40px;justify-content:space-between}
+.nav-left{display:flex;align-items:center;gap:32px;flex:1}
+.nav-menu{display:flex;list-style:none;gap:36px;align-items:center}
+.nav-menu li{position:relative}
+.nav-menu>li>a,.nav-menu>li>button{font-size:11px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;padding:30px 0;display:inline-flex;align-items:center;color:var(--black)}
+.nav-menu>li>a:hover,.nav-menu>li>button:hover{opacity:.6}
+.nav-logo{position:absolute;left:50%;transform:translateX(-50%)}
+.nav-logo img{height:44px;width:auto}
+.nav-right{display:flex;align-items:center;gap:14px;flex:1;justify-content:flex-end}
+.nav-icon{width:38px;height:38px;display:flex;align-items:center;justify-content:center;position:relative;color:var(--black)}
+.nav-icon:hover{opacity:.6}
+.nav-icon svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.cart-count{position:absolute;top:4px;right:4px;background:var(--black);color:#fff;width:16px;height:16px;border-radius:50%;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
 .cart-count.show{opacity:1}
-@media(max-width:600px){nav{padding:0 20px}}
+.nav-back{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--black);opacity:.55;transition:opacity .2s}
+.nav-back:hover{opacity:1}
+.burger{display:none;width:24px;height:18px;flex-direction:column;justify-content:space-between;cursor:pointer}
+.burger span{display:block;height:2px;background:var(--black);border-radius:1px}
 
-/* LAYOUT */
-.product-page{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 64px)}
-@media(max-width:768px){.product-page{grid-template-columns:1fr}}
+/* ══ BREADCRUMB ══ */
+.breadcrumb{padding:110px 56px 0;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(0,0,0,.45);display:flex;gap:10px;align-items:center}
+.breadcrumb a:hover{color:var(--black)}
+.breadcrumb span{opacity:.4}
 
-/* IMAGE */
-.prod-img-side{position:sticky;top:64px;height:calc(100vh - 64px);overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center}
-@media(max-width:768px){.prod-img-side{position:relative;height:80vw;top:0}}
-.prod-img-side img{width:100%;height:100%;object-fit:contain;transition:.4s}
+/* ══ PRODUCT LAYOUT ══ */
+.product-page{display:grid;grid-template-columns:1.25fr 1fr;gap:0;min-height:calc(100vh - 82px);padding:32px 56px 60px}
+@media(max-width:1024px){.product-page{grid-template-columns:1fr 1fr;padding:24px 32px 40px;gap:24px}}
+@media(max-width:768px){.product-page{grid-template-columns:1fr;padding:24px 0 40px;gap:0}}
 
-/* INFO */
-.prod-info-side{padding:48px 52px 80px;overflow-y:auto}
-@media(max-width:900px){.prod-info-side{padding:36px 28px 60px}}
-@media(max-width:600px){.prod-info-side{padding:24px 18px 48px}}
+/* ══ IMAGE SIDE ══ */
+.prod-img-side{position:relative;display:flex;gap:14px;align-items:flex-start}
+.prod-thumbs{display:flex;flex-direction:column;gap:10px;flex-shrink:0;position:sticky;top:104px}
+.prod-thumb{width:72px;aspect-ratio:4/5;background:var(--off);overflow:hidden;cursor:pointer;border:1px solid transparent;transition:border-color .2s,opacity .2s;opacity:.7}
+.prod-thumb:hover{opacity:1}
+.prod-thumb.sel{border-color:var(--black);opacity:1}
+.prod-thumb img{width:100%;height:100%;object-fit:cover}
+.prod-main-img-wrap{flex:1;background:var(--off);overflow:hidden;aspect-ratio:4/5;position:sticky;top:104px;max-height:calc(100vh - 130px)}
+.prod-main-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center;transition:opacity .35s}
+@media(max-width:768px){
+  .prod-img-side{flex-direction:column;padding:0 0;gap:0}
+  .prod-thumbs{flex-direction:row;order:2;padding:14px 20px 0;position:static;overflow-x:auto;width:100%}
+  .prod-thumb{width:64px;flex-shrink:0}
+  .prod-main-img-wrap{order:1;position:relative;top:0;max-height:none;width:100%;aspect-ratio:1/1.1}
+}
 
-.prod-badge{display:inline-block;background:var(--black);color:#fff;font-size:9px;letter-spacing:.16em;text-transform:uppercase;padding:5px 12px;margin-bottom:18px}
-.prod-name{font-size:clamp(24px,3.5vw,42px);font-weight:300;letter-spacing:-.02em;line-height:1.05;text-transform:uppercase;margin-bottom:10px}
+/* ══ INFO SIDE ══ */
+.prod-info-side{padding:8px 0 0 60px;display:flex;flex-direction:column;gap:0}
+@media(max-width:1024px){.prod-info-side{padding:8px 0 0 24px}}
+@media(max-width:768px){.prod-info-side{padding:32px 24px 0}}
 
-/* RATING */
-.prod-price-row{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
-.prod-price{font-size:24px;font-weight:400}
-.prod-klarna-hint{font-size:11px;color:rgba(0,0,0,.4)}
-.prod-klarna-hint strong{color:#17120E;background:#FFB3C7;padding:1px 6px;border-radius:3px;font-size:10px}
+.prod-eyebrow{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:rgba(0,0,0,.45);margin-bottom:18px;font-weight:400}
+.prod-name{font-size:clamp(28px,3.6vw,48px);font-weight:300;letter-spacing:-.025em;line-height:1.05;color:var(--black);margin-bottom:24px}
+.prod-price{font-size:22px;font-weight:400;letter-spacing:.01em;margin-bottom:6px}
+.prod-klarna-hint{font-size:12px;color:rgba(0,0,0,.5);margin-bottom:36px;font-weight:300;letter-spacing:.02em}
 
-/* VARIANTS */
-.variant-section{margin-bottom:22px}
-.variant-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(0,0,0,.4);margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.variant-sel{color:var(--black);font-weight:600;font-size:11px}
+/* Variants */
+.variant-section{margin-bottom:30px}
+.variant-label{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:rgba(0,0,0,.45);margin-bottom:14px;font-weight:400;display:flex;gap:10px;align-items:center}
+.variant-sel{color:var(--black);font-weight:500;letter-spacing:.18em}
+.color-swatches{display:flex;flex-wrap:wrap;gap:10px}
+.cswatch{width:30px;height:30px;border-radius:50%;cursor:pointer;border:1px solid rgba(0,0,0,.15);transition:transform .25s;position:relative;flex-shrink:0}
+.cswatch:hover{transform:scale(1.08)}
+.cswatch.sel::after{content:'';position:absolute;inset:-5px;border-radius:50%;border:1px solid var(--black)}
+.cswatch.white-swatch{border-color:rgba(0,0,0,.25)}
+
 .pills{display:flex;flex-wrap:wrap;gap:8px}
-.pill{font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;border:1px solid rgba(0,0,0,.2);padding:8px 16px;cursor:pointer;transition:background .15s,border-color .15s,color .15s;background:none;color:var(--black);font-family:var(--F);-webkit-tap-highlight-color:transparent}
+.pill{font-size:11px;font-weight:400;letter-spacing:.18em;text-transform:uppercase;border:1px solid rgba(0,0,0,.18);padding:12px 0;cursor:pointer;transition:.2s;background:transparent;color:var(--black);min-width:54px;text-align:center}
 .pill:hover{border-color:var(--black)}
 .pill.sel{background:var(--black);border-color:var(--black);color:#fff}
 
-/* COLOR SWATCHES */
-.color-swatches{display:flex;flex-wrap:wrap;gap:10px}
-.cswatch{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:.2s;position:relative;flex-shrink:0}
-.cswatch:hover{transform:scale(1.1)}
-.cswatch.sel{border-color:var(--black)}
-.cswatch.sel::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1.5px solid var(--black)}
-.cswatch.white-swatch{border-color:rgba(0,0,0,.2)}
+/* Quantity + add */
+.action-row{display:flex;gap:10px;margin-bottom:28px;align-items:stretch}
+.qty-stepper{display:flex;align-items:center;border:1px solid rgba(0,0,0,.18);flex-shrink:0}
+.qty-btn{width:46px;height:54px;font-size:16px;font-weight:300;display:flex;align-items:center;justify-content:center;color:var(--black);transition:opacity .2s}
+.qty-btn:hover{opacity:.5}
+.qty-val{width:42px;height:54px;text-align:center;font-size:13px;font-weight:500;border:none;border-left:1px solid rgba(0,0,0,.12);border-right:1px solid rgba(0,0,0,.12);outline:none;font-family:inherit}
+.add-btn{flex:1;background:var(--black);color:#fff;font-size:11px;font-weight:400;letter-spacing:.24em;text-transform:uppercase;padding:0 24px;height:54px;transition:opacity .2s}
+.add-btn:hover{opacity:.82}
 
-/* QUANTITY */
-.qty-section{margin-bottom:22px}
-.qty-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(0,0,0,.4);margin-bottom:10px}
-.qty-stepper{display:flex;align-items:center;gap:0;border:1px solid rgba(0,0,0,.2);width:fit-content}
-.qty-btn{width:40px;height:40px;background:none;border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--black);transition:.15s}
-.qty-btn:hover{background:#f5f5f5}
-.qty-val{width:48px;height:40px;text-align:center;font-size:14px;font-weight:500;font-family:var(--F);border:none;border-left:1px solid rgba(0,0,0,.12);border-right:1px solid rgba(0,0,0,.12);outline:none}
+/* Engagements (replaces colored eco labels) */
+.engagements{padding:24px 0;border-top:1px solid var(--line-l);border-bottom:1px solid var(--line-l);margin-bottom:28px;display:flex;flex-wrap:wrap;gap:24px 32px}
+.eng{display:flex;align-items:center;gap:10px}
+.eng svg{width:18px;height:18px;stroke:var(--black);fill:none;stroke-width:1.4;opacity:.7}
+.eng span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(0,0,0,.7);font-weight:400}
 
-/* BUTTONS */
-.add-btn{width:100%;background:var(--black);color:#fff;border:none;font-family:var(--F);font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:18px;cursor:pointer;transition:opacity .2s;margin-bottom:20px}
-.add-btn:hover{opacity:.8}
+/* Description */
+.prod-desc{font-size:13px;line-height:1.85;color:rgba(0,0,0,.65);font-weight:300;margin-bottom:14px}
+.prod-material{font-size:10px;letter-spacing:.2em;color:rgba(0,0,0,.4);text-transform:uppercase;margin-bottom:36px}
 
-/* PAYMENT ICONS */
-.payment-row{display:flex;align-items:center;gap:10px;margin-bottom:28px;flex-wrap:wrap}
-.payment-label{font-size:10px;color:rgba(0,0,0,.35);letter-spacing:.06em;text-transform:uppercase;width:100%;margin-bottom:4px}
-.pay-icon{height:24px;border-radius:3px}
-.klarna-strip{display:flex;align-items:center;gap:8px;background:#FFF5F7;border:1px solid #FFB3C7;padding:10px 14px;margin-bottom:24px}
-.klarna-strip-text{font-size:12px;color:var(--black)}
-.klarna-strip-text strong{font-weight:600}
-
-/* ECO LABELS */
-.eco-labels{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
-.eco-label{display:flex;align-items:center;gap:5px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(0,0,0,.55);background:#F5F9F2;border:1px solid #D4EAC8;padding:6px 12px;border-radius:20px}
-.eco-check{color:#16A34A;font-weight:700}
-.eco-recycle{color:#16A34A}
-.eco-star{color:#C8A96E}
-
-/* DESC */
-.prod-desc{font-size:13px;line-height:1.85;color:rgba(0,0,0,.55);font-weight:300;margin-bottom:16px;border-top:1px solid var(--line);padding-top:22px}
-.prod-material{font-size:10px;letter-spacing:.08em;color:rgba(0,0,0,.35);text-transform:uppercase;margin-bottom:28px}
-
-/* ACCORDION */
-.accordion{border-top:1px solid var(--line);margin-top:8px}
-.acc-item{border-bottom:1px solid var(--line)}
-.acc-head{display:flex;justify-content:space-between;align-items:center;padding:16px 0;cursor:pointer;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,0,0,.5)}
-.acc-head:hover{color:var(--black)}
-.acc-icon{font-size:18px;font-weight:300}
-.acc-body{max-height:0;overflow:hidden;transition:.3s}
+/* Accordion */
+.accordion{border-top:1px solid var(--line-l)}
+.acc-item{border-bottom:1px solid var(--line-l)}
+.acc-head{display:flex;justify-content:space-between;align-items:center;padding:20px 0;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--black);font-weight:400}
+.acc-head:hover{opacity:.6}
+.acc-icon{font-size:18px;font-weight:300;transition:transform .3s}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
 .acc-body.open{max-height:600px}
-.acc-content{font-size:13px;line-height:1.8;color:rgba(0,0,0,.55);padding-bottom:16px}
+.acc-content{font-size:13px;line-height:1.85;color:rgba(0,0,0,.6);padding-bottom:22px;font-weight:300}
 
-/* TOAST */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--black);color:#fff;padding:13px 24px;font-size:13px;z-index:500;transition:.3s;opacity:0;white-space:nowrap}
+/* Payment row */
+.payment-row{margin-top:36px;padding-top:24px;border-top:1px solid var(--line-l);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.payment-label{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(0,0,0,.4);width:100%;margin-bottom:10px;font-weight:400}
+.payment-row svg{height:22px;opacity:.85}
+
+/* ══ RELATED ══ */
+.related{padding:120px 56px 100px;background:#fff;border-top:1px solid var(--line-l)}
+.related-head{margin-bottom:44px}
+.related-eyebrow{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:rgba(0,0,0,.45);margin-bottom:18px;font-weight:400}
+.related-title{font-size:clamp(32px,4.4vw,56px);font-weight:300;letter-spacing:-.03em;line-height:1}
+.related-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.pcard{display:block;cursor:pointer;position:relative}
+.pcard-img{aspect-ratio:4/5;overflow:hidden;background:var(--cream)}
+.pcard-img img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform 1.2s cubic-bezier(.16,1,.3,1)}
+.pcard:hover .pcard-img img{transform:scale(1.04)}
+.pcard-info{padding:18px 2px}
+.pcard-name{font-size:13px;font-weight:400;margin-bottom:8px;line-height:1.4}
+.pcard-price{font-size:13px;font-weight:500}
+@media(max-width:1024px){.related-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.related{padding:80px 24px 60px}.related-grid{gap:12px}}
+
+/* ══ TOAST ══ */
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--black);color:#fff;padding:14px 28px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;z-index:500;transition:.35s;opacity:0;white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 
-/* CART */
-.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;opacity:0;pointer-events:none;transition:.3s}
+/* ══ CART SIDEBAR (aligné home) ══ */
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:700;opacity:0;pointer-events:none;transition:opacity .35s}
 .cart-overlay.open{opacity:1;pointer-events:all}
-#cartSidebar{position:fixed;top:0;right:0;bottom:0;width:min(420px,100vw);background:#fff;z-index:201;transform:translateX(100%);transition:.35s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column}
-#cartSidebar.open{transform:none}
-.cart-hd{display:flex;align-items:center;justify-content:space-between;padding:24px 24px 16px;border-bottom:1px solid var(--line)}
-.cart-hd-title{font-size:13px;letter-spacing:.16em;text-transform:uppercase;font-weight:400}
-.cart-close{background:none;border:none;font-size:22px;cursor:pointer;color:#aaa;line-height:1}
+.cart-sidebar{position:fixed;top:0;right:0;bottom:0;width:440px;max-width:100vw;background:#fff;z-index:701;transform:translateX(100%);transition:transform .45s cubic-bezier(.76,0,.24,1);display:flex;flex-direction:column;box-shadow:-2px 0 40px rgba(0,0,0,.1)}
+.cart-sidebar.open{transform:translateX(0)}
+.cart-hd{display:flex;align-items:center;justify-content:space-between;padding:24px 28px;border-bottom:1px solid var(--line-l)}
+.cart-hd-title{font-size:12px;font-weight:500;letter-spacing:.22em;text-transform:uppercase}
+.cart-close{font-size:26px;font-weight:300;color:rgba(0,0,0,.4);line-height:1}
 .cart-close:hover{color:var(--black)}
-#cartItems{flex:1;overflow-y:auto;padding:16px 24px}
-.cart-empty{font-size:13px;color:#aaa;text-align:center;padding:40px 0}
-.cart-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
-.cart-item-img{width:64px;height:80px;background:#f5f4f2;flex-shrink:0;overflow:hidden}
-.cart-item-img img{width:100%;height:100%;object-fit:contain;padding:4px}
-.cart-item-info{flex:1;display:flex;flex-direction:column;gap:4px}
-.cart-item-name{font-size:13px;font-weight:400}
-.cart-item-variant{font-size:11px;color:#aaa}
-.cart-item-row{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
-.cart-item-price{font-size:13px;font-weight:500}
-.cart-item-remove{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#aaa;background:none;border:none;cursor:pointer}
+#cartItems{flex:1;overflow-y:auto;padding:20px 28px}
+.cart-empty{text-align:center;padding:60px 0;font-size:13px;color:rgba(0,0,0,.35)}
+.cart-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line-l)}
+.cart-item-img{width:74px;height:90px;background:var(--cream);overflow:hidden;flex-shrink:0}
+.cart-item-img img{width:100%;height:100%;object-fit:contain;padding:5px}
+.cart-item-info{flex:1;min-width:0}
+.cart-item-name{font-size:13px;font-weight:500;margin-bottom:4px;line-height:1.3}
+.cart-item-variant{font-size:11px;color:rgba(0,0,0,.45);margin-bottom:8px;letter-spacing:.06em;text-transform:uppercase}
+.cart-item-row{display:flex;justify-content:space-between;align-items:center}
+.cart-item-price{font-size:13px;font-weight:600}
+.cart-item-remove{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,0,0,.35);border-bottom:1px solid rgba(0,0,0,.15)}
 .cart-item-remove:hover{color:var(--black)}
-#cartFoot{padding:16px 24px 24px;border-top:1px solid var(--line)}
-.cart-total-row{display:flex;justify-content:space-between;font-size:14px;font-weight:500;margin-bottom:14px}
-.cart-checkout-btn{width:100%;background:var(--black);color:#fff;border:none;font-family:var(--F);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:16px;cursor:pointer;transition:opacity .2s}
-.cart-checkout-btn:hover{opacity:.8}
+#cartFoot{padding:22px 28px;border-top:1px solid var(--line-l)}
+.cart-total-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:18px}
+.cart-total-row span:last-child{font-weight:600}
+.cart-checkout-btn{display:block;width:100%;background:var(--black);color:#fff;padding:16px;text-align:center;font-size:11px;font-weight:400;letter-spacing:.24em;text-transform:uppercase;transition:opacity .2s}
+.cart-checkout-btn:hover{opacity:.85}
 
-/* PAYMENT MODAL */
+/* ══ PAY MODAL ══ */
 #payModal{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
 #payModal.open{opacity:1;pointer-events:all}
 .pm-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
 .pm-box{position:relative;background:#fff;width:min(500px,95vw);max-height:90vh;overflow-y:auto;padding:44px 36px}
-.pm-close{position:absolute;top:18px;right:22px;font-size:24px;font-weight:300;color:#bbb;background:none;border:none;cursor:pointer;line-height:1}
+.pm-close{position:absolute;top:18px;right:22px;font-size:24px;font-weight:300;color:#bbb;line-height:1}
 .pm-close:hover{color:var(--black)}
-.pm-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#aaa;margin-bottom:12px}
+.pm-label{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#aaa;margin-bottom:12px;font-weight:400}
 .pm-lines{border-top:1px solid #f0f0f0;padding-top:14px;margin-bottom:14px;display:flex;flex-direction:column;gap:10px}
 .pm-line{display:flex;justify-content:space-between;gap:16px;font-size:13px;color:#333}
 .pm-total-row{display:flex;justify-content:space-between;font-size:14px;font-weight:600;border-top:1px solid #f0f0f0;padding-top:14px;margin-bottom:28px}
-.pm-method-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;border:1.5px solid #e8e8e8;background:#fff;padding:16px 18px;cursor:pointer;font-family:inherit;margin-bottom:10px;transition:border-color .2s;text-align:left}
+.pm-method-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;border:1px solid #e8e8e8;background:#fff;padding:18px 20px;margin-bottom:10px;transition:border-color .2s;text-align:left}
 .pm-method-btn:hover{border-color:var(--black)}
-.pm-method-label{display:flex;flex-direction:column;gap:3px}
-.pm-method-label>span:first-child{font-size:13px;font-weight:500}
-.pm-method-sub{font-size:11px;color:#aaa}
+.pm-method-label>span:first-child{font-size:13px;font-weight:500;display:block}
+.pm-method-sub{font-size:11px;color:#aaa;margin-top:3px}
 .pm-method-icons{display:flex;gap:6px;align-items:center}
-.pm-klarna{border-color:#FFB3C7}
-.pm-klarna:hover{border-color:#ff80a0;background:#fff8fa}
-.pm-vir-info{display:none;background:#f7f7f5;padding:14px 18px;font-size:12px;line-height:1.9;color:#555;margin-top:-4px;margin-bottom:10px}
-.pm-secure{margin-top:18px;font-size:11px;color:#ccc;text-align:center}
+.pm-vir-info{display:none;background:#f7f7f5;padding:14px 18px;font-size:12px;line-height:1.9;color:#555;margin-bottom:10px}
+.pm-secure{margin-top:18px;font-size:11px;color:#aaa;text-align:center;letter-spacing:.04em}
+
+/* ══ FOOTER ══ */
+footer{background:var(--black);color:#fff;padding:80px 56px 30px;margin-top:0}
+.f-top{display:grid;grid-template-columns:1.4fr repeat(4,1fr);gap:48px;margin-bottom:60px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.1)}
+.f-brand .f-logo{font-size:13px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;margin-bottom:14px}
+.f-brand p{font-size:13px;font-weight:300;color:rgba(255,255,255,.55);line-height:1.7;max-width:300px;margin-bottom:24px}
+.f-socials{display:flex;gap:12px}
+.f-socials a{width:38px;height:38px;border:1px solid rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;transition:.2s}
+.f-socials a:hover{background:#fff;color:var(--black);border-color:#fff}
+.f-socials svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5}
+.f-col h5{font-size:10px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:16px}
+.f-col ul{list-style:none}
+.f-col li{margin-bottom:10px}
+.f-col a{font-size:13px;font-weight:300;color:rgba(255,255,255,.85);transition:color .2s}
+.f-col a:hover{color:var(--gold)}
+.f-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px}
+.f-copy{font-size:11px;font-weight:300;color:rgba(255,255,255,.45);letter-spacing:.08em}
+.f-pay{display:flex;gap:8px;flex-wrap:wrap}
+.f-pay svg{height:22px}
+@media(max-width:1024px){.f-top{grid-template-columns:1fr 1fr;gap:32px}}
+@media(max-width:768px){footer{padding:60px 24px 24px}.f-top{grid-template-columns:1fr;gap:32px;padding-bottom:32px;margin-bottom:32px}.f-bottom{flex-direction:column;align-items:flex-start}}
+
+@media(max-width:768px){
+  nav{padding:0 16px;height:62px}
+  .nav-menu{display:none}
+  .burger{display:flex}
+  .nav-logo img{height:32px}
+  .breadcrumb{padding:80px 24px 0}
+}
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
+  <div class="nav-left">
+    <div class="burger" onclick="window.location='/'"><span></span><span></span><span></span></div>
+    <ul class="nav-menu">
+      <li><a href="/#new">Nouveautés</a></li>
+      <li><a href="/#shop">Boutique</a></li>
+      <li><a href="/#manifesto">La Marque</a></li>
+    </ul>
+  </div>
   <a href="/" class="nav-logo"><img src="images/talseume-logo.png" alt="TALSEUME"/></a>
   <div class="nav-right">
-    <a href="/" class="nav-back">← Retour</a>
-    <button class="nav-cart-btn" onclick="openCart()">
+    <a href="/" class="nav-back">← Boutique</a>
+    <button class="nav-icon" onclick="openCart()" aria-label="Panier">
       <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
       <span id="cartCount" class="cart-count">0</span>
     </button>
   </div>
 </nav>
 
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="/">Accueil</a><span>/</span><a href="/#shop">Boutique</a><span>/</span><span id="bc-product"></span>
+</div>
+
+<!-- PRODUCT LAYOUT -->
 <div class="product-page">
   <div class="prod-img-side">
-    <img id="prod-main-img" src="" alt=""/>
+    <div class="prod-thumbs" id="prod-thumbs"></div>
+    <div class="prod-main-img-wrap">
+      <img id="prod-main-img" src="" alt=""/>
+    </div>
   </div>
   <div class="prod-info-side">
-    <div id="prod-badge" class="prod-badge" style="display:none"></div>
+    <div id="prod-eyebrow" class="prod-eyebrow"></div>
     <h1 class="prod-name" id="prod-name"></h1>
-    <div class="prod-price-row">
-      <div class="prod-price" id="prod-price"></div>
-    </div>
-    <div class="prod-klarna-hint" id="prod-klarna-hint"></div>
 
-    <div style="height:24px"></div>
+    <div class="prod-price" id="prod-price"></div>
+    <div class="prod-klarna-hint" id="prod-klarna-hint"></div>
 
     <!-- COLORS -->
     <div id="prod-colors" style="display:none">
       <div class="variant-section">
-        <div class="variant-label">Couleur — <span class="variant-sel" id="selected-color"></span></div>
+        <div class="variant-label">Couleur <span class="variant-sel" id="selected-color"></span></div>
         <div class="color-swatches" id="color-pills"></div>
       </div>
     </div>
@@ -194,45 +275,27 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
     <!-- SIZES -->
     <div id="prod-sizes" style="display:none">
       <div class="variant-section">
-        <div class="variant-label">Taille — <span class="variant-sel" id="selected-size"></span></div>
+        <div class="variant-label">Taille <span class="variant-sel" id="selected-size"></span></div>
         <div class="pills" id="size-pills"></div>
       </div>
     </div>
 
-    <!-- QUANTITY -->
-    <div class="qty-section">
-      <div class="qty-label">Quantité</div>
+    <!-- ACTION ROW -->
+    <div class="action-row">
       <div class="qty-stepper">
         <button class="qty-btn" onclick="changeQty(-1)">−</button>
         <input class="qty-val" id="qty-val" type="number" value="1" min="1" max="10" readonly/>
         <button class="qty-btn" onclick="changeQty(1)">+</button>
       </div>
+      <button class="add-btn" onclick="addProductToCart()">Ajouter au panier</button>
     </div>
 
-    <button class="add-btn" onclick="addProductToCart()">Ajouter au panier</button>
-
-
-    <!-- ECO LABELS -->
-    <div class="eco-labels">
-      <div class="eco-label"><span class="eco-check">✓</span> Certifié GOTS</div>
-      <div class="eco-label"><span class="eco-check">✓</span> 100% Vegan</div>
-      <div class="eco-label"><span class="eco-recycle">♻</span> Matières éco-responsables</div>
-      <div class="eco-label"><span class="eco-star">✦</span> Production éthique</div>
-    </div>
-
-    <!-- PAYMENT METHODS -->
-    <div class="payment-row">
-      <div class="payment-label">Paiement sécurisé accepté</div>
-      <svg width="44" height="28" viewBox="0 0 44 28"><rect width="44" height="28" rx="4" fill="#1A1F71"/><text x="7" y="20" font-family="Arial" font-size="13" font-weight="bold" fill="white">VISA</text></svg>
-      <svg width="44" height="28" viewBox="0 0 44 28"><rect width="44" height="28" rx="4" fill="#fff" stroke="#ddd"/><circle cx="17" cy="14" r="9" fill="#EB001B"/><circle cx="27" cy="14" r="9" fill="#F79E1B"/><path d="M22 6.8a9 9 0 010 14.4A9 9 0 0122 6.8Z" fill="#FF5F00"/></svg>
-      <svg width="44" height="28" viewBox="0 0 44 28"><rect width="44" height="28" rx="4" fill="#000"/><text x="5" y="16" font-family="Arial" font-size="9" fill="white">Apple</text><text x="5" y="24" font-family="Arial" font-size="8" fill="white">Pay</text></svg>
-      <svg width="44" height="28" viewBox="0 0 44 28"><rect width="44" height="28" rx="4" fill="#FFB3C7"/><text x="6" y="18" font-size="11" font-weight="700" fill="#17120E" font-family="sans-serif">klarna</text></svg>
-      <svg width="44" height="28" viewBox="0 0 44 28"><rect width="44" height="28" rx="4" fill="#2E77BC"/><text x="4" y="18" font-family="Arial" font-size="9" font-weight="bold" fill="white">AMEX</text></svg>
-    </div>
-
-    <div class="klarna-strip">
-      <svg width="40" height="16" viewBox="0 0 52 20"><rect width="52" height="20" rx="4" fill="#FFB3C7"/><text x="8" y="14" font-size="11" font-weight="700" fill="#17120E" font-family="sans-serif">klarna</text></svg>
-      <div class="klarna-strip-text">Payez en <strong>3× sans frais</strong> — à partir de <span id="klarna-price"></span>/mois</div>
+    <!-- ENGAGEMENTS -->
+    <div class="engagements">
+      <div class="eng"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span>Certifié GOTS</span></div>
+      <div class="eng"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12s1.5-2 4-2 4 2 4 2"/></svg><span>100% Vegan</span></div>
+      <div class="eng"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg><span>Matières recyclées</span></div>
+      <div class="eng"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Production éthique</span></div>
     </div>
 
     <p class="prod-desc" id="prod-desc"></p>
@@ -240,33 +303,115 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 
     <div class="accordion">
       <div class="acc-item">
-        <div class="acc-head" onclick="toggleAcc(this)"><span>Matières & Composition</span><span class="acc-icon">+</span></div>
+        <div class="acc-head" onclick="toggleAcc(this)"><span>Composition & matières</span><span class="acc-icon">+</span></div>
         <div class="acc-body"><div class="acc-content" id="acc-materials"></div></div>
       </div>
       <div class="acc-item">
-        <div class="acc-head" onclick="toggleAcc(this)"><span>Livraison & Retours</span><span class="acc-icon">+</span></div>
-        <div class="acc-body"><div class="acc-content">Livraison offerte dès 80€ · Livraison standard 5-7 jours ouvrés · Retours gratuits sous 30 jours · Remboursement intégral garanti.</div></div>
+        <div class="acc-head" onclick="toggleAcc(this)"><span>Livraison & retours</span><span class="acc-icon">+</span></div>
+        <div class="acc-body"><div class="acc-content">Livraison offerte dès 80€ — standard 5 à 7 jours ouvrés. Retours gratuits sous 30 jours. Remboursement intégral garanti.</div></div>
       </div>
       <div class="acc-item">
         <div class="acc-head" onclick="toggleAcc(this)"><span>Guide des tailles</span><span class="acc-icon">+</span></div>
         <div class="acc-body"><div class="acc-content" id="acc-sizes"></div></div>
       </div>
     </div>
+
+    <div class="payment-row">
+      <div class="payment-label">Paiement sécurisé</div>
+      <svg width="44" height="24" viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#1A1F71"/><text x="8" y="26" font-family="Arial" font-size="16" font-weight="bold" fill="white">VISA</text></svg>
+      <svg width="44" height="24" viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#fff" stroke="#ddd"/><circle cx="23" cy="19" r="11" fill="#EB001B"/><circle cx="37" cy="19" r="11" fill="#F79E1B"/><path d="M30 9.8a11 11 0 010 18.4A11 11 0 0130 9.8z" fill="#FF5F00"/></svg>
+      <svg width="44" height="24" viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#000"/><text x="8" y="22" font-family="Arial" font-size="11" fill="white">Apple</text><text x="8" y="33" font-family="Arial" font-size="10" fill="white">Pay</text></svg>
+      <svg width="44" height="24" viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#FFB3C7"/><text x="6" y="25" font-family="Arial" font-size="12" font-weight="bold" fill="#17120E">Klarna</text></svg>
+      <svg width="44" height="24" viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#2E77BC"/><text x="5" y="24" font-family="Arial" font-size="9" font-weight="bold" fill="white">AMERICAN</text><text x="5" y="33" font-family="Arial" font-size="9" font-weight="bold" fill="white">EXPRESS</text></svg>
+    </div>
   </div>
 </div>
+
+<!-- RELATED -->
+<section class="related">
+  <div class="related-head">
+    <div class="related-eyebrow">Compléter le look</div>
+    <h2 class="related-title">Vous aimerez aussi</h2>
+  </div>
+  <div class="related-grid" id="related-grid"></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-top">
+    <div class="f-brand">
+      <div class="f-logo">Talseume</div>
+      <p>Streetwear éco-responsable né à Paris. Coton bio GOTS, matériaux recyclés, fabriqué pour durer.</p>
+      <div class="f-socials">
+        <a href="https://www.instagram.com/talseumeclothing" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="mailto:talseumeclothes@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg></a>
+        <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg></a>
+      </div>
+    </div>
+    <div class="f-col">
+      <h5>Boutique</h5>
+      <ul>
+        <li><a href="/#new">Nouveautés</a></li>
+        <li><a href="/#shop">Tous les produits</a></li>
+        <li><a href="/#shop">Homme</a></li>
+        <li><a href="/#shop">Femme</a></li>
+        <li><a href="/#shop">Accessoires</a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      <h5>Aide</h5>
+      <ul>
+        <li><a href="#">Livraison & Retours</a></li>
+        <li><a href="#">Suivi de commande</a></li>
+        <li><a href="#">Guide des tailles</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      <h5>La Marque</h5>
+      <ul>
+        <li><a href="/#manifesto">Notre histoire</a></li>
+        <li><a href="/#manifesto">Matériaux & Engagements</a></li>
+        <li><a href="/#newsletter">Newsletter</a></li>
+        <li><a href="mailto:talseumeclothes@gmail.com">Contact</a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      <h5>Légal</h5>
+      <ul>
+        <li><a href="#">Mentions légales</a></li>
+        <li><a href="#">CGV</a></li>
+        <li><a href="#">Politique de confidentialité</a></li>
+        <li><a href="#">Cookies</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="f-bottom">
+    <span class="f-copy">©2026 Talseume — Tous droits réservés</span>
+    <div class="f-pay">
+      <svg viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#1A1F71"/><text x="8" y="26" font-family="Arial" font-size="16" font-weight="bold" fill="white">VISA</text></svg>
+      <svg viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#fff"/><circle cx="23" cy="19" r="11" fill="#EB001B"/><circle cx="37" cy="19" r="11" fill="#F79E1B"/><path d="M30 9.8a11 11 0 010 18.4A11 11 0 0130 9.8z" fill="#FF5F00"/></svg>
+      <svg viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#fff"/><text x="9" y="25" font-family="Arial" font-size="13" font-weight="bold" fill="#003087">Pay</text><text x="28" y="25" font-family="Arial" font-size="13" font-weight="bold" fill="#009CDE">Pal</text></svg>
+      <svg viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#000"/><text x="8" y="22" font-family="Arial" font-size="11" fill="white">Apple</text><text x="8" y="33" font-family="Arial" font-size="10" fill="white">Pay</text></svg>
+      <svg viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#FFB3C7"/><text x="6" y="25" font-family="Arial" font-size="12" font-weight="bold" fill="#17120E">Klarna</text></svg>
+    </div>
+  </div>
+</footer>
 
 <div class="toast" id="toast"></div>
 
+<!-- CART -->
 <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
-<div id="cartSidebar">
-  <div class="cart-hd"><span class="cart-hd-title">Mon Panier</span><button class="cart-close" onclick="closeCart()">×</button></div>
-  <div id="cartItems"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-hd"><span class="cart-hd-title">Panier</span><button class="cart-close" onclick="closeCart()">×</button></div>
+  <div id="cartItems"><p class="cart-empty">Votre panier est vide.</p></div>
   <div id="cartFoot" style="display:none">
-    <div class="cart-total-row"><span>Total</span><span id="cartTotal"></span></div>
-    <button class="cart-checkout-btn" onclick="goCheckout()">Commander →</button>
+    <div class="cart-total-row"><span>Sous-total</span><span id="cartTotal">0,00 €</span></div>
+    <button class="cart-checkout-btn" onclick="goCheckout()">Passer la commande →</button>
   </div>
 </div>
 
+<!-- PAY MODAL -->
 <div id="payModal">
   <div class="pm-backdrop" onclick="closePayModal()"></div>
   <div class="pm-box">
@@ -282,7 +427,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
         <svg width="34" height="22" viewBox="0 0 34 22"><rect width="34" height="22" rx="3" fill="#f2f2f2"/><circle cx="13" cy="11" r="7" fill="#EB001B"/><circle cx="21" cy="11" r="7" fill="#F79E1B"/></svg>
       </span>
     </button>
-    <button id="pm-klarna-btn" class="pm-method-btn pm-klarna" onclick="stripeCheckout('3x')">
+    <button id="pm-klarna-btn" class="pm-method-btn" onclick="stripeCheckout('3x')">
       <span class="pm-method-label"><span>Payer en 3× sans frais</span><span class="pm-method-sub">Klarna — Divisé en 3 paiements égaux</span></span>
       <svg width="52" height="20" viewBox="0 0 52 20"><rect width="52" height="20" rx="4" fill="#FFB3C7"/><text x="8" y="14" font-size="11" font-weight="700" fill="#17120E" font-family="sans-serif">klarna</text></svg>
     </button>
@@ -291,7 +436,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
       <svg width="20" height="20" fill="none" stroke="#888" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
     </button>
     <div id="pm-vir-info" class="pm-vir-info"><strong>Coordonnées bancaires Talseume</strong><br>IBAN : FR76 XXXX XXXX XXXX XXXX XXXX XXX<br>BIC : XXXXXXXX<br>Référence : commande + ton nom</div>
-    <p class="pm-secure">🔒 Paiement 100% sécurisé · SSL · Stripe</p>
+    <p class="pm-secure">Paiement 100% sécurisé · SSL · Stripe</p>
   </div>
 </div>
 
@@ -305,7 +450,7 @@ const COLOR_HEX = {
 
 const PRODUCTS = {
   'sweat-talseume-oversize':{
-    name:'Sweat Talseume Oversize',price:90,badge:'GOTS',rating:{score:4.9,count:38,sold:124},
+    name:'Sweat Talseume Oversize',price:90,badge:'GOTS',
     desc:'Le sweat qui ne cherche pas à plaire — il s\'impose. Coupe boxy assumée, matière dense, conscience tranquille. Molleton non brossé 100% coton biologique certifié GOTS.',
     material:'Coton bio GOTS 100% · Unisexe · Oversize',
     materials:'100% coton biologique certifié GOTS. Molleton non brossé 350g/m². Coupe oversize unisexe.',
@@ -314,7 +459,7 @@ const PRODUCTS = {
     colors:[{name:'ROUGE',img:'images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg'},{name:'BLANC',img:'images/products/sweat-a-acapuche-talseume-dos.jpg'},{name:'NOIR',img:'images/products/SWEAT-TALSEUME-NOIR-OVERSIZE01.jpg'},{name:'BLEUE',img:'images/products/SWEAT-TALSEUME-ACAPUCHE-BLEU.jpg'},{name:'BEIGE',img:'images/products/B18BC283-4899-40C1-9F96-34ED3F8DD9FF_38ab9d91-6208-4e33-a9b8-3a0a4e4cd56b.jpg'}]
   },
   'tee-shirt-oversize':{
-    name:'Tee-Shirt Talseume Oversize',price:60,badge:'Bio',rating:{score:4.8,count:22,sold:87},
+    name:'Tee-Shirt Talseume Oversize',price:60,badge:'Bio',
     desc:'Le totem du streetwear. Pas de fioritures — juste de la présence. Coupe XXL assumée, tissu lavé jersey simple certifié GOTS.',
     material:'Coton bio GOTS · Tissu lavé · Unisexe',
     materials:'100% coton biologique certifié GOTS. Jersey simple tissu lavé 180g/m². Coupe oversize unisexe.',
@@ -323,7 +468,7 @@ const PRODUCTS = {
     colors:[{name:'NOIR',img:'images/products/tee-shirt-talseume-noir-oversise.jpg'},{name:'BLANC',img:'images/products/IMG_7520_e3dbdd17-a9be-4adb-b256-4159034c7b0d.jpg'}]
   },
   'sweat-bikelife':{
-    name:'Sweat Tls × Bikelife',price:68.99,badge:'Collab',rating:{score:5.0,count:14,sold:56},
+    name:'Sweat Tls × Bikelife',price:68.99,badge:'Édition limitée',
     desc:'Taillé pour la Bike life et les rues, pensé pour durer. Coton biologique filé et peigné certifié GOTS, oversize par nature.',
     material:'Coton bio GOTS 100% · Édition limitée · Coloris Noir',
     materials:'100% coton biologique certifié GOTS, filé et peigné. Molleton 380g/m². Édition limitée.',
@@ -332,7 +477,7 @@ const PRODUCTS = {
     colors:[{name:'NOIR',img:'images/products/sweat-talseume-bikelife-devant.jpg'}]
   },
   'tshirt-manches-longues':{
-    name:'T-Shirt Manches Longues',price:75,badge:'Bio 240g',rating:{score:4.9,count:19,sold:63},
+    name:'T-Shirt Manches Longues',price:75,badge:'Bio 240g',
     desc:'240g, 70% coton bio + 30% polyester recyclé. Natural Raw, Stargazer, Noir. Seul ou en layering.',
     material:'70% coton bio · 30% polyester recyclé · 3 coloris',
     materials:'70% coton biologique, 30% polyester recyclé. 240g/m². Certifié GOTS.',
@@ -341,7 +486,7 @@ const PRODUCTS = {
     colors:[{name:'Natural Raw',img:'images/products/tshirt-talseume-mancheslongue-creme.jpg'},{name:'Stargazer',img:'images/products/tee-shirt-talseume-mancheslongue-star.jpg'},{name:'Noir',img:'images/products/tee-shirt-talseume-mancheslongue.jpg'}]
   },
   'veste-coach':{
-    name:'Veste Coach Unisexe Talseume',price:90,badge:'Recyclé',rating:{score:4.8,count:16,sold:48},
+    name:'Veste Coach Unisexe Talseume',price:90,badge:'Recyclé',
     desc:'La veste coach redéfinie. Matière recyclée premium, coupe unisexe intemporelle. Entre la rue et le vestiaire.',
     material:'Polyester recyclé · Unisexe · 3 coloris',
     materials:'Polyester recyclé. Coupe unisexe. Disponible en NOIR, FRENCH NAVY et KAKI.',
@@ -350,7 +495,7 @@ const PRODUCTS = {
     colors:[{name:'NOIR',img:'images/products/Coach-Jacket-By-talseumecopie2.jpg'},{name:'FRENCH NAVY',img:'images/products/Coach-Jacket-By-talseumecopie3.jpg'},{name:'KAKI',img:'images/products/Coach-Jacket-By-talseumecopie.jpg'}]
   },
   'veste-coach-ultra':{
-    name:'Veste Coach Talseume Ultra',price:130,badge:'Ultra',rating:{score:4.9,count:12,sold:35},
+    name:'Veste Coach Talseume Ultra',price:130,badge:'Ultra',
     desc:'Ultra légère. Ultra propre. Ultra Talseume. 75g/m² en plain weave 100% polyester recyclé — se glisse partout, se porte toujours.',
     material:'100% polyester recyclé · 75g/m² · Unisexe',
     materials:'100% polyester recyclé plain weave 75g/m². Ultra légère et compressible.',
@@ -359,7 +504,7 @@ const PRODUCTS = {
     colors:[{name:'NOIR',img:'images/products/Jacket-By-TALSEUMENWAR.jpg'}]
   },
   'debardeur-femme':{
-    name:'Débardeur Talseume Femme',price:24.99,badge:'Femme',rating:{score:4.8,count:9,sold:27},
+    name:'Débardeur Talseume Femme',price:24.99,badge:'Femme',
     desc:'Le débardeur éco-responsable pensé pour elle. 100% coton biologique filé et peigné 155g. Coupe normale, col rond, sans manches.',
     material:'100% coton bio · 155g/m² · XS → 3XL',
     materials:'100% coton biologique filé et peigné. 155g/m². Coupe normale, col rond.',
@@ -368,7 +513,7 @@ const PRODUCTS = {
     colors:[{name:'Orange',img:'images/products/debardeur-femme-talseume-090.jpg'},{name:'Noir',img:'images/products/debardeur-femme-talseume.jpg'},{name:'Jaune',img:'images/products/debardeur-talseume-femme-0987.jpg'}]
   },
   'tshirt-femme':{
-    name:'T-shirt Talseume Femme',price:29,badge:'Femme',rating:{score:4.9,count:8,sold:21},
+    name:'T-shirt Talseume Femme',price:29,badge:'Femme',
     desc:'Le t-shirt féminin qui ne fait aucune concession. 50% coton bio / 50% polyester recyclé. Côte 1×1 au col, surpiqûres doubles, coupe ajustée.',
     material:'50% coton bio · 50% polyester recyclé · XS → 3XL',
     materials:'50% coton biologique, 50% polyester recyclé. Côte 1×1 au col. Surpiqûre double large.',
@@ -377,16 +522,15 @@ const PRODUCTS = {
     colors:[{name:'Bleu',img:'images/products/tshirt-femme-talseume-009.jpg'},{name:'Noir',img:'images/products/tshirt-talseume-femme.jpg'},{name:'Blanc',img:'images/products/tshirt-femme-talseume-009.jpg'}]
   },
   'cagoule':{
-    name:'Cagoule Talseume',price:18,badge:null,rating:{score:4.9,count:6,sold:19},
+    name:'Cagoule Talseume',price:18,badge:null,
     desc:'La cagoule, c\'était l\'accessoire des ombres. Talseume en a fait l\'accessoire du mouvement. Chaude, graphique, identitaire.',
     material:'Polyester · Streetwear · Taille unique',
     materials:'Polyester. Taille unique, s\'adapte à toutes morphologies.',
     sizeGuide:'Taille unique.',
-    sizes:[],
-    colors:[{name:'NOIR',img:'images/products/IMG_7578.jpg'}]
+    sizes:[],colors:[{name:'NOIR',img:'images/products/IMG_7578.jpg'}]
   },
   'sport-beanie':{
-    name:'Talseume Sport Beanie',price:17.99,badge:null,rating:{score:4.7,count:11,sold:42},
+    name:'Talseume Sport Beanie',price:17.99,badge:null,
     desc:'Pensé pour rester en place, conçu pour être vu. Épouse la tête sans serrer, garde la chaleur sans étouffer.',
     material:'85% Polyester · 15% Élasthanne · Taille unique',
     materials:'85% polyester, 15% élasthanne. Taille unique.',
@@ -394,7 +538,7 @@ const PRODUCTS = {
     sizes:[],colors:[{name:'NOIR',img:'images/products/Bonnet_talseume.jpg'}]
   },
   'casquette-trucker':{
-    name:'Casquette Trucker',price:19.99,badge:null,rating:{score:4.6,count:9,sold:31},
+    name:'Casquette Trucker',price:19.99,badge:null,
     desc:'Devant structuré 100% coton, résille 100% polyester. Sérigraphie nette. Fermeture snapback ajustable.',
     material:'Coton / Polyester · Snapback ajustable',
     materials:'Devant 100% coton. Résille 100% polyester. Fermeture snapback.',
@@ -402,7 +546,7 @@ const PRODUCTS = {
     sizes:[],colors:[{name:'Rouge',img:'images/products/IMG_7199.png'}]
   },
   'talseume-bag':{
-    name:'Talseume Bag',price:25.99,badge:null,rating:{score:4.8,count:7,sold:28},
+    name:'Talseume Bag',price:25.99,badge:null,
     desc:'Extérieur tissu lavé recyclé, intérieur doublé coton bio ring-spun. Fonctionnel et responsable.',
     material:'80% coton recyclé · 20% polyester recyclé',
     materials:'Extérieur 80% coton recyclé + 20% polyester recyclé. Intérieur coton bio ring-spun.',
@@ -422,27 +566,25 @@ let selectedColor = p.colors[0]?.name || '';
 let qty = 1;
 
 function render() {
-  const img = p.colors.find(c=>c.name===selectedColor)?.img || p.colors[0]?.img || '';
-  document.getElementById('prod-main-img').src = img;
   document.getElementById('prod-name').textContent = p.name;
+  document.getElementById('bc-product').textContent = p.name;
   document.getElementById('prod-price').textContent = p.price.toLocaleString('fr-FR',{style:'currency',currency:'EUR'});
   document.getElementById('prod-desc').textContent = p.desc;
   document.getElementById('prod-material').textContent = p.material;
   document.getElementById('acc-materials').textContent = p.materials;
   document.getElementById('acc-sizes').textContent = p.sizeGuide;
 
-  // Klarna hint
+  if (p.badge) { document.getElementById('prod-eyebrow').textContent = p.badge; }
+
   const monthly = (p.price / 3).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});
-  document.getElementById('prod-klarna-hint').innerHTML = `<svg width="40" height="14" viewBox="0 0 52 20" style="vertical-align:middle;margin-right:5px"><rect width="52" height="20" rx="4" fill="#FFB3C7"/><text x="8" y="14" font-size="11" font-weight="700" fill="#17120E" font-family="sans-serif">klarna</text></svg> Ou 3× <strong>${monthly}</strong> sans frais`;
-  document.getElementById('klarna-price').textContent = monthly;
+  document.getElementById('prod-klarna-hint').textContent = `Ou 3× ${monthly} sans frais avec Klarna`;
 
-  // Badge
-  if (p.badge) { const b=document.getElementById('prod-badge'); b.textContent=p.badge; b.style.display='inline-block'; }
+  renderThumbs();
+  renderMainImg();
 
-  // Colors
   if (p.colors.length > 1) {
     document.getElementById('prod-colors').style.display = 'block';
-    document.getElementById('selected-color').textContent = selectedColor;
+    document.getElementById('selected-color').textContent = '— ' + selectedColor;
     document.getElementById('color-pills').innerHTML = p.colors.map(c => {
       const hex = COLOR_HEX[c.name] || '#888';
       const isWhite = hex === '#FFFFFF';
@@ -450,27 +592,55 @@ function render() {
     }).join('');
   }
 
-  // Sizes
   if (p.sizes.length > 0) {
     document.getElementById('prod-sizes').style.display = 'block';
-    document.getElementById('selected-size').textContent = selectedSize;
+    document.getElementById('selected-size').textContent = '— ' + selectedSize;
     document.getElementById('size-pills').innerHTML = p.sizes.map(s =>
       `<button class="pill${s===selectedSize?' sel':''}" onclick="selectSize('${s}')">${s}</button>`
     ).join('');
   }
+
+  renderRelated();
+}
+
+function renderMainImg(){
+  const img = p.colors.find(c=>c.name===selectedColor)?.img || p.colors[0]?.img || '';
+  document.getElementById('prod-main-img').src = img;
+}
+
+function renderThumbs(){
+  const wrap = document.getElementById('prod-thumbs');
+  if (p.colors.length < 2) { wrap.style.display='none'; return; }
+  wrap.innerHTML = p.colors.map(c => `
+    <div class="prod-thumb${c.name===selectedColor?' sel':''}" onclick="selectColor('${c.name}')">
+      <img src="${c.img}" alt="${c.name}"/>
+    </div>
+  `).join('');
+}
+
+function renderRelated(){
+  const others = Object.entries(PRODUCTS).filter(([k])=>k!==id).slice(0,4);
+  document.getElementById('related-grid').innerHTML = others.map(([k,r])=>`
+    <a class="pcard" href="product.html?id=${k}">
+      <div class="pcard-img"><img src="${r.colors[0].img}" alt="${r.name}"/></div>
+      <div class="pcard-info">
+        <div class="pcard-name">${r.name}</div>
+        <div class="pcard-price">${r.price.toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div>
+      </div>
+    </a>`).join('');
 }
 
 function selectColor(name) {
   selectedColor = name;
-  const img = p.colors.find(c=>c.name===name)?.img;
-  if (img) document.getElementById('prod-main-img').src = img;
-  document.getElementById('selected-color').textContent = name;
+  renderMainImg();
+  document.getElementById('selected-color').textContent = '— ' + name;
   document.querySelectorAll('.cswatch').forEach(b => b.classList.toggle('sel', b.title===name));
+  document.querySelectorAll('.prod-thumb').forEach(t => t.classList.toggle('sel', t.querySelector('img').alt===name));
 }
 
 function selectSize(s) {
   selectedSize = s;
-  document.getElementById('selected-size').textContent = s;
+  document.getElementById('selected-size').textContent = '— ' + s;
   document.querySelectorAll('#size-pills .pill').forEach(b => b.classList.toggle('sel', b.textContent.trim()===s));
 }
 
@@ -504,13 +674,8 @@ function addProductToCart() {
   const ex = cart.find(i => i.name===p.name && i.variant===variant);
   if (ex) { ex.qty += qty; } else { cart.push({name:p.name, variant, price:p.price, img, qty}); }
   saveCart(); renderCart();
-  showToast(`${qty}× ajouté au panier ✓`);
-  setTimeout(openCart, 300);
-}
-
-function buyNow() {
-  addProductToCart();
-  setTimeout(() => { closeCart(); setTimeout(showPayModal, 450); }, 400);
+  showToast(`${qty}× ajouté au panier`);
+  setTimeout(openCart, 350);
 }
 
 function removeFromCart(idx) { cart.splice(idx,1); saveCart(); renderCart(); }
@@ -555,7 +720,10 @@ function closePayModal() { document.getElementById('payModal').classList.remove(
 
 async function stripeCheckout(mode) {
   const btn = document.getElementById(mode==='3x'?'pm-klarna-btn':'pm-card-btn');
-  btn.disabled=true; btn.textContent='Chargement…';
+  btn.disabled=true;
+  const lbl = btn.querySelector('.pm-method-label>span');
+  const orig = lbl.textContent;
+  lbl.textContent='Chargement…';
   try {
     const res = await fetch('/.netlify/functions/create-checkout',{
       method:'POST', headers:{'Content-Type':'application/json'},
@@ -570,8 +738,7 @@ async function stripeCheckout(mode) {
     else throw new Error(data.error||'Erreur');
   } catch(e) {
     alert('Erreur paiement : '+e.message);
-    btn.disabled=false;
-    btn.textContent=mode==='3x'?'Payer en 3× sans frais →':'Payer par carte →';
+    btn.disabled=false; lbl.textContent=orig;
   }
 }
 
