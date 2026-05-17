@@ -8,16 +8,19 @@
 <style>
 @font-face{font-family:'Suisse Intl';src:url('https://cdn.prod.website-files.com/6772f6efe246aaaa73ad2a98/67784f5e4c3068c2e2f22e60_SuisseIntl-Regular.otf')format('opentype');font-weight:400;font-display:swap}
 @font-face{font-family:'Suisse Intl';src:url('https://cdn.prod.website-files.com/6772f6efe246aaaa73ad2a98/67784f815ee57b4c18bdae11_SuisseIntl-Light.otf')format('opentype');font-weight:300;font-display:swap}
-@font-face{font-family:'HelveticaNowDisplay';src:url('https://locomotive.ca/assets/fonts/HelveticaNowDisplay-Regular.woff2')format('woff2'),url('https://locomotive.ca/assets/fonts/HelveticaNowDisplay-Regular.woff')format('woff');font-weight:400;font-display:swap}
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--black:#080808;--white:#fff;--off:#f2f1ef;--line-d:rgba(255,255,255,.08);--line-l:rgba(0,0,0,.08);--F:'Suisse Intl','Helvetica Neue',Helvetica,Arial,sans-serif}
+:root{
+  --black:#0a0a0a;--white:#fff;--off:#f4f3f0;--cream:#f7f5f0;
+  --accent:#C0392B;--accent2:#1B2A6B;--gold:#C8A96E;
+  --line-d:rgba(255,255,255,.08);--line-l:rgba(0,0,0,.1);
+  --F:'Suisse Intl','Helvetica Neue',Helvetica,Arial,sans-serif
+}
 html{background:var(--black);overflow-x:hidden;scroll-behavior:smooth}
-body{font-family:var(--F);-webkit-font-smoothing:antialiased;overflow-x:hidden;cursor:none;color:var(--black)}
+body{font-family:var(--F);-webkit-font-smoothing:antialiased;overflow-x:hidden;color:var(--black);background:#fff}
 a{text-decoration:none;color:inherit}
-button{font-family:var(--F);cursor:none;border:none;background:none}
+button{font-family:var(--F);cursor:pointer;border:none;background:none}
 img{display:block;max-width:100%}
-@media(hover:none),(max-width:768px){body,button{cursor:auto}#cur,#cring{display:none}}
 
 /* ══ PRELOADER ══ */
 #preloader{position:fixed;inset:0;z-index:9000;pointer-events:none}
@@ -29,225 +32,291 @@ img{display:block;max-width:100%}
 #preloader.open .pre-bot{transform:translateY(100%)}
 #preloader.open .pre-logo{opacity:0}
 
-/* ══ CURSOR ══ */
-#cur{position:fixed;z-index:8000;pointer-events:none;width:6px;height:6px;border-radius:50%;background:#fff;mix-blend-mode:difference;transform:translate(-50%,-50%);top:0;left:0}
-#cring{position:fixed;z-index:7999;pointer-events:none;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.35);transform:translate(-50%,-50%);top:0;left:0;transition:width .3s,height .3s,border-color .3s}
-#cring.l{border-color:rgba(0,0,0,.25)}
-body.hov #cring{width:60px;height:60px}
+/* ══ TOP PROMO BAR ══ */
+.promo-bar{background:var(--black);color:#fff;text-align:center;padding:9px 20px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:400;position:relative;z-index:600;overflow:hidden;height:36px;display:flex;align-items:center;justify-content:center}
+.promo-track{display:flex;gap:60px;animation:promoSlide 28s linear infinite;white-space:nowrap}
+.promo-track span{display:inline-flex;align-items:center;gap:10px}
+.promo-track span::before{content:'✦';color:var(--gold);font-size:9px}
+@keyframes promoSlide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ══ NAV ══ */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;height:80px;display:flex;align-items:center;padding:0 40px;justify-content:space-between;transition:background .4s}
-.nav-logo{flex-shrink:0}
-.nav-logo img{height:64px;width:auto;filter:invert(1);transition:filter .4s}
-nav.scrolled .nav-logo img{filter:none}
-.nav-center{display:flex;gap:32px;list-style:none;position:absolute;left:50%;transform:translateX(-50%)}
-.nav-center a{font-size:11px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);transition:color .3s}
-.nav-center a:hover{color:#fff}
-nav.scrolled .nav-center a{color:rgba(0,0,0,.45)}
-nav.scrolled .nav-center a:hover{color:#080808}
-.nav-right{display:flex;align-items:center;gap:20px}
-.nav-cart-btn{position:relative;display:flex;align-items:center;gap:8px;font-size:11px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);transition:color .3s;background:none;border:none;padding:0}
-.nav-cart-btn:hover{color:#fff}
-nav.scrolled .nav-cart-btn{color:rgba(0,0,0,.45)}
-nav.scrolled .nav-cart-btn:hover{color:#080808}
-.nav-cart-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.cart-count{position:absolute;top:-6px;right:-6px;background:#fff;color:#080808;width:16px;height:16px;border-radius:50%;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
+nav{position:sticky;top:0;left:0;right:0;z-index:500;background:#fff;border-bottom:1px solid var(--line-l);height:74px;display:flex;align-items:center;padding:0 32px;justify-content:space-between;transition:box-shadow .3s}
+nav.scrolled{box-shadow:0 1px 12px rgba(0,0,0,.06)}
+.nav-left{display:flex;align-items:center;gap:32px;flex:1}
+.nav-menu{display:flex;list-style:none;gap:28px;align-items:center}
+.nav-menu li{position:relative}
+.nav-menu>li>a,.nav-menu>li>button{font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--black);padding:26px 0;display:inline-flex;align-items:center;gap:6px;transition:opacity .2s}
+.nav-menu>li>a:hover,.nav-menu>li>button:hover{opacity:.55}
+.nav-menu .caret{font-size:8px;opacity:.5}
+.nav-logo{position:absolute;left:50%;transform:translateX(-50%)}
+.nav-logo img{height:38px;width:auto}
+.nav-right{display:flex;align-items:center;gap:18px;flex:1;justify-content:flex-end}
+.nav-icon{width:38px;height:38px;display:flex;align-items:center;justify-content:center;color:var(--black);position:relative;transition:opacity .2s}
+.nav-icon:hover{opacity:.55}
+.nav-icon svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.cart-count{position:absolute;top:4px;right:4px;background:var(--accent);color:#fff;width:16px;height:16px;border-radius:50%;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
 .cart-count.show{opacity:1}
-nav.scrolled .cart-count{background:#080808;color:#fff}
-@media(max-width:600px){nav{padding:0 20px}.nav-center{display:none}}
+.nav-cc{font-size:11px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--black);padding:0 10px;border-left:1px solid var(--line-l);height:24px;display:inline-flex;align-items:center}
+.burger{display:none;width:24px;height:18px;flex-direction:column;justify-content:space-between;cursor:pointer}
+.burger span{display:block;height:2px;background:var(--black);border-radius:1px}
+
+/* Mega menu */
+.megamenu{position:absolute;top:100%;left:0;right:0;background:#fff;border-top:1px solid var(--line-l);border-bottom:1px solid var(--line-l);padding:36px 60px 44px;display:grid;grid-template-columns:repeat(5,1fr);gap:36px;opacity:0;visibility:hidden;transform:translateY(-6px);transition:.3s;z-index:499;box-shadow:0 8px 32px rgba(0,0,0,.05)}
+.nav-menu li:hover .megamenu{opacity:1;visibility:visible;transform:none}
+.mm-col h4{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.4);margin-bottom:14px;font-weight:500}
+.mm-col ul{list-style:none}
+.mm-col li{margin-bottom:8px}
+.mm-col a{font-size:13px;color:var(--black);font-weight:400;transition:opacity .2s;display:inline-block}
+.mm-col a:hover{opacity:.55;transform:translateX(2px)}
+.mm-feat{grid-column:span 2;display:flex;gap:14px}
+.mm-feat-card{flex:1;position:relative;aspect-ratio:4/5;overflow:hidden;background:#f5f4f2}
+.mm-feat-card img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.mm-feat-card:hover img{transform:scale(1.04)}
+.mm-feat-card span{position:absolute;left:14px;bottom:14px;background:#fff;color:var(--black);padding:7px 14px;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
 
 /* ══ CART SIDEBAR ══ */
 .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:700;opacity:0;pointer-events:none;transition:opacity .35s}
 .cart-overlay.open{opacity:1;pointer-events:all}
-.cart-sidebar{position:fixed;top:0;right:0;bottom:0;width:420px;max-width:100vw;background:#ffffff;z-index:701;transform:translateX(100%);transition:transform .45s cubic-bezier(.76,0,.24,1);display:flex;flex-direction:column;box-shadow:-2px 0 40px rgba(0,0,0,.08)}
+.cart-sidebar{position:fixed;top:0;right:0;bottom:0;width:440px;max-width:100vw;background:#fff;z-index:701;transform:translateX(100%);transition:transform .45s cubic-bezier(.76,0,.24,1);display:flex;flex-direction:column;box-shadow:-2px 0 40px rgba(0,0,0,.1)}
 .cart-sidebar.open{transform:translateX(0)}
-.cart-head{display:flex;align-items:center;justify-content:space-between;padding:28px 32px;border-bottom:1px solid rgba(0,0,0,.06)}
-.cart-head h3{font-size:12px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:#080808}
-.cart-close{font-size:24px;font-weight:300;color:rgba(0,0,0,.3);transition:color .2s;cursor:none;background:none;border:none;line-height:1}
-.cart-close:hover{color:#080808}
-.cart-items{flex:1;overflow-y:auto;padding:24px 32px;background:#fff}
-.cart-empty{text-align:center;padding:60px 0;font-size:13px;color:rgba(0,0,0,.35);font-weight:300}
-.cart-item{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid rgba(0,0,0,.06)}
-.cart-item-img{width:72px;height:88px;flex-shrink:0;background:#f7f7f5;overflow:hidden}
-.cart-item-img img{width:100%;height:100%;object-fit:contain;padding:6px}
+.cart-head{display:flex;align-items:center;justify-content:space-between;padding:24px 28px;border-bottom:1px solid var(--line-l)}
+.cart-head h3{font-size:12px;font-weight:500;letter-spacing:.22em;text-transform:uppercase}
+.cart-close{font-size:26px;font-weight:300;color:rgba(0,0,0,.4);line-height:1}
+.cart-close:hover{color:#000}
+.cart-items{flex:1;overflow-y:auto;padding:20px 28px}
+.cart-empty{text-align:center;padding:60px 0;font-size:13px;color:rgba(0,0,0,.35)}
+.cart-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line-l)}
+.cart-item-img{width:74px;height:90px;flex-shrink:0;background:var(--cream);overflow:hidden}
+.cart-item-img img{width:100%;height:100%;object-fit:contain;padding:5px}
 .cart-item-info{flex:1;min-width:0}
-.cart-item-name{font-size:13px;font-weight:400;margin-bottom:4px;line-height:1.3;color:#080808}
-.cart-item-variant{font-size:11px;color:rgba(0,0,0,.35);margin-bottom:8px;letter-spacing:.08em;text-transform:uppercase}
+.cart-item-name{font-size:13px;font-weight:500;margin-bottom:4px;line-height:1.3}
+.cart-item-variant{font-size:11px;color:rgba(0,0,0,.45);margin-bottom:8px;letter-spacing:.06em;text-transform:uppercase}
 .cart-item-row{display:flex;justify-content:space-between;align-items:center}
-.cart-item-price{font-size:13px;font-weight:600;color:#080808}
-.cart-item-remove{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,0,0,.3);cursor:none;background:none;border:none;border-bottom:1px solid rgba(0,0,0,.15);transition:color .2s;padding:0}
-.cart-item-remove:hover{color:#080808}
-.cart-foot{padding:24px 32px;border-top:1px solid rgba(0,0,0,.06);background:#fff}
-.cart-subtotal{display:flex;justify-content:space-between;font-size:13px;margin-bottom:20px;color:#080808}
+.cart-item-price{font-size:13px;font-weight:600}
+.cart-item-remove{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,0,0,.35);border-bottom:1px solid rgba(0,0,0,.15)}
+.cart-item-remove:hover{color:#000}
+.cart-foot{padding:22px 28px;border-top:1px solid var(--line-l)}
+.cart-subtotal{display:flex;justify-content:space-between;font-size:13px;margin-bottom:18px}
 .cart-subtotal span:last-child{font-weight:600}
-.cart-checkout{display:block;width:100%;background:#080808;color:#fff;padding:16px;text-align:center;font-size:11px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;border-radius:0;transition:background .2s;border:none;cursor:none}
-.cart-checkout:hover{background:#222}
-.cart-pay-icons{display:flex;justify-content:center;gap:10px;margin-top:16px;flex-wrap:wrap}
-.cart-pay-icons svg{height:22px;width:auto;opacity:.7}
+.cart-checkout{display:block;width:100%;background:var(--black);color:#fff;padding:16px;text-align:center;font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;transition:background .2s}
+.cart-checkout:hover{background:var(--accent)}
+.cart-pay-icons{display:flex;justify-content:center;gap:8px;margin-top:14px;flex-wrap:wrap}
+.cart-pay-icons svg{height:20px;width:auto;opacity:.65}
 
 /* ══ HERO ══ */
-.hero{position:relative;width:100%;height:100svh;overflow:hidden;display:flex;align-items:flex-end;background:var(--black)}
+.hero{position:relative;width:100%;height:calc(100svh - 110px);min-height:560px;overflow:hidden;display:flex;align-items:flex-end;background:var(--black)}
 .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
-.hero-grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,8,8,.4) 0%,transparent 40%,rgba(8,8,8,.96) 100%);z-index:1}
-.hero-content{position:relative;z-index:2;padding:0 40px 60px;width:100%;color:#fff}
-.hero-tag{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:16px;display:flex;align-items:center;gap:14px}
-.hero-tag::before{content:'';width:28px;height:1px;background:rgba(255,255,255,.3)}
-.hero-title{font-size:clamp(80px,15vw,200px);font-weight:700;line-height:.85;letter-spacing:-.04em;text-transform:uppercase}
-.hero-foot{margin-top:28px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
-.hero-desc{font-size:13px;line-height:1.75;color:rgba(255,255,255,.45);max-width:420px;font-weight:300}
-.hero-cta{display:inline-flex;align-items:center;gap:12px;font-size:11px;font-weight:400;letter-spacing:.16em;text-transform:uppercase;background:#fff;color:#080808;padding:14px 30px;transition:opacity .25s;white-space:nowrap}
-.hero-cta:hover{opacity:.82}
-@media(max-width:768px){.hero-content{padding:0 24px 48px}.hero-foot{flex-direction:column;align-items:flex-start}}
+.hero-grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,8,8,.25) 0%,transparent 35%,rgba(8,8,8,.92) 100%);z-index:1}
+.hero-content{position:relative;z-index:2;padding:0 48px 60px;width:100%;color:#fff}
+.hero-tag{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:18px;display:flex;align-items:center;gap:14px}
+.hero-tag::before{content:'';width:30px;height:1px;background:rgba(255,255,255,.45)}
+.hero-title{font-size:clamp(72px,14vw,190px);font-weight:700;line-height:.84;letter-spacing:-.045em;text-transform:uppercase}
+.hero-foot{margin-top:32px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.hero-desc{font-size:13px;line-height:1.7;color:rgba(255,255,255,.6);max-width:420px;font-weight:300}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary{display:inline-flex;align-items:center;gap:12px;font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;background:#fff;color:var(--black);padding:16px 32px;transition:background .25s,color .25s}
+.btn-primary:hover{background:var(--accent);color:#fff}
+.btn-ghost{display:inline-flex;align-items:center;gap:12px;font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;background:transparent;color:#fff;padding:16px 32px;border:1px solid rgba(255,255,255,.35);transition:.25s}
+.btn-ghost:hover{background:#fff;color:var(--black);border-color:#fff}
 
 /* ══ TICKER ══ */
-.ticker{overflow:hidden;padding:13px 0;background:var(--black);border-top:1px solid var(--line-d)}
-.ticker-track{display:flex;width:max-content;animation:tick 26s linear infinite}
-.ticker-track:hover{animation-play-state:paused}
-.ti{font-size:11px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.28);padding:0 52px;white-space:nowrap}
-.ti b{color:rgba(255,255,255,.6);font-weight:400}
+.ticker{overflow:hidden;padding:14px 0;background:var(--black);border-top:1px solid var(--line-d)}
+.ticker-track{display:flex;width:max-content;animation:tick 30s linear infinite}
+.ti{font-size:11px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.35);padding:0 52px;white-space:nowrap;display:inline-flex;align-items:center;gap:14px}
+.ti::after{content:'◆';color:var(--gold);font-size:7px;margin-left:36px;opacity:.6}
+.ti b{color:#fff;font-weight:500}
 @keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
+/* ══ SECTION HEAD ══ */
+.s-head{padding:80px 48px 30px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.s-eyebrow{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(0,0,0,.4);margin-bottom:14px;font-weight:500}
+.s-title{font-size:clamp(34px,5vw,60px);font-weight:300;letter-spacing:-.03em;text-transform:uppercase;line-height:1}
+.s-more{font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--black);border-bottom:1px solid var(--black);padding-bottom:3px;transition:opacity .2s}
+.s-more:hover{opacity:.5}
 
-/* ══ WHITE SECTION ══ */
-.white{background:#fff}
+/* ══ NEW ARRIVALS CAROUSEL ══ */
+.carousel-wrap{padding:0 48px 80px;position:relative}
+.carousel{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 42px)/4);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:8px}
+.carousel::-webkit-scrollbar{display:none}
+.carousel .pcard{scroll-snap-align:start}
+.car-controls{position:absolute;top:-66px;right:48px;display:flex;gap:8px}
+.car-btn{width:42px;height:42px;border:1px solid var(--black);background:#fff;display:flex;align-items:center;justify-content:center;transition:.2s}
+.car-btn:hover{background:var(--black);color:#fff}
+.car-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8}
 
-/* Brand intro */
-.brand-intro{padding:64px 40px;border-bottom:1px solid var(--line-l)}
-.brand-eyebrow{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.3);margin-bottom:20px;font-weight:300}
-.brand-text{font-size:clamp(17px,2.2vw,26px);font-weight:300;line-height:1.55;max-width:800px;color:rgba(0,0,0,.72)}
-@media(max-width:768px){.brand-intro{padding:48px 24px}}
+/* ══ PRODUCT CARD ══ */
+.pcard{background:#fff;display:block;position:relative;cursor:pointer;overflow:hidden}
+.pcard-img{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--cream)}
+.pcard-img img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .7s cubic-bezier(.16,1,.3,1)}
+.pcard:hover .pcard-img img{transform:scale(1.05)}
+.badge-row{position:absolute;top:12px;left:12px;z-index:2;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.badge{background:var(--black);color:#fff;font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:5px 11px}
+.badge.sale{background:var(--accent)}
+.badge.new{background:var(--accent2)}
+.badge.limited{background:var(--gold);color:var(--black)}
+.pcard-fav{position:absolute;top:12px;right:12px;z-index:2;width:34px;height:34px;background:rgba(255,255,255,.92);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:.25s}
+.pcard:hover .pcard-fav{opacity:1}
+.pcard-fav svg{width:16px;height:16px;stroke:var(--black);fill:none;stroke-width:1.5}
+.pcard-quick{position:absolute;left:10px;right:10px;bottom:10px;z-index:2;background:#fff;color:var(--black);padding:11px;text-align:center;font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;transform:translateY(8px);opacity:0;transition:.3s}
+.pcard:hover .pcard-quick{opacity:1;transform:none}
+.pcard-quick:hover{background:var(--black);color:#fff}
+.pcard-info{padding:14px 4px 4px}
+.pcard-name{font-size:13px;font-weight:500;line-height:1.3;margin-bottom:6px}
+.pcard-stars{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.stars{color:var(--gold);font-size:11px;letter-spacing:1px}
+.stars-count{font-size:10px;color:rgba(0,0,0,.4)}
+.pcard-colors{display:flex;gap:5px;margin-bottom:8px}
+.swatch{width:13px;height:13px;border-radius:50%;border:1px solid rgba(0,0,0,.15)}
+.swatch.white{border-color:rgba(0,0,0,.25)}
+.pcard-footer{display:flex;align-items:center;gap:8px}
+.pcard-price{font-size:14px;font-weight:600}
+.pcard-price-old{font-size:12px;font-weight:400;color:rgba(0,0,0,.4);text-decoration:line-through}
+.pcard-save{font-size:10px;font-weight:600;color:var(--accent);letter-spacing:.06em;text-transform:uppercase}
 
-/* Collection nav */
-.coll-nav{padding:0 40px;border-bottom:1px solid var(--line-l);display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none}
-.coll-nav::-webkit-scrollbar{display:none}
-.coll-btn{font-size:11px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;padding:18px 24px;color:rgba(0,0,0,.35);transition:color .2s;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px;background:none;border-left:none;border-right:none;border-top:none;cursor:none}
-.coll-btn:hover{color:#080808}
-.coll-btn.active{color:#080808;border-bottom-color:#080808}
-@media(max-width:768px){.coll-nav{padding:0 24px}}
+/* ══ CATEGORY GRID ══ */
+.catgrid{padding:0 48px 100px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.catcard{position:relative;aspect-ratio:3/4;overflow:hidden;display:block;background:var(--black);cursor:pointer}
+.catcard img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .8s cubic-bezier(.16,1,.3,1);opacity:.85}
+.catcard:hover img{transform:scale(1.06);opacity:1}
+.catcard::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.75) 100%)}
+.catcard-info{position:absolute;left:0;right:0;bottom:0;padding:26px 24px;z-index:2;color:#fff}
+.catcard-eyebrow{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:6px;font-weight:500}
+.catcard-title{font-size:24px;font-weight:600;letter-spacing:-.01em;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between}
+.catcard-title::after{content:'→';font-weight:400;transition:transform .3s}
+.catcard:hover .catcard-title::after{transform:translateX(6px)}
 
-/* Section head */
-.s-head{padding:64px 40px 28px;display:flex;align-items:flex-end;justify-content:space-between;border-bottom:1px solid var(--line-l)}
-.s-title{font-size:clamp(36px,5vw,64px);font-weight:300;letter-spacing:-.03em;text-transform:uppercase;line-height:1}
-.s-more{font-size:11px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:rgba(0,0,0,.35);border-bottom:1px solid rgba(0,0,0,.18);padding-bottom:2px;transition:color .2s}
-.s-more:hover{color:#080808}
-@media(max-width:768px){.s-head{padding:48px 24px 24px}}
+/* ══ FULL PRODUCT GRID ══ */
+.pgrid-wrap{padding:0 48px 100px}
+.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 
-/* ══ EDITORIAL ROWS ══ */
-.ed-list{padding:0 40px}
-@media(max-width:768px){.ed-list{padding:0 24px}}
+/* ══ BRAND INTRO BAND ══ */
+.brand-band{background:var(--cream);padding:80px 48px;text-align:center}
+.brand-band .s-eyebrow{justify-content:center}
+.brand-text{font-size:clamp(20px,2.6vw,32px);font-weight:300;line-height:1.4;max-width:900px;margin:0 auto;color:rgba(0,0,0,.78);letter-spacing:-.01em}
+.brand-text b{font-weight:500;color:var(--black)}
 
-.ed-row{display:flex;flex-direction:column;padding:64px 0;border-bottom:1px solid var(--line-l);gap:32px}
-.ed-img{order:-1;width:100%;height:0;padding-bottom:133.33%;position:relative;overflow:hidden;background:#f4f4f2;flex-shrink:0}
-.ed-img a{position:absolute;inset:0;display:block}
-.ed-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.16,1,.3,1)}
-.ed-img:hover img{transform:scale(1.03)}
-.ed-info{order:1;padding:0}
-@media(max-width:767px){
-  .ed-row{flex-direction:column}
-  .ed-img{order:0;padding-bottom:110%;width:100%;background:#fff}
-  .ed-img img{object-fit:contain}
-  .ed-info{order:1}
-}
-@media(min-width:768px){
-  .ed-row{flex-direction:row;align-items:flex-start;gap:56px}
-  .ed-img{flex:0 0 48%;max-width:48%;padding-bottom:calc(48% * 1.333)}
-  .ed-info{flex:1;padding-top:16px}
-}
-
-.ed-num{font-size:11px;letter-spacing:.2em;color:rgba(0,0,0,.25);margin-bottom:20px;font-weight:300}
-.ed-name{font-size:clamp(28px,4vw,52px);font-weight:300;letter-spacing:-.025em;line-height:1;text-transform:uppercase;margin-bottom:12px}
-.ed-cat{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(0,0,0,.35);margin-bottom:16px;font-weight:300}
-.ed-desc{font-size:13px;line-height:1.75;color:rgba(0,0,0,.55);margin-bottom:24px;font-weight:300;max-width:340px}
-.ed-price{font-size:20px;font-weight:400;margin-bottom:28px}
-
-/* Variant pills */
-.ed-variants{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
-.vpill{font-size:10px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;border:1px solid rgba(0,0,0,.2);padding:6px 14px;transition:background .2s,border-color .2s,color .2s;cursor:none}
-.vpill:hover,.vpill.sel{background:#080808;border-color:#080808;color:#fff}
-
-.ed-add{display:inline-flex;align-items:center;gap:12px;font-size:11px;font-weight:400;letter-spacing:.16em;text-transform:uppercase;background:var(--black);color:#fff;padding:14px 32px;transition:opacity .25s;cursor:none;border:none}
-.ed-add:hover{opacity:.8}
-
-
-/* ══ SEUM TEXT ══ */
-.seum-block{display:flex;flex-direction:column;align-items:center;text-align:center;gap:24px;padding:56px 40px;background:#fff;border-top:1px solid var(--line-l);border-bottom:1px solid var(--line-l)}
-.seum-label span{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.3);font-weight:300}
-.seum-text{max-width:900px;font-size:clamp(17px,2.2vw,32px);font-weight:300;line-height:1.45;color:rgba(0,0,0,.8);font-family:var(--F);text-transform:uppercase}
-.seum-text b{font-weight:500;color:#080808}
-@media(max-width:768px){.seum-block{padding:48px 24px}.seum-text{font-size:clamp(20px,5.5vw,30px)}}
-
-/* ══ PRODUCT GRID ══ */
-.pgrid-wrap{padding:0 40px 80px}
-@media(max-width:768px){.pgrid-wrap{padding:0 24px 60px}}
-
-.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:2px}
-@media(max-width:960px){.pgrid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:500px){.pgrid{grid-template-columns:1fr}}
-
-.pcard{background:#fff;overflow:hidden;display:block;position:relative}
-.pcard[data-col="hidden"]{display:none}
-.pcard-img{position:relative;aspect-ratio:3/4;overflow:hidden;background:#000}
-.pcard-img img{width:100%;height:100%;object-fit:cover;padding:0;transition:transform .8s cubic-bezier(.16,1,.3,1),opacity .4s}
-.pcard-img .img-b{position:absolute;inset:0;opacity:0;transition:opacity .4s}
-.pcard-img .img-b img{padding:0}
-.pcard:hover .pcard-img>img{transform:scale(1.04);opacity:0}
-.pcard:hover .img-b{opacity:1}
-.pcard:hover .img-b img{transform:scale(1.04)}
-.badge{position:absolute;top:12px;left:12px;z-index:2;background:#080808;color:#fff;font-size:9px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;padding:5px 11px}
-.pcard-info{padding:16px 20px 20px}
-.pcard-name{font-size:13px;font-weight:400;line-height:1.35;margin-bottom:4px}
-.pcard-type{font-size:10px;font-weight:300;letter-spacing:.12em;text-transform:uppercase;color:rgba(0,0,0,.35);margin-bottom:10px}
-.pcard-desc{font-size:12px;font-weight:300;line-height:1.65;color:rgba(0,0,0,.55);margin-bottom:14px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.pcard-foot{display:flex;justify-content:space-between;align-items:center}
-.pcard-price{font-size:14px;font-weight:400}
-.pcard-add{font-size:10px;font-weight:400;letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(0,0,0,.2);padding:8px 16px;transition:background .2s,border-color .2s,color .2s;cursor:none;background:none}
-.pcard-add:hover{background:#080808;border-color:#080808;color:#fff}
+/* ══ SHOP THE LOOK ══ */
+.stl{padding:90px 48px;background:#fff;border-top:1px solid var(--line-l)}
+.stl-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;margin-top:40px}
+.stl-hero{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--cream)}
+.stl-hero img{width:100%;height:100%;object-fit:cover}
+.stl-dot{position:absolute;width:28px;height:28px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--black);cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.2);animation:dotPulse 2.4s infinite}
+.stl-dot::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(255,255,255,.6);animation:dotRing 2.4s infinite}
+@keyframes dotPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes dotRing{0%{transform:scale(.8);opacity:1}100%{transform:scale(1.6);opacity:0}}
+.stl-items{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.stl-items .pcard-img{aspect-ratio:1/1}
 
 /* ══ MANIFESTO ══ */
-.manifesto{background:var(--black);color:#fff;padding:120px 40px 140px;overflow:hidden;text-align:center}
-.m-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:64px;border-top:1px solid rgba(255,255,255,.1);padding-top:24px;text-align:left}
-.m-label{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.3);font-weight:400}
-.m-year{font-size:10px;letter-spacing:.14em;color:rgba(255,255,255,.2);font-weight:400}
-.m-lines{display:flex;flex-direction:column;gap:0;align-items:center}
-.m-line{font-size:clamp(38px,6.5vw,96px);font-weight:700;line-height:.92;letter-spacing:-.04em;text-transform:uppercase;overflow:hidden}
-.m-line span{display:block}
-.m-line.dim span{color:rgba(255,255,255,.18)}
-.m-line.outline span{-webkit-text-stroke:1px rgba(255,255,255,.35);color:transparent}
-.m-foot{margin-top:56px;display:flex;flex-direction:column;align-items:center;gap:20px}
-.m-sub{font-size:12px;font-weight:300;color:rgba(255,255,255,.35);letter-spacing:.08em;line-height:1.7;max-width:320px;text-align:center}
-.m-cta-link{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);border-bottom:1px solid rgba(255,255,255,.2);padding-bottom:2px;transition:color .25s,border-color .25s;white-space:nowrap}
-.m-cta-link:hover{color:#fff;border-color:#fff}
-@media(max-width:900px){.manifesto{padding:96px 32px 120px}.m-line{font-size:clamp(36px,7.5vw,72px)}}
-@media(max-width:600px){.manifesto{padding:64px 20px 80px}.m-header{flex-direction:column;gap:8px;margin-bottom:36px}.m-line{font-size:clamp(28px,11vw,56px);letter-spacing:-.03em}.m-sub{font-size:11px;max-width:260px}}
+.manifesto{background:var(--black);color:#fff;padding:120px 48px 130px;overflow:hidden;text-align:center}
+.m-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:60px;border-top:1px solid rgba(255,255,255,.12);padding-top:24px;text-align:left}
+.m-label{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.4);font-weight:500}
+.m-year{font-size:10px;letter-spacing:.14em;color:rgba(255,255,255,.25)}
+.m-lines{display:flex;flex-direction:column;align-items:center}
+.m-line{font-size:clamp(38px,6.5vw,98px);font-weight:700;line-height:.92;letter-spacing:-.04em;text-transform:uppercase}
+.m-line.dim{color:rgba(255,255,255,.2)}
+.m-line.outline{-webkit-text-stroke:1px rgba(255,255,255,.4);color:transparent}
+.m-foot{margin-top:50px;display:flex;flex-direction:column;align-items:center;gap:22px}
+.m-sub{font-size:13px;font-weight:300;color:rgba(255,255,255,.6);letter-spacing:.04em;line-height:1.7;max-width:480px}
+.m-cta-link{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#fff;border-bottom:1px solid rgba(255,255,255,.4);padding-bottom:4px;transition:.25s}
+.m-cta-link:hover{border-color:#fff}
+
+/* ══ NEWSLETTER ══ */
+.newsletter{padding:90px 48px;background:var(--cream);text-align:center;border-top:1px solid var(--line-l)}
+.nl-eyebrow{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(0,0,0,.4);margin-bottom:14px;font-weight:500}
+.nl-title{font-size:clamp(28px,4vw,46px);font-weight:300;letter-spacing:-.02em;text-transform:uppercase;line-height:1.05;margin-bottom:14px}
+.nl-sub{font-size:14px;color:rgba(0,0,0,.55);max-width:520px;margin:0 auto 32px;line-height:1.6}
+.nl-form{display:flex;max-width:520px;margin:0 auto;background:#fff;border:1px solid var(--black)}
+.nl-form input{flex:1;border:none;outline:none;padding:18px 22px;font-family:inherit;font-size:13px;background:transparent;letter-spacing:.04em}
+.nl-form button{background:var(--black);color:#fff;padding:0 28px;font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;transition:background .2s}
+.nl-form button:hover{background:var(--accent)}
+.nl-mini{font-size:11px;color:rgba(0,0,0,.4);margin-top:14px}
+
+/* ══ BENEFITS ══ */
+.benefits{padding:60px 48px;background:#fff;border-top:1px solid var(--line-l);border-bottom:1px solid var(--line-l);display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+.bn{text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;padding:0 12px}
+.bn-icon{width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--black)}
+.bn-icon svg{width:34px;height:34px;stroke:currentColor;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.bn-title{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--black)}
+.bn-sub{font-size:11px;color:rgba(0,0,0,.5);line-height:1.6;max-width:200px}
 
 /* ══ FOOTER ══ */
-footer{background:#000;border-top:1px solid rgba(255,255,255,.07);padding:60px 40px 40px}
-.f-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
-.f-logo{font-size:13px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;margin-bottom:10px;color:#fff}
-.f-sub{font-size:12px;font-weight:300;color:rgba(255,255,255,.7);line-height:1.7}
-.f-col-title{font-size:9px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:14px}
+footer{background:var(--black);color:#fff;padding:80px 48px 30px}
+.f-top{display:grid;grid-template-columns:1.4fr repeat(4,1fr);gap:48px;margin-bottom:60px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.1)}
+.f-brand .f-logo{font-size:13px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;margin-bottom:14px}
+.f-brand p{font-size:13px;font-weight:300;color:rgba(255,255,255,.55);line-height:1.7;max-width:300px;margin-bottom:24px}
+.f-socials{display:flex;gap:12px}
+.f-socials a{width:38px;height:38px;border:1px solid rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;transition:.2s}
+.f-socials a:hover{background:#fff;color:var(--black);border-color:#fff}
+.f-socials svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5}
+.f-col h5{font-size:10px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:16px}
 .f-col ul{list-style:none}
-.f-col li{margin-bottom:9px}
-.f-col a{font-size:12px;font-weight:300;color:#fff;transition:color .2s}
-.f-col a:hover{color:rgba(255,255,255,.6)}
-.f-bottom{border-top:1px solid rgba(255,255,255,.15);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
-.f-copy{font-size:10px;font-weight:300;color:rgba(255,255,255,.5);letter-spacing:.08em}
-.f-pay{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.f-pay svg{height:24px;width:auto}
-.f-soc{display:flex;gap:20px}
-.f-soc a{font-size:10px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:#fff;transition:color .2s}
-.f-soc a:hover{color:rgba(255,255,255,.6)}
-@media(max-width:900px){footer{padding:40px 24px 32px}.f-grid{grid-template-columns:1fr 1fr;gap:32px}.f-bottom{flex-direction:column;align-items:flex-start}}
-@media(max-width:480px){.f-grid{grid-template-columns:1fr}}
+.f-col li{margin-bottom:10px}
+.f-col a{font-size:13px;font-weight:300;color:rgba(255,255,255,.85);transition:color .2s}
+.f-col a:hover{color:var(--gold)}
+.f-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px}
+.f-copy{font-size:11px;font-weight:300;color:rgba(255,255,255,.45);letter-spacing:.08em}
+.f-pay{display:flex;gap:8px;flex-wrap:wrap}
+.f-pay svg{height:22px;width:auto}
+#back-top{position:fixed;bottom:24px;right:24px;z-index:400;width:46px;height:46px;background:#fff;color:var(--black);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transform:translateY(12px);transition:.3s;box-shadow:0 4px 16px rgba(0,0,0,.18)}
+#back-top.show{opacity:1;transform:none}
+#back-top:hover{background:var(--accent);color:#fff}
+#back-top svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
 
 /* ══ REVEAL ══ */
 .rv{opacity:0;transform:translateY(28px);transition:opacity .85s ease,transform .85s ease}
 .rv.in{opacity:1;transform:none}
-.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
 
-/* Float img hover */
-#floatImg{position:fixed;pointer-events:none;width:260px;height:340px;overflow:hidden;z-index:600;opacity:0;transition:opacity .3s;transform:translate(-50%,-60%)}
-#floatImg img{width:100%;height:100%;object-fit:contain;background:var(--off);padding:16px}
+/* ══ MOBILE MENU ══ */
+.mobile-menu{position:fixed;inset:0;background:#fff;z-index:600;transform:translateY(-100%);transition:transform .4s cubic-bezier(.76,0,.24,1);overflow-y:auto;padding:80px 28px 40px}
+.mobile-menu.open{transform:none}
+.mobile-menu-close{position:absolute;top:24px;right:24px;font-size:32px;font-weight:300;line-height:1}
+.mm-mobile-section{margin-bottom:32px;border-bottom:1px solid var(--line-l);padding-bottom:24px}
+.mm-mobile-section h4{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.5);margin-bottom:16px;font-weight:500}
+.mm-mobile-section a{display:block;font-size:18px;font-weight:400;padding:10px 0;color:var(--black)}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1024px){
+  .catgrid,.pgrid,.benefits,.f-top,.carousel{grid-template-columns:repeat(2,1fr)}
+  .carousel{grid-auto-columns:calc((100% - 14px)/2)}
+  .f-top{grid-template-columns:1fr 1fr;gap:32px}
+  .megamenu{grid-template-columns:repeat(3,1fr);padding:28px}
+  .mm-feat{grid-column:span 3;flex-wrap:wrap}
+}
+@media(max-width:768px){
+  nav{padding:0 16px;height:62px}
+  .nav-menu,.nav-cc{display:none}
+  .burger{display:flex}
+  .nav-logo img{height:32px}
+  .nav-right{gap:8px;flex:0}
+  .nav-left{flex:0}
+  .promo-bar{font-size:10px}
+  .hero{height:calc(100svh - 98px);min-height:480px}
+  .hero-content{padding:0 24px 44px}
+  .hero-foot{flex-direction:column;align-items:flex-start;gap:20px}
+  .s-head{padding:60px 24px 24px}
+  .carousel-wrap{padding:0 24px 60px}
+  .car-controls{display:none}
+  .carousel{grid-auto-columns:calc((100% - 10px)/2);gap:10px}
+  .catgrid,.pgrid-wrap{padding:0 24px 60px}
+  .catgrid,.pgrid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .brand-band,.stl,.manifesto,.newsletter{padding:60px 24px}
+  .stl-grid{grid-template-columns:1fr}
+  .benefits{grid-template-columns:repeat(2,1fr);gap:24px;padding:48px 24px}
+  footer{padding:60px 24px 24px}
+  .f-top{grid-template-columns:1fr;gap:32px;padding-bottom:32px;margin-bottom:32px}
+  .nl-form{flex-direction:column}
+  .nl-form button{padding:16px}
+  .m-line{font-size:clamp(30px,10vw,60px)}
+}
+@media(max-width:480px){
+  .benefits{grid-template-columns:1fr}
+  .pcard-quick{font-size:9px;padding:9px}
+}
+
+/* ══ ED Variants (for product pages compat) ══ */
+.vpill{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;border:1px solid rgba(0,0,0,.2);padding:6px 14px;cursor:pointer;background:#fff}
+.vpill:hover,.vpill.sel{background:var(--black);border-color:var(--black);color:#fff}
 </style>
 </head>
 <body>
@@ -258,9 +327,6 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.07);padding:60px 4
   <div class="pre-logo"><img src="images/talseume-logo.png" alt="TALSEUME"/></div>
   <div class="pre-panel pre-bot"></div>
 </div>
-
-<div id="cur"></div>
-<div id="cring"></div>
 
 <!-- CART OVERLAY -->
 <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
@@ -276,32 +342,147 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.07);padding:60px 4
     <div class="cart-subtotal"><span>Sous-total</span><span id="cartTotal">0,00 €</span></div>
     <button class="cart-checkout" onclick="goCheckout()">Passer la commande →</button>
     <div class="cart-pay-icons">
-      <!-- Visa -->
-      <svg viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="38" rx="5" fill="#1A1F71"/><text x="8" y="26" font-family="Arial" font-size="16" font-weight="bold" fill="white">VISA</text></svg>
-      <!-- Mastercard -->
-      <svg viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="38" rx="5" fill="#fff" stroke="#ddd"/><circle cx="23" cy="19" r="11" fill="#EB001B"/><circle cx="37" cy="19" r="11" fill="#F79E1B"/><path d="M30 10.5a11 11 0 010 17A11 11 0 0130 10.5z" fill="#FF5F00"/></svg>
-      <!-- PayPal -->
-      <svg viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="38" rx="5" fill="#fff" stroke="#ddd"/><text x="9" y="26" font-family="Arial" font-size="13" font-weight="bold" fill="#003087">Pay</text><text x="28" y="26" font-family="Arial" font-size="13" font-weight="bold" fill="#009CDE">Pal</text></svg>
-      <!-- Apple Pay -->
-      <svg viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="38" rx="5" fill="#000"/><text x="7" y="24" font-family="Arial" font-size="11" fill="white">Apple</text><text x="7" y="34" font-family="Arial" font-size="9" fill="white">Pay</text></svg>
-      <!-- CB -->
-      <svg viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="38" rx="5" fill="#005498"/><text x="14" y="26" font-family="Arial" font-size="16" font-weight="bold" fill="white">CB</text></svg>
-      <!-- Amex -->
-      <svg viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="38" rx="5" fill="#2E77BC"/><text x="5" y="26" font-family="Arial" font-size="10" font-weight="bold" fill="white">AMEX</text></svg>
+      <svg viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#1A1F71"/><text x="8" y="26" font-family="Arial" font-size="16" font-weight="bold" fill="white">VISA</text></svg>
+      <svg viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#fff" stroke="#ddd"/><circle cx="23" cy="19" r="11" fill="#EB001B"/><circle cx="37" cy="19" r="11" fill="#F79E1B"/><path d="M30 10.5a11 11 0 010 17A11 11 0 0130 10.5z" fill="#FF5F00"/></svg>
+      <svg viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#fff" stroke="#ddd"/><text x="9" y="26" font-family="Arial" font-size="13" font-weight="bold" fill="#003087">Pay</text><text x="28" y="26" font-family="Arial" font-size="13" font-weight="bold" fill="#009CDE">Pal</text></svg>
+      <svg viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#000"/><text x="7" y="24" font-family="Arial" font-size="11" fill="white">Apple</text><text x="7" y="34" font-family="Arial" font-size="9" fill="white">Pay</text></svg>
+      <svg viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#2E77BC"/><text x="5" y="26" font-family="Arial" font-size="10" font-weight="bold" fill="white">AMEX</text></svg>
     </div>
+  </div>
+</div>
+
+<!-- TOP PROMO BAR -->
+<div class="promo-bar">
+  <div class="promo-track">
+    <span>Livraison offerte en France métropolitaine</span>
+    <span>Paiement en 3× sans frais — Klarna</span>
+    <span>Retours gratuits sous 30 jours</span>
+    <span>Coton bio GOTS · Matériaux recyclés</span>
+    <span>Livraison offerte en France métropolitaine</span>
+    <span>Paiement en 3× sans frais — Klarna</span>
+    <span>Retours gratuits sous 30 jours</span>
+    <span>Coton bio GOTS · Matériaux recyclés</span>
   </div>
 </div>
 
 <!-- NAV -->
 <nav>
+  <div class="nav-left">
+    <div class="burger" onclick="document.getElementById('mobileMenu').classList.add('open')">
+      <span></span><span></span><span></span>
+    </div>
+    <ul class="nav-menu">
+      <li>
+        <button>Mode &amp; Accessoires <span class="caret">▼</span></button>
+        <div class="megamenu">
+          <div class="mm-col">
+            <h4>Nouveautés</h4>
+            <ul>
+              <li><a href="#new">No Limit 0.27</a></li>
+              <li><a href="#new">Voir tout</a></li>
+            </ul>
+          </div>
+          <div class="mm-col">
+            <h4>Homme</h4>
+            <ul>
+              <li><a href="#shop">Sweats à capuche</a></li>
+              <li><a href="#shop">T-shirts</a></li>
+              <li><a href="#shop">Manches longues</a></li>
+              <li><a href="#shop">Vestes</a></li>
+            </ul>
+          </div>
+          <div class="mm-col">
+            <h4>Femme</h4>
+            <ul>
+              <li><a href="#shop">T-shirts</a></li>
+              <li><a href="#shop">Débardeurs</a></li>
+              <li><a href="#shop">Voir tout</a></li>
+            </ul>
+          </div>
+          <div class="mm-feat">
+            <a href="#new" class="mm-feat-card">
+              <img src="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg" alt="Nouveautés"/>
+              <span>Nouveautés</span>
+            </a>
+            <a href="#shop" class="mm-feat-card">
+              <img src="images/products/Jacket-By-TALSEUMENWAR.jpg" alt="Vestes"/>
+              <span>Vestes</span>
+            </a>
+          </div>
+        </div>
+      </li>
+      <li>
+        <button>Accessoires <span class="caret">▼</span></button>
+        <div class="megamenu">
+          <div class="mm-col">
+            <h4>Tête</h4>
+            <ul>
+              <li><a href="#shop">Bonnets</a></li>
+              <li><a href="#shop">Casquettes</a></li>
+              <li><a href="#shop">Cagoules</a></li>
+            </ul>
+          </div>
+          <div class="mm-col">
+            <h4>Sacs</h4>
+            <ul>
+              <li><a href="#shop">Talseume Bag</a></li>
+            </ul>
+          </div>
+          <div class="mm-feat">
+            <a href="#shop" class="mm-feat-card">
+              <img src="images/products/Bonnet_talseume.jpg" alt="Bonnets"/>
+              <span>Bonnets</span>
+            </a>
+            <a href="#shop" class="mm-feat-card">
+              <img src="images/products/sactalseume.jpg" alt="Sacs"/>
+              <span>Sacs</span>
+            </a>
+          </div>
+        </div>
+      </li>
+      <li><a href="#manifesto">La Marque</a></li>
+    </ul>
+  </div>
   <a href="#" class="nav-logo"><img src="images/talseume-logo.png" alt="TALSEUME"/></a>
   <div class="nav-right">
-    <button class="nav-cart-btn" onclick="openCart()" aria-label="Panier">
+    <span class="nav-cc">FR / EUR</span>
+    <button class="nav-icon" aria-label="Recherche">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="nav-icon" aria-label="Compte">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </button>
+    <button class="nav-icon" onclick="openCart()" aria-label="Panier">
       <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
       <span id="cartCount" class="cart-count">0</span>
     </button>
   </div>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" onclick="document.getElementById('mobileMenu').classList.remove('open')">×</button>
+  <div class="mm-mobile-section">
+    <h4>Mode &amp; Accessoires</h4>
+    <a href="#new" onclick="document.getElementById('mobileMenu').classList.remove('open')">Nouveautés</a>
+    <a href="#shop" onclick="document.getElementById('mobileMenu').classList.remove('open')">Sweats à capuche</a>
+    <a href="#shop" onclick="document.getElementById('mobileMenu').classList.remove('open')">T-shirts</a>
+    <a href="#shop" onclick="document.getElementById('mobileMenu').classList.remove('open')">Vestes</a>
+    <a href="#shop" onclick="document.getElementById('mobileMenu').classList.remove('open')">Femme</a>
+    <a href="#shop" onclick="document.getElementById('mobileMenu').classList.remove('open')">Accessoires</a>
+  </div>
+  <div class="mm-mobile-section">
+    <h4>La Marque</h4>
+    <a href="#manifesto" onclick="document.getElementById('mobileMenu').classList.remove('open')">Manifeste</a>
+    <a href="#newsletter" onclick="document.getElementById('mobileMenu').classList.remove('open')">Newsletter</a>
+  </div>
+  <div class="mm-mobile-section">
+    <h4>Aide</h4>
+    <a href="#">Livraison &amp; Retours</a>
+    <a href="#">FAQ</a>
+    <a href="mailto:talseumeclothes@gmail.com">Contact</a>
+  </div>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -312,7 +493,10 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.07);padding:60px 4
     <h1 class="hero-title">TAL<br>SEU<br>ME</h1>
     <div class="hero-foot">
       <p class="hero-desc">Coton bio GOTS. Matériaux recyclés.<br>Fabriqué pour durer.</p>
-      <a href="#collection" class="hero-cta">Collection No Limit 0.27 ↓</a>
+      <div class="hero-ctas">
+        <a href="#new" class="btn-primary">Découvrir la collection ↓</a>
+        <a href="#manifesto" class="btn-ghost">Notre histoire</a>
+      </div>
     </div>
   </div>
 </section>
@@ -322,315 +506,606 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.07);padding:60px 4
   <div class="ticker-track">
     <span class="ti"><b>New Drop</b> No Limit 0.27</span><span class="ti">Coton bio GOTS</span><span class="ti"><b>Talseume</b> Paris</span><span class="ti">Livraison offerte</span><span class="ti">Streetwear Oversize</span><span class="ti">Polyester recyclé</span>
     <span class="ti"><b>New Drop</b> No Limit 0.27</span><span class="ti">Coton bio GOTS</span><span class="ti"><b>Talseume</b> Paris</span><span class="ti">Livraison offerte</span><span class="ti">Streetwear Oversize</span><span class="ti">Polyester recyclé</span>
-    <span class="ti"><b>New Drop</b> No Limit 0.27</span><span class="ti">Coton bio GOTS</span><span class="ti"><b>Talseume</b> Paris</span><span class="ti">Livraison offerte</span><span class="ti">Streetwear Oversize</span><span class="ti">Polyester recyclé</span>
-    <span class="ti"><b>New Drop</b> No Limit 0.27</span><span class="ti">Coton bio GOTS</span><span class="ti"><b>Talseume</b> Paris</span><span class="ti">Livraison offerte</span><span class="ti">Streetwear Oversize</span><span class="ti">Polyester recyclé</span>
   </div>
 </div>
 
-<!-- WHITE SECTION -->
-<div class="white">
-
-  <!-- Brand intro -->
-  <div class="brand-intro rv">
-    <div class="brand-eyebrow">Talseume — Paris</div>
-    <p class="brand-text">Vêtements éco-responsables, modernes avec du coton 100% organique vegan certifié GOTS et des matériaux recyclés tels que le modal et le polyester recyclé.</p>
+<!-- NEW ARRIVALS CAROUSEL -->
+<div class="s-head rv" id="new">
+  <div>
+    <div class="s-eyebrow">Drop SS26</div>
+    <h2 class="s-title">Nouveautés</h2>
   </div>
-
-  <!-- Section head -->
-  <div class="s-head rv">
-    <h2 class="s-title">Collection<br><span style="font-size:.52em;opacity:.4;letter-spacing:.02em">No Limit 0.27</span></h2>
-    <a href="#produits" class="s-more">Tout voir →</a>
+  <a href="#shop" class="s-more">Voir tout →</a>
+</div>
+<div class="carousel-wrap rv">
+  <div class="car-controls">
+    <button class="car-btn" onclick="carScroll(-1)" aria-label="Précédent"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button class="car-btn" onclick="carScroll(1)" aria-label="Suivant"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
   </div>
+  <div class="carousel" id="carousel">
 
-  <!-- EDITORIAL (featured) -->
-  <div class="ed-list" id="editorial">
-
-    <!-- 01 Sweat Oversize -->
-    <div class="ed-row rv d1" data-col="sweats">
-      <div class="ed-img">
-        <a href="#produits">
-          <img src="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg" alt="Sweat Talseume Oversize"/>
-        </a>
-      </div>
-      <div class="ed-info">
-        <div class="ed-num">01 — Sweats</div>
-        <h3 class="ed-name">Sweat<br>Oversize</h3>
-        <div class="ed-cat">Coton bio GOTS · Unisexe · 5 coloris</div>
-        <p class="ed-desc">Le sweat qui ne cherche pas à plaire — il s'impose. Coupe boxy assumée, matière dense, conscience tranquille. Molleton non brossé 100% coton biologique certifié GOTS.</p>
-        <div class="ed-variants">
-          <button class="vpill sel" data-group="size" onclick="selectPill(this)">S</button><button class="vpill" data-group="size" onclick="selectPill(this)">M</button><button class="vpill" data-group="size" onclick="selectPill(this)">L</button><button class="vpill" data-group="size" onclick="selectPill(this)">XL</button><button class="vpill" data-group="size" onclick="selectPill(this)">XXXL</button>
-        </div>
-        <div class="ed-variants">
-          <button class="vpill sel" data-group="color" data-img="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg" onclick="selectPill(this)">ROUGE</button><button class="vpill" data-group="color" data-img="images/products/sweat-a-acapuche-talseume-dos.jpg" onclick="selectPill(this)">BLANC</button><button class="vpill" data-group="color" data-img="images/products/SWEAT-TALSEUME-NOIR-OVERSIZE01.jpg" onclick="selectPill(this)">NOIR</button><button class="vpill" data-group="color" data-img="images/products/SWEAT-TALSEUME-ACAPUCHE-BLEU.jpg" onclick="selectPill(this)">BLEUE</button><button class="vpill" data-group="color" onclick="selectPill(this)">BEIGE</button>
-        </div>
-        <div class="ed-price">90,00 €</div>
-        <button class="ed-add" onclick="addToCartRow(this,'Sweat Talseume Oversize','90.00','images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg')">Ajouter au panier →</button>
+    <div class="pcard" onclick="location='product.html?id=sweat-talseume-oversize'">
+      <div class="badge-row"><span class="badge new">Nouveau</span><span class="badge">GOTS</span></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()" aria-label="Favori"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg" alt="Sweat Talseume Oversize" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">Sweat Talseume Oversize</div>
+        <div class="pcard-stars"><span class="stars">★★★★★</span><span class="stars-count">(38)</span></div>
+        <div class="pcard-colors"><span class="swatch" style="background:#C0392B"></span><span class="swatch white" style="background:#fff"></span><span class="swatch" style="background:#1A1A1A"></span><span class="swatch" style="background:#2C5F8A"></span><span class="swatch" style="background:#D4B896"></span></div>
+        <div class="pcard-footer"><span class="pcard-price">90,00 €</span></div>
       </div>
     </div>
 
-
-    <!-- 03 Tee-Shirt Oversize Bio -->
-    <div class="ed-row left rv d1" data-col="tshirts">
-      <div class="ed-img">
-        <a href="#produits">
-          <img src="images/products/tee-shirt-talseume-noir-oversise.jpg" alt="Tee-Shirt Oversize Bio"/>
-        </a>
-      </div>
-      <div class="ed-info">
-        <div class="ed-num">03 — T-shirts</div>
-        <h3 class="ed-name">Tee-Shirt<br>Oversize Bio</h3>
-        <div class="ed-cat">Coton bio GOTS · Tissu lavé · 2 coloris</div>
-        <p class="ed-desc">Le totem du streetwear. Pas de fioritures — juste de la présence. Coupe XXL assumée, tissu lavé jersey simple certifié GOTS. Visuel qui reste dans les mémoires.</p>
-        <div class="ed-variants">
-          <button class="vpill sel" data-group="size" onclick="selectPill(this)">XS</button><button class="vpill" data-group="size" onclick="selectPill(this)">S</button><button class="vpill" data-group="size" onclick="selectPill(this)">M</button><button class="vpill" data-group="size" onclick="selectPill(this)">L</button><button class="vpill" data-group="size" onclick="selectPill(this)">XL</button>
-        </div>
-        <div class="ed-variants">
-          <button class="vpill sel" data-group="color" data-img="images/products/tee-shirt-talseume-noir-oversise.jpg" onclick="selectPill(this)">NOIR</button><button class="vpill" data-group="color" onclick="selectPill(this)">BLANC</button>
-        </div>
-        <div class="ed-price">60,00 €</div>
-        <button class="ed-add" onclick="addToCartRow(this,'Tee-Shirt Talseume Oversize','60.00','images/products/tee-shirt-talseume-noir-oversise.jpg')">Ajouter au panier →</button>
+    <div class="pcard" onclick="location='product.html?id=tshirt-manches-longues'">
+      <div class="badge-row"><span class="badge new">Nouveau</span></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/tee-shirt-talseume-mancheslongue-star.jpg" alt="T-Shirt Manches Longues" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">T-Shirt Manches Longues</div>
+        <div class="pcard-stars"><span class="stars">★★★★★</span><span class="stars-count">(19)</span></div>
+        <div class="pcard-colors"><span class="swatch" style="background:#E8D5B0"></span><span class="swatch" style="background:#2C3E50"></span><span class="swatch" style="background:#1A1A1A"></span></div>
+        <div class="pcard-footer"><span class="pcard-price">75,00 €</span></div>
       </div>
     </div>
 
-    <!-- 04 Sweat Bikelife -->
-    <div class="ed-row rv d2" data-col="sweats">
-      <div class="ed-img">
-        <a href="#produits">
-          <img src="images/products/sweat-talseume-bikelife-devant.jpg" alt="Sweat Bikelife"/>
-        </a>
-      </div>
-      <div class="ed-info">
-        <div class="ed-num">04 — Sweats</div>
-        <h3 class="ed-name">Sweat<br>Tls × Bikelife</h3>
-        <div class="ed-cat">Coton bio GOTS 100% · Collab · Coloris Noir</div>
-        <p class="ed-desc">Taillé pour la Bike life et les rues, pensé pour durer. Style brut, confort total, conscience libre. Coton biologique filé et peigné certifié GOTS, oversize par nature.</p>
-        <div class="ed-variants">
-          <button class="vpill sel" data-group="size" onclick="selectPill(this)">2XS</button><button class="vpill" data-group="size" onclick="selectPill(this)">S</button><button class="vpill" data-group="size" onclick="selectPill(this)">M</button><button class="vpill" data-group="size" onclick="selectPill(this)">L</button><button class="vpill" data-group="size" onclick="selectPill(this)">XL</button><button class="vpill" data-group="size" onclick="selectPill(this)">2XL</button><button class="vpill" data-group="size" onclick="selectPill(this)">3XL</button>
-        </div>
-        <div class="ed-price">68,99 €</div>
-        <button class="ed-add" onclick="addToCartRow(this,'Sweat Tls × Bikelife','68.99','images/products/sweat-talseume-bikelife-devant.jpg')">Ajouter au panier →</button>
+    <div class="pcard" onclick="location='product.html?id=sweat-bikelife'">
+      <div class="badge-row"><span class="badge limited">Édition limitée</span></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/sweat-talseume-bikelife-devant.jpg" alt="Sweat Tls × Bikelife" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">Sweat Tls × Bikelife</div>
+        <div class="pcard-stars"><span class="stars">★★★★★</span><span class="stars-count">(14)</span></div>
+        <div class="pcard-colors"><span class="swatch" style="background:#1A1A1A"></span></div>
+        <div class="pcard-footer"><span class="pcard-price">68,99 €</span></div>
       </div>
     </div>
 
-  </div><!-- /ed-list -->
+    <div class="pcard" onclick="location='product.html?id=veste-coach-ultra'">
+      <div class="badge-row"><span class="badge new">Nouveau</span><span class="badge sale">-20%</span></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/Jacket-By-TALSEUMENWAR.jpg" alt="Veste Coach Ultra" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">Veste Coach Ultra</div>
+        <div class="pcard-stars"><span class="stars">★★★★★</span><span class="stars-count">(12)</span></div>
+        <div class="pcard-colors"><span class="swatch" style="background:#1A1A1A"></span></div>
+        <div class="pcard-footer"><span class="pcard-price">104,00 €</span><span class="pcard-price-old">130,00 €</span><span class="pcard-save">-26 €</span></div>
+      </div>
+    </div>
 
-  <!-- SEUM ORIGIN TEXT -->
-  <div class="seum-block rv">
-    <div class="seum-label"><span>Origine</span></div>
-    <p class="seum-text">Le terme <b>"SEUM"</b> trouve ses racines dans <b>"sèmm"</b>, un mot d'origine orientale signifiant <b>"venin de serpent"</b>. Chez l'humain, ce venin se manifeste par la rage, une énergie vibrante qui peut se traduire en puissance, à condition d'être en phase avec une fréquence positive. C'est une force qui, lorsqu'elle est canalisée correctement, peut mener à des résultats extraordinaires.</p>
+    <div class="pcard" onclick="location='product.html?id=tee-shirt-oversize'">
+      <div class="badge-row"><span class="badge">Bio</span></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/tee-shirt-talseume-noir-oversise.jpg" alt="Tee-Shirt Talseume Oversize" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">Tee-Shirt Talseume Oversize</div>
+        <div class="pcard-stars"><span class="stars">★★★★★</span><span class="stars-count">(22)</span></div>
+        <div class="pcard-colors"><span class="swatch" style="background:#1A1A1A"></span><span class="swatch white" style="background:#fff"></span></div>
+        <div class="pcard-footer"><span class="pcard-price">60,00 €</span></div>
+      </div>
+    </div>
+
+    <div class="pcard" onclick="location='product.html?id=veste-coach'">
+      <div class="badge-row"><span class="badge">Recyclé</span></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/Coach-Jacket-By-talseumecopie2.jpg" alt="Veste Coach Unisexe" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">Veste Coach Unisexe</div>
+        <div class="pcard-stars"><span class="stars">★★★★★</span><span class="stars-count">(16)</span></div>
+        <div class="pcard-colors"><span class="swatch" style="background:#1A1A1A"></span><span class="swatch" style="background:#1B2A6B"></span><span class="swatch" style="background:#6B7C3B"></span></div>
+        <div class="pcard-footer"><span class="pcard-price">90,00 €</span></div>
+      </div>
+    </div>
+
+    <div class="pcard" onclick="location='product.html?id=debardeur-femme'">
+      <div class="badge-row"><span class="badge new">Femme</span></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/debardeur-femme-talseume-090.jpg" alt="Débardeur Femme" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">Débardeur Femme</div>
+        <div class="pcard-stars"><span class="stars">★★★★★</span><span class="stars-count">(9)</span></div>
+        <div class="pcard-colors"><span class="swatch" style="background:#E8621A"></span><span class="swatch" style="background:#1A1A1A"></span><span class="swatch" style="background:#F0D020"></span></div>
+        <div class="pcard-footer"><span class="pcard-price">24,99 €</span></div>
+      </div>
+    </div>
+
+    <div class="pcard" onclick="location='product.html?id=talseume-bag'">
+      <div class="badge-row"><span class="badge">Recyclé 80%</span></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/sactalseume.jpg" alt="Talseume Bag" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">Talseume Bag</div>
+        <div class="pcard-stars"><span class="stars">★★★★★</span><span class="stars-count">(7)</span></div>
+        <div class="pcard-colors"><span class="swatch" style="background:#1A1A1A"></span></div>
+        <div class="pcard-footer"><span class="pcard-price">25,99 €</span></div>
+      </div>
+    </div>
+
   </div>
+</div>
 
-  <!-- ALL PRODUCTS GRID -->
-  <div class="pgrid-wrap" id="shop">
-    <div style="padding:48px 0 20px;border-bottom:1px solid var(--line-l);margin-bottom:2px" class="rv">
-      <p style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.3);font-weight:300">Tous les produits</p>
+<!-- CATEGORY GRID -->
+<div class="s-head rv">
+  <div>
+    <div class="s-eyebrow">Catégories</div>
+    <h2 class="s-title">L'essentiel</h2>
+  </div>
+</div>
+<div class="catgrid rv">
+  <a href="#shop" class="catcard">
+    <img src="images/products/tee-shirt-talseume-noir-oversise.jpg" alt="T-Shirts"/>
+    <div class="catcard-info">
+      <div class="catcard-eyebrow">Coton bio GOTS</div>
+      <div class="catcard-title">T-Shirts</div>
     </div>
-    <div class="pgrid" id="pgrid">
+  </a>
+  <a href="#shop" class="catcard">
+    <img src="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg" alt="Sweats à capuche"/>
+    <div class="catcard-info">
+      <div class="catcard-eyebrow">Coupe oversize</div>
+      <div class="catcard-title">Sweats Capuche</div>
+    </div>
+  </a>
+  <a href="#shop" class="catcard">
+    <img src="images/products/Jacket-By-TALSEUMENWAR.jpg" alt="Vestes"/>
+    <div class="catcard-info">
+      <div class="catcard-eyebrow">Polyester recyclé</div>
+      <div class="catcard-title">Vestes</div>
+    </div>
+  </a>
+  <a href="#shop" class="catcard">
+    <img src="images/products/Bonnet_talseume.jpg" alt="Accessoires"/>
+    <div class="catcard-info">
+      <div class="catcard-eyebrow">Bonnets · Sacs · Casquettes</div>
+      <div class="catcard-title">Accessoires</div>
+    </div>
+  </a>
+</div>
 
+<!-- BRAND BAND -->
+<div class="brand-band rv">
+  <div class="s-eyebrow">Talseume — Paris</div>
+  <p class="brand-text">Vêtements éco-responsables, modernes, avec du <b>coton 100% organique vegan certifié GOTS</b> et des matériaux recyclés tels que le <b>modal</b> et le <b>polyester recyclé</b>.</p>
+</div>
 
-      <div class="pcard rv" data-col="tshirts">
-        <span class="badge">Bio 240g</span>
-        <div class="pcard-img">
-          <img src="images/products/tee-shirt-talseume-mancheslongue-star.jpg" alt="T-Shirt Manches Longues"/>
-          <div class="img-b"><img src="images/products/tshirt-talseume-mancheslongue-creme.jpg" alt=""/></div>
-        </div>
-        <div class="pcard-info">
-          <div class="pcard-name">T-Shirt Manches Longues</div>
-          <div class="pcard-type">T-shirt · XS→XXL · 3 coloris</div>
-          <p class="pcard-desc">240g, 70% coton bio + 30% recyclé. Natural Raw, Stargazer, Noir. Seul ou en layering, sans jamais passer pour un compromis.</p>
-          <div class="ed-variants" style="margin:8px 0 4px;gap:4px">
-            <button class="vpill sel" data-group="size" onclick="selectPill(this)" style="padding:4px 10px;font-size:9px">S</button><button class="vpill" data-group="size" onclick="selectPill(this)" style="padding:4px 10px;font-size:9px">M</button><button class="vpill" data-group="size" onclick="selectPill(this)" style="padding:4px 10px;font-size:9px">L</button><button class="vpill" data-group="size" onclick="selectPill(this)" style="padding:4px 10px;font-size:9px">XL</button>
-          </div>
-          <div class="ed-variants" style="margin:0 0 8px;gap:4px">
-            <button class="vpill sel" data-group="color" data-img="images/products/tshirt-talseume-mancheslongue-creme.jpg" onclick="selectPill(this)" style="padding:4px 10px;font-size:9px">Natural Raw</button><button class="vpill" data-group="color" data-img="images/products/tee-shirt-talseume-mancheslongue-star.jpg" onclick="selectPill(this)" style="padding:4px 10px;font-size:9px">Stargazer</button><button class="vpill" data-group="color" data-img="images/products/tee-shirt-talseume-mancheslongue.jpg" onclick="selectPill(this)" style="padding:4px 10px;font-size:9px">Noir</button>
-          </div>
-          <div class="pcard-foot">
-            <span class="pcard-price">75,00 €</span>
-            <button class="pcard-add" onclick="addToCartRow(this,'T-Shirt Manches Longues','75.00','images/products/tee-shirt-talseume-mancheslongue-star.jpg')">+ Panier</button>
-          </div>
-        </div>
+<!-- FULL COLLECTION GRID -->
+<div class="s-head rv" id="shop">
+  <div>
+    <div class="s-eyebrow">Collection · No Limit 0.27</div>
+    <h2 class="s-title">Tous les produits</h2>
+  </div>
+  <a href="#" class="s-more">Filtres →</a>
+</div>
+<div class="pgrid-wrap rv">
+  <div class="pgrid">
+
+    <div class="pcard" onclick="location='product.html?id=sweat-talseume-oversize'">
+      <div class="badge-row"><span class="badge">GOTS</span></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg" alt="Sweat Talseume Oversize" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">Sweat Talseume Oversize</div>
+        <div class="pcard-stars"><span class="stars">★★★★★</span><span class="stars-count">(38) · 124 vendus</span></div>
+        <div class="pcard-colors"><span class="swatch" style="background:#C0392B"></span><span class="swatch white" style="background:#fff"></span><span class="swatch" style="background:#1A1A1A"></span><span class="swatch" style="background:#2C5F8A"></span><span class="swatch" style="background:#D4B896"></span></div>
+        <div class="pcard-footer"><span class="pcard-price">90,00 €</span></div>
       </div>
+    </div>
 
-      <div class="pcard rv d1" data-col="sweats">
-        <span class="badge">GOTS</span>
-        <div class="pcard-img">
-          <img src="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg" alt="Sweat Oversize"/>
-          <div class="img-b"><img src="images/products/SWEAT-TALSEUME-NOIR-OVERSIZE01.jpg" alt=""/></div>
-        </div>
+    <div class="pcard" onclick="location='product.html?id=tee-shirt-oversize'">
+      <div class="badge-row"><span class="badge">Bio</span></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/tee-shirt-talseume-noir-oversise.jpg" alt="Tee-Shirt Talseume Oversize" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">Tee-Shirt Talseume Oversize</div>
+        <div class="pcard-stars"><span class="stars">★★★★★</span><span class="stars-count">(22) · 87 vendus</span></div>
+        <div class="pcard-colors"><span class="swatch" style="background:#1A1A1A"></span><span class="swatch white" style="background:#fff"></span></div>
+        <div class="pcard-footer"><span class="pcard-price">60,00 €</span></div>
+      </div>
+    </div>
+
+    <div class="pcard" onclick="location='product.html?id=sweat-bikelife'">
+      <div class="badge-row"><span class="badge limited">Collab</span></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/sweat-talseume-bikelife-devant.jpg" alt="Sweat Tls × Bikelife" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">Sweat Tls × Bikelife</div>
+        <div class="pcard-stars"><span class="stars">★★★★★</span><span class="stars-count">(14) · 56 vendus</span></div>
+        <div class="pcard-colors"><span class="swatch" style="background:#1A1A1A"></span></div>
+        <div class="pcard-footer"><span class="pcard-price">68,99 €</span></div>
+      </div>
+    </div>
+
+    <div class="pcard" onclick="location='product.html?id=tshirt-manches-longues'">
+      <div class="badge-row"><span class="badge">240g Bio</span></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/tee-shirt-talseume-mancheslongue-star.jpg" alt="T-Shirt Manches Longues" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">T-Shirt Manches Longues</div>
+        <div class="pcard-stars"><span class="stars">★★★★★</span><span class="stars-count">(19) · 63 vendus</span></div>
+        <div class="pcard-colors"><span class="swatch" style="background:#E8D5B0"></span><span class="swatch" style="background:#2C3E50"></span><span class="swatch" style="background:#1A1A1A"></span></div>
+        <div class="pcard-footer"><span class="pcard-price">75,00 €</span></div>
+      </div>
+    </div>
+
+    <div class="pcard" onclick="location='product.html?id=veste-coach'">
+      <div class="badge-row"><span class="badge">Recyclé</span></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/Coach-Jacket-By-talseumecopie2.jpg" alt="Veste Coach Unisexe" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">Veste Coach Unisexe</div>
+        <div class="pcard-stars"><span class="stars">★★★★★</span><span class="stars-count">(16) · 48 vendus</span></div>
+        <div class="pcard-colors"><span class="swatch" style="background:#1A1A1A"></span><span class="swatch" style="background:#1B2A6B"></span><span class="swatch" style="background:#6B7C3B"></span></div>
+        <div class="pcard-footer"><span class="pcard-price">90,00 €</span></div>
+      </div>
+    </div>
+
+    <div class="pcard" onclick="location='product.html?id=veste-coach-ultra'">
+      <div class="badge-row"><span class="badge sale">-20%</span><span class="badge">Ultra</span></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/Jacket-By-TALSEUMENWAR.jpg" alt="Veste Coach Ultra" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">Veste Coach Ultra</div>
+        <div class="pcard-stars"><span class="stars">★★★★★</span><span class="stars-count">(12) · 35 vendus</span></div>
+        <div class="pcard-colors"><span class="swatch" style="background:#1A1A1A"></span></div>
+        <div class="pcard-footer"><span class="pcard-price">104,00 €</span><span class="pcard-price-old">130,00 €</span></div>
+      </div>
+    </div>
+
+    <div class="pcard" onclick="location='product.html?id=debardeur-femme'">
+      <div class="badge-row"><span class="badge">Femme</span></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/debardeur-femme-talseume-090.jpg" alt="Débardeur Femme" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">Débardeur Femme</div>
+        <div class="pcard-stars"><span class="stars">★★★★★</span><span class="stars-count">(9) · 27 vendus</span></div>
+        <div class="pcard-colors"><span class="swatch" style="background:#E8621A"></span><span class="swatch" style="background:#1A1A1A"></span><span class="swatch" style="background:#F0D020"></span></div>
+        <div class="pcard-footer"><span class="pcard-price">24,99 €</span></div>
+      </div>
+    </div>
+
+    <div class="pcard" onclick="location='product.html?id=tshirt-femme'">
+      <div class="badge-row"><span class="badge">Femme</span></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/tshirt-femme-talseume-009.jpg" alt="T-shirt Femme" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">T-shirt Femme</div>
+        <div class="pcard-stars"><span class="stars">★★★★★</span><span class="stars-count">(8) · 21 vendus</span></div>
+        <div class="pcard-colors"><span class="swatch" style="background:#2C5F8A"></span><span class="swatch" style="background:#1A1A1A"></span><span class="swatch white" style="background:#fff"></span></div>
+        <div class="pcard-footer"><span class="pcard-price">29,00 €</span></div>
+      </div>
+    </div>
+
+    <div class="pcard" onclick="location='product.html?id=cagoule'">
+      <div class="badge-row"><span class="badge">Identité</span></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/IMG_7578.jpg" alt="Cagoule Talseume" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">Cagoule Talseume</div>
+        <div class="pcard-stars"><span class="stars">★★★★★</span><span class="stars-count">(6) · 19 vendus</span></div>
+        <div class="pcard-colors"><span class="swatch" style="background:#1A1A1A"></span></div>
+        <div class="pcard-footer"><span class="pcard-price">18,00 €</span></div>
+      </div>
+    </div>
+
+    <div class="pcard" onclick="location='product.html?id=sport-beanie'">
+      <div class="badge-row"></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/Bonnet_talseume.jpg" alt="Sport Beanie" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">Talseume Sport Beanie</div>
+        <div class="pcard-stars"><span class="stars">★★★★☆</span><span class="stars-count">(11) · 42 vendus</span></div>
+        <div class="pcard-colors"><span class="swatch" style="background:#1A1A1A"></span></div>
+        <div class="pcard-footer"><span class="pcard-price">17,99 €</span></div>
+      </div>
+    </div>
+
+    <div class="pcard" onclick="location='product.html?id=casquette-trucker'">
+      <div class="badge-row"></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/IMG_7199.png" alt="Casquette Trucker" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">Casquette Trucker</div>
+        <div class="pcard-stars"><span class="stars">★★★★☆</span><span class="stars-count">(9) · 31 vendus</span></div>
+        <div class="pcard-colors"><span class="swatch" style="background:#C0392B"></span></div>
+        <div class="pcard-footer"><span class="pcard-price">19,99 €</span></div>
+      </div>
+    </div>
+
+    <div class="pcard" onclick="location='product.html?id=talseume-bag'">
+      <div class="badge-row"><span class="badge">80% recyclé</span></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/sactalseume.jpg" alt="Talseume Bag" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">Talseume Bag</div>
+        <div class="pcard-stars"><span class="stars">★★★★★</span><span class="stars-count">(7) · 28 vendus</span></div>
+        <div class="pcard-colors"><span class="swatch" style="background:#1A1A1A"></span></div>
+        <div class="pcard-footer"><span class="pcard-price">25,99 €</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SHOP THE LOOK -->
+<section class="stl">
+  <div class="s-head" style="padding:0 0 0 0">
+    <div>
+      <div class="s-eyebrow">Shop the Look</div>
+      <h2 class="s-title">Le look complet</h2>
+    </div>
+  </div>
+  <div class="stl-grid rv">
+    <div class="stl-hero">
+      <img src="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg" alt="Shop the look"/>
+      <div class="stl-dot" style="top:32%;left:48%" onclick="location='product.html?id=sweat-talseume-oversize'">1</div>
+      <div class="stl-dot" style="top:72%;left:42%" onclick="location='product.html?id=talseume-bag'">2</div>
+    </div>
+    <div class="stl-items">
+      <div class="pcard" onclick="location='product.html?id=sweat-talseume-oversize'">
+        <div class="pcard-img"><img src="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg" alt="Sweat"/></div>
         <div class="pcard-info">
           <div class="pcard-name">Sweat Talseume Oversize</div>
-          <div class="pcard-type">Sweat — Unisexe</div>
-          <p class="pcard-desc">Coupe boxy, molleton non brossé 100% coton bio GOTS. Blanc, Noir, Rouge, Bleue. Le sweat qui s'impose.</p>
-          <div class="pcard-foot">
-            <span class="pcard-price">90,00 €</span>
-            <button class="pcard-add" onclick="addToCart('Sweat Talseume Oversize','S','90.00','images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg')">+ Panier</button>
-          </div>
+          <div class="pcard-footer"><span class="pcard-price">90,00 €</span></div>
         </div>
       </div>
-
-      <div class="pcard rv d2" data-col="sweats">
-        <span class="badge">Collab</span>
-        <div class="pcard-img">
-          <img src="images/products/sweat-talseume-bikelife-devant.jpg" alt="Sweat Bikelife"/>
-          <div class="img-b"><img src="images/products/sweat-talseume-bikelife_4bf5c04d-11ac-451a-8f63-6c7dd4697233.jpg" alt=""/></div>
-        </div>
+      <div class="pcard" onclick="location='product.html?id=tee-shirt-oversize'">
+        <div class="pcard-img"><img src="images/products/tee-shirt-talseume-noir-oversise.jpg" alt="T-shirt"/></div>
         <div class="pcard-info">
-          <div class="pcard-name">Sweat Tls × Bikelife</div>
-          <div class="pcard-type">Sweat à capuche</div>
-          <p class="pcard-desc">Pour la Bike life et les rues. Style brut, confort total. Coton bio GOTS 100%, oversize. 2XS → L disponibles.</p>
-          <div class="pcard-foot">
-            <span class="pcard-price">68,99 €</span>
-            <button class="pcard-add" onclick="addToCart('Sweat Tls × Bikelife','S','68.99','images/products/sweat-talseume-bikelife-devant.jpg')">+ Panier</button>
-          </div>
+          <div class="pcard-name">Tee-Shirt Oversize</div>
+          <div class="pcard-footer"><span class="pcard-price">60,00 €</span></div>
         </div>
       </div>
-
-
-      <div class="pcard rv" data-col="accessoires">
-        <div class="pcard-img">
-          <img src="images/products/Bonnet_talseume.jpg" alt="Sport Beanie"/>
-          <div class="img-b"><img src="images/products/Bonnet_talseume.jpg" alt=""/></div>
-        </div>
+      <div class="pcard" onclick="location='product.html?id=sport-beanie'">
+        <div class="pcard-img"><img src="images/products/Bonnet_talseume.jpg" alt="Beanie"/></div>
         <div class="pcard-info">
-          <div class="pcard-name">Talseume Sport Beanie</div>
-          <div class="pcard-type">Accessoire — 85% Polyester / 15% Élasthanne</div>
-          <p class="pcard-desc">Pensé pour rester en place, conçu pour être vu. Épouse la tête sans serrer, garde la chaleur sans étouffer.</p>
-          <div class="pcard-foot">
-            <span class="pcard-price">17,99 €</span>
-            <button class="pcard-add" onclick="addToCart('Sport Beanie','NOIR','17.99','images/products/Bonnet_talseume.jpg')">+ Panier</button>
-          </div>
+          <div class="pcard-name">Sport Beanie</div>
+          <div class="pcard-footer"><span class="pcard-price">17,99 €</span></div>
         </div>
       </div>
-
-      <div class="pcard rv d1" data-col="accessoires">
-        <div class="pcard-img">
-          <img src="images/products/IMG_7199.png" alt="Casquette Trucker"/>
-          <div class="img-b"><img src="images/products/IMG_7199.png" alt=""/></div>
-        </div>
-        <div class="pcard-info">
-          <div class="pcard-name">Casquette Trucker</div>
-          <div class="pcard-type">Accessoire — Coton / Polyester</div>
-          <p class="pcard-desc">Devant structuré 100% coton, résille 100% polyester. Sérigraphie nette. L'accessoire qui finit le look.</p>
-          <div class="pcard-foot">
-            <span class="pcard-price">19,99 €</span>
-            <button class="pcard-add" onclick="addToCart('Casquette Trucker','Unique','19.99','images/products/IMG_7199.png')">+ Panier</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="pcard rv d2" data-col="accessoires">
-        <div class="pcard-img">
-          <img src="images/products/sactalseume.jpg" alt="Talseume Bag"/>
-          <div class="img-b"><img src="images/products/sactalseume.jpg" alt=""/></div>
-        </div>
+      <div class="pcard" onclick="location='product.html?id=talseume-bag'">
+        <div class="pcard-img"><img src="images/products/sactalseume.jpg" alt="Bag"/></div>
         <div class="pcard-info">
           <div class="pcard-name">Talseume Bag</div>
-          <div class="pcard-type">Sac — 80% coton recyclé + 20% polyester recyclé</div>
-          <p class="pcard-desc">Extérieur tissu lavé recyclé, intérieur doublé coton bio ring-spun. Fonctionnel et responsable.</p>
-          <div class="pcard-foot">
-            <span class="pcard-price">25,99 €</span>
-            <button class="pcard-add" onclick="addToCart('Talseume Bag','Unique','25.99','images/products/sactalseume.jpg')">+ Panier</button>
-          </div>
+          <div class="pcard-footer"><span class="pcard-price">25,99 €</span></div>
         </div>
       </div>
-
-    </div><!-- /pgrid -->
+    </div>
   </div>
+</section>
 
-</div><!-- /white -->
+<!-- MANIFESTO -->
+<section class="manifesto" id="manifesto">
+  <div class="m-header">
+    <span class="m-label">Origine · Seum</span>
+    <span class="m-year">SS — 26</span>
+  </div>
+  <div class="m-lines">
+    <div class="m-line">Venin</div>
+    <div class="m-line outline">de serpent</div>
+    <div class="m-line dim">canalisé</div>
+    <div class="m-line">en force.</div>
+  </div>
+  <div class="m-foot">
+    <p class="m-sub">Le terme <b style="color:#fff">SEUM</b> vient de <b style="color:#fff">sèmm</b>, mot oriental pour <b style="color:#fff">"venin de serpent"</b>. Chez l'humain, cette rage devient une énergie. Canalisée, elle mène à l'extraordinaire.</p>
+    <a href="#shop" class="m-cta-link">Découvrir la collection →</a>
+  </div>
+</section>
 
+<!-- NEWSLETTER -->
+<section class="newsletter" id="newsletter">
+  <div class="nl-eyebrow">Rejoindre la maison</div>
+  <h2 class="nl-title">10% de réduction<br>sur ta première commande</h2>
+  <p class="nl-sub">Drops en avant-première, accès aux éditions limitées et offres réservées à la communauté Talseume.</p>
+  <form class="nl-form" onsubmit="event.preventDefault();this.querySelector('button').textContent='Merci ✓';this.querySelector('input').value=''">
+    <input type="email" placeholder="Ton adresse email" required/>
+    <button type="submit">S'inscrire</button>
+  </form>
+  <p class="nl-mini">Pas de spam. Désinscription en un clic.</p>
+</section>
+
+<!-- BENEFITS -->
+<section class="benefits">
+  <div class="bn">
+    <div class="bn-icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+    <div class="bn-title">Livraison offerte</div>
+    <div class="bn-sub">Dès 80€ d'achat en France métropolitaine</div>
+  </div>
+  <div class="bn">
+    <div class="bn-icon"><svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg></div>
+    <div class="bn-title">Retours gratuits</div>
+    <div class="bn-sub">30 jours pour changer d'avis, sans frais</div>
+  </div>
+  <div class="bn">
+    <div class="bn-icon"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+    <div class="bn-title">Paiement 3×</div>
+    <div class="bn-sub">Sans frais avec Klarna — Visa, Mastercard, Apple Pay</div>
+  </div>
+  <div class="bn">
+    <div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+    <div class="bn-title">Paiement sécurisé</div>
+    <div class="bn-sub">SSL · Données chiffrées par Stripe</div>
+  </div>
+</section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="f-grid">
-    <div>
+  <div class="f-top">
+    <div class="f-brand">
       <div class="f-logo">Talseume</div>
+      <p>Streetwear éco-responsable né à Paris. Coton bio GOTS, matériaux recyclés, fabriqué pour durer.</p>
+      <div class="f-socials">
+        <a href="https://www.instagram.com/talseumeclothing" target="_blank" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="mailto:talseumeclothes@gmail.com" aria-label="Email">
+          <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+        </a>
+        <a href="#" aria-label="TikTok">
+          <svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg>
+        </a>
+      </div>
     </div>
     <div class="f-col">
-      <div class="f-col-title">Collections</div>
+      <h5>Boutique</h5>
       <ul>
-        <li><a href="#produits">T-shirts & Débardeurs</a></li>
-        <li><a href="#produits">Sweats & Hoodies</a></li>
-        <li><a href="#produits">Vestes & Manteaux</a></li>
-        <li><a href="#produits">Accessoires</a></li>
+        <li><a href="#new">Nouveautés</a></li>
+        <li><a href="#shop">Tous les produits</a></li>
+        <li><a href="#shop">Homme</a></li>
+        <li><a href="#shop">Femme</a></li>
+        <li><a href="#shop">Accessoires</a></li>
       </ul>
     </div>
     <div class="f-col">
-      <div class="f-col-title">Information</div>
+      <h5>Aide</h5>
       <ul>
-        <li><a href="#">Livraison & Retours</a></li>
+        <li><a href="#">Livraison &amp; Retours</a></li>
+        <li><a href="#">Suivi de commande</a></li>
         <li><a href="#">Guide des tailles</a></li>
-        <li><a href="#">Matériaux & Engagements</a></li>
         <li><a href="#">FAQ</a></li>
       </ul>
     </div>
     <div class="f-col">
-      <div class="f-col-title">Contact</div>
+      <h5>La Marque</h5>
       <ul>
-        <li><a href="mailto:talseumeclothes@gmail.com">talseumeclothes@gmail.com</a></li>
-        <li><a href="https://www.instagram.com" target="_blank">Instagram</a></li>
-        
+        <li><a href="#manifesto">Notre histoire</a></li>
+        <li><a href="#manifesto">Matériaux &amp; Engagements</a></li>
+        <li><a href="#newsletter">Newsletter</a></li>
+        <li><a href="mailto:talseumeclothes@gmail.com">Contact</a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      <h5>Légal</h5>
+      <ul>
+        <li><a href="#">Mentions légales</a></li>
+        <li><a href="#">CGV</a></li>
+        <li><a href="#">Politique de confidentialité</a></li>
+        <li><a href="#">Cookies</a></li>
       </ul>
     </div>
   </div>
   <div class="f-bottom">
     <span class="f-copy">©2026 Talseume — Tous droits réservés</span>
     <div class="f-pay">
-      <svg viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="38" rx="5" fill="#1A1F71"/><text x="8" y="26" font-family="Arial" font-size="16" font-weight="bold" fill="white">VISA</text></svg>
-      <svg viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="38" rx="5" fill="#fff" stroke="#ddd" stroke-width="1"/><circle cx="23" cy="19" r="11" fill="#EB001B"/><circle cx="37" cy="19" r="11" fill="#F79E1B"/><path d="M30 9.8a11 11 0 010 18.4A11 11 0 0130 9.8z" fill="#FF5F00"/></svg>
-      <svg viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="38" rx="5" fill="#fff" stroke="#ddd" stroke-width="1"/><text x="9" y="25" font-family="Arial" font-size="13" font-weight="bold" fill="#003087">Pay</text><text x="28" y="25" font-family="Arial" font-size="13" font-weight="bold" fill="#009CDE">Pal</text></svg>
-      <svg viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="38" rx="5" fill="#000"/><text x="8" y="22" font-family="-apple-system,Arial" font-size="11" fill="white">Apple</text><text x="8" y="33" font-family="Arial" font-size="10" fill="white">Pay</text></svg>
-      <svg viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="38" rx="5" fill="#005498"/><text x="14" y="26" font-family="Arial" font-size="17" font-weight="bold" fill="white">CB</text></svg>
-      <svg viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="38" rx="5" fill="#2E77BC"/><text x="5" y="24" font-family="Arial" font-size="9" font-weight="bold" fill="white">AMERICAN</text><text x="5" y="33" font-family="Arial" font-size="9" font-weight="bold" fill="white">EXPRESS</text></svg>
-    </div>
-    <div class="f-soc">
-      <a href="#produits">Shop</a>
-      <a href="https://www.instagram.com" target="_blank">Instagram</a>
+      <svg viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#1A1F71"/><text x="8" y="26" font-family="Arial" font-size="16" font-weight="bold" fill="white">VISA</text></svg>
+      <svg viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#fff"/><circle cx="23" cy="19" r="11" fill="#EB001B"/><circle cx="37" cy="19" r="11" fill="#F79E1B"/><path d="M30 9.8a11 11 0 010 18.4A11 11 0 0130 9.8z" fill="#FF5F00"/></svg>
+      <svg viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#fff"/><text x="9" y="25" font-family="Arial" font-size="13" font-weight="bold" fill="#003087">Pay</text><text x="28" y="25" font-family="Arial" font-size="13" font-weight="bold" fill="#009CDE">Pal</text></svg>
+      <svg viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#000"/><text x="8" y="22" font-family="Arial" font-size="11" fill="white">Apple</text><text x="8" y="33" font-family="Arial" font-size="10" fill="white">Pay</text></svg>
+      <svg viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#FFB3C7"/><text x="6" y="25" font-family="Arial" font-size="12" font-weight="bold" fill="#17120E">Klarna</text></svg>
+      <svg viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#2E77BC"/><text x="5" y="24" font-family="Arial" font-size="9" font-weight="bold" fill="white">AMERICAN</text><text x="5" y="33" font-family="Arial" font-size="9" font-weight="bold" fill="white">EXPRESS</text></svg>
     </div>
   </div>
 </footer>
 
-<div id="floatImg"><img id="floatImgSrc" src="" alt=""/></div>
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Remonter">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<!-- MODAL PAIEMENT -->
+<div id="payModal">
+  <div class="pm-backdrop" onclick="closePayModal()"></div>
+  <div class="pm-box">
+    <button class="pm-close" onclick="closePayModal()">×</button>
+    <p class="pm-label">Récapitulatif</p>
+    <div id="pm-lines" class="pm-lines"></div>
+    <div class="pm-total-row"><span>Total</span><span id="pm-total"></span></div>
+    <p class="pm-label" style="margin-bottom:14px">Mode de paiement</p>
+    <button id="pm-card-btn" class="pm-method-btn" onclick="stripeCheckout('card')">
+      <span class="pm-method-label"><span>Carte bancaire</span><span class="pm-method-sub">Visa, Mastercard, Apple Pay</span></span>
+      <span class="pm-method-icons">
+        <svg width="34" height="22" viewBox="0 0 34 22"><rect width="34" height="22" rx="3" fill="#1A1F71"/><rect y="7" width="34" height="6" fill="#F7B600"/></svg>
+        <svg width="34" height="22" viewBox="0 0 34 22"><rect width="34" height="22" rx="3" fill="#f2f2f2"/><circle cx="13" cy="11" r="7" fill="#EB001B"/><circle cx="21" cy="11" r="7" fill="#F79E1B"/></svg>
+      </span>
+    </button>
+    <button id="pm-klarna-btn" class="pm-method-btn pm-klarna" onclick="stripeCheckout('3x')">
+      <span class="pm-method-label"><span>Payer en 3× sans frais</span><span class="pm-method-sub">Klarna — Divisé en 3 paiements égaux</span></span>
+      <svg width="52" height="20" viewBox="0 0 52 20"><rect width="52" height="20" rx="4" fill="#FFB3C7"/><text x="8" y="14" font-size="11" font-weight="700" fill="#17120E" font-family="sans-serif">klarna</text></svg>
+    </button>
+    <button id="pm-vir-btn" class="pm-method-btn">
+      <span class="pm-method-label"><span>Virement bancaire</span><span class="pm-method-sub">Traitement sous 1-3 jours ouvrés</span></span>
+      <svg width="20" height="20" fill="none" stroke="#888" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+    </button>
+    <div id="pm-vir-info" class="pm-vir-info">
+      <strong>Coordonnées bancaires Talseume</strong><br>
+      IBAN : FR76 XXXX XXXX XXXX XXXX XXXX XXX<br>
+      BIC : XXXXXXXX<br>
+      Référence : ta commande + ton nom
+    </div>
+    <p class="pm-secure">🔒 Paiement 100% sécurisé · SSL · Données chiffrées par Stripe</p>
+  </div>
+</div>
+
+<style>
+#payModal{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+#payModal.open{opacity:1;pointer-events:all}
+.pm-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
+.pm-box{position:relative;background:#fff;width:min(500px,95vw);max-height:90vh;overflow-y:auto;padding:44px 36px}
+.pm-close{position:absolute;top:18px;right:22px;font-size:24px;font-weight:300;color:#bbb;line-height:1}
+.pm-close:hover{color:#080808}
+.pm-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#aaa;margin-bottom:12px}
+.pm-lines{border-top:1px solid #f0f0f0;padding-top:14px;margin-bottom:14px;display:flex;flex-direction:column;gap:10px}
+.pm-line{display:flex;justify-content:space-between;gap:16px;font-size:13px;color:#333}
+.pm-total-row{display:flex;justify-content:space-between;font-size:14px;font-weight:600;border-top:1px solid #f0f0f0;padding-top:14px;margin-bottom:28px}
+.pm-method-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;border:1.5px solid #e8e8e8;background:#fff;padding:16px 18px;margin-bottom:10px;transition:border-color .2s;text-align:left}
+.pm-method-btn:hover{border-color:#080808}
+.pm-method-label{display:flex;flex-direction:column;gap:3px}
+.pm-method-label>span:first-child{font-size:13px;font-weight:500;color:#080808}
+.pm-method-sub{font-size:11px;color:#aaa}
+.pm-method-icons{display:flex;gap:6px;align-items:center}
+.pm-klarna{border-color:#FFB3C7}
+.pm-klarna:hover{border-color:#ff80a0;background:#fff8fa}
+.pm-vir-info{display:none;background:#f7f7f5;padding:14px 18px;font-size:12px;line-height:1.9;color:#555;margin-bottom:10px}
+.pm-secure{margin-top:18px;font-size:11px;color:#ccc;text-align:center}
+</style>
 
 <script>
 /* ── PRELOADER ── */
 window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.getElementById('preloader').classList.add('open');
-    setTimeout(() => document.getElementById('preloader').style.display='none', 1300);
-  }, 500);
+  if(sessionStorage.getItem('visited')){
+    document.getElementById('preloader').style.display='none';
+  } else {
+    sessionStorage.setItem('visited','1');
+    setTimeout(() => {
+      document.getElementById('preloader').classList.add('open');
+      setTimeout(() => document.getElementById('preloader').style.display='none', 1300);
+    }, 500);
+  }
 });
 
-/* ── CURSOR ── */
-const cur=document.getElementById('cur'), cring=document.getElementById('cring');
-let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-document.querySelectorAll('a,button').forEach(el=>{
-  el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
-  el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
-});
+/* ── NAV SCROLL ── */
 const navEl=document.querySelector('nav');
 window.addEventListener('scroll',()=>{
-  const hero=document.querySelector('.hero');
-  const heroH=hero?hero.offsetHeight:window.innerHeight;
-  if(window.scrollY>heroH*0.7)navEl.classList.add('scrolled');
-  else navEl.classList.remove('scrolled');
-  const white=document.querySelector('.white');
-  cring.className=white&&window.scrollY>white.offsetTop-80?'l':'';
+  navEl.classList.toggle('scrolled',window.scrollY>10);
+  document.getElementById('back-top').classList.toggle('show',window.scrollY>400);
 },{passive:true});
-(function loop(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;cring.style.left=rx+'px';cring.style.top=ry+'px';requestAnimationFrame(loop);})();
 
 /* ── REVEAL ── */
 const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in');}),{threshold:.06});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 
-/* ── COLLECTION FILTER ── */
-function filterCol(col,btn){
-  document.querySelectorAll('.coll-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('#pgrid .pcard, #editorial .ed-row').forEach(el=>{
-    if(col==='all'||el.dataset.col===col){el.style.display='';} else {el.style.display='none';}
-  });
+/* ── CAROUSEL ── */
+function carScroll(dir){
+  const c=document.getElementById('carousel');
+  const w=c.querySelector('.pcard').offsetWidth+14;
+  c.scrollBy({left:dir*w*2,behavior:'smooth'});
 }
 
 /* ── SHOPIFY VARIANT MAP ── */
@@ -667,33 +1142,12 @@ const VARIANTS={
 let cart=JSON.parse(localStorage.getItem('tls-cart')||'[]');
 function saveCart(){localStorage.setItem('tls-cart',JSON.stringify(cart));}
 
-function selectPill(btn){
-  const grp=btn.dataset.group||'size';
-  let container=btn.closest('.ed-row');
-  if(!container) container=btn.closest('.pcard');
-  if(!container) container=btn.parentElement;
-  container.querySelectorAll('.vpill[data-group="'+grp+'"]').forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel');
-  if(grp==='color'&&btn.dataset.img){
-    const target=container.querySelector('.ed-img img')||container.querySelector('.pcard-img>img');
-    if(target){target.src=btn.dataset.img;}
-  }
-}
-function addToCartRow(btn,name,price,img){
-  const c=btn.closest('.ed-row,.pcard');
-  const size=c?.querySelector('.vpill.sel[data-group="size"]')?.textContent.trim()||'';
-  const color=c?.querySelector('.vpill.sel[data-group="color"]')?.textContent.trim()||'';
-  const key=color?size+'/'+color:size;
-  addToCart(name,key,price,img);
-}
-
 function addToCart(name,variant,price,img){
   const variantId=VARIANTS[name]?.[variant]||'';
   const ex=cart.find(i=>i.name===name&&i.variant===variant);
   if(ex){ex.qty++;}else{cart.push({name,variant,price:parseFloat(price),img,qty:1,variantId});}
   saveCart();renderCart();openCart();
 }
-
 function removeFromCart(idx){cart.splice(idx,1);saveCart();renderCart();}
 
 function renderCart(){
@@ -706,7 +1160,7 @@ function renderCart(){
   cnt.className='cart-count'+(totalItems>0?' show':'');
   if(cart.length===0){el.innerHTML='<p class="cart-empty">Votre panier est vide.</p>';foot.style.display='none';return;}
   foot.style.display='block';
-  document.getElementById('cartTotal').textContent=total.toFixed(2).replace('.',',')+'€';
+  document.getElementById('cartTotal').textContent=total.toFixed(2).replace('.',',')+' €';
   el.innerHTML=cart.map((item,i)=>`
     <div class="cart-item">
       <div class="cart-item-img"><img src="${item.img}" alt="${item.name}"/></div>
@@ -723,22 +1177,14 @@ function renderCart(){
 
 function openCart(){document.getElementById('cartSidebar').classList.add('open');document.getElementById('cartOverlay').classList.add('open');}
 function closeCart(){document.getElementById('cartSidebar').classList.remove('open');document.getElementById('cartOverlay').classList.remove('open');}
-function goCheckout(){
-  if(!cart.length)return;
-  closeCart();
-  setTimeout(showPayModal,450);
-}
+function goCheckout(){if(!cart.length)return;closeCart();setTimeout(showPayModal,450);}
 
 renderCart();
 
-/* ── MODAL RÉCAPITULATIF ── */
+/* ── PAY MODAL ── */
 function showPayModal(){
   const total=cart.reduce((s,i)=>s+i.price*i.qty,0).toFixed(2);
-  const lines=cart.map(i=>`
-    <div class="pm-line">
-      <span>${i.name} — ${i.variant} × ${i.qty}</span>
-      <span>${(i.price*i.qty).toFixed(2).replace('.',',')} €</span>
-    </div>`).join('');
+  const lines=cart.map(i=>`<div class="pm-line"><span>${i.name} — ${i.variant} × ${i.qty}</span><span>${(i.price*i.qty).toFixed(2).replace('.',',')} €</span></div>`).join('');
   document.getElementById('pm-lines').innerHTML=lines;
   document.getElementById('pm-total').textContent=parseFloat(total).toLocaleString('fr-FR',{minimumFractionDigits:2})+' €';
   document.getElementById('payModal').classList.add('open');
@@ -748,11 +1194,10 @@ function closePayModal(){document.getElementById('payModal').classList.remove('o
 async function stripeCheckout(mode){
   const btn = document.getElementById(mode==='3x'?'pm-klarna-btn':'pm-card-btn');
   btn.disabled=true;
-  btn.textContent='Chargement…';
+  btn.querySelector('.pm-method-label>span').textContent='Chargement…';
   try{
     const res = await fetch('/.netlify/functions/create-checkout',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
+      method:'POST',headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
         items: cart.map(i=>({name:i.name,variant:i.variant,price:i.price,qty:i.qty,img:window.location.origin+'/'+i.img})),
         successUrl: window.location.origin+'/?commande=ok',
@@ -765,94 +1210,14 @@ async function stripeCheckout(mode){
   }catch(e){
     alert('Erreur paiement : '+e.message);
     btn.disabled=false;
-    btn.textContent=mode==='3x'?'Payer en 3× sans frais →':'Payer par carte →';
+    btn.querySelector('.pm-method-label>span').textContent=mode==='3x'?'Payer en 3× sans frais':'Carte bancaire';
   }
 }
 
 document.getElementById('pm-vir-btn').addEventListener('click',function(){
-  document.getElementById('pm-vir-info').style.display=
-    document.getElementById('pm-vir-info').style.display==='block'?'none':'block';
+  const i=document.getElementById('pm-vir-info');
+  i.style.display=i.style.display==='block'?'none':'block';
 });
 </script>
-
-<!-- MODAL PAIEMENT -->
-<div id="payModal">
-  <div class="pm-backdrop" onclick="closePayModal()"></div>
-  <div class="pm-box">
-    <button class="pm-close" onclick="closePayModal()">×</button>
-
-    <p class="pm-label">Récapitulatif</p>
-    <div id="pm-lines" class="pm-lines"></div>
-    <div class="pm-total-row">
-      <span>Total</span><span id="pm-total"></span>
-    </div>
-
-    <p class="pm-label" style="margin-bottom:14px">Mode de paiement</p>
-
-    <!-- Carte -->
-    <button id="pm-card-btn" class="pm-method-btn" onclick="stripeCheckout('card')">
-      <span class="pm-method-label">
-        <span>Carte bancaire</span>
-        <span class="pm-method-sub">Visa, Mastercard, Apple Pay</span>
-      </span>
-      <span class="pm-method-icons">
-        <svg width="34" height="22" viewBox="0 0 34 22" fill="none"><rect width="34" height="22" rx="3" fill="#1A1F71"/><rect y="7" width="34" height="6" fill="#F7B600"/></svg>
-        <svg width="34" height="22" viewBox="0 0 34 22" fill="none"><rect width="34" height="22" rx="3" fill="#f2f2f2"/><circle cx="13" cy="11" r="7" fill="#EB001B"/><circle cx="21" cy="11" r="7" fill="#F79E1B"/><path d="M17 6.2a7 7 0 0 1 0 9.6A7 7 0 0 1 17 6.2Z" fill="#FF5F00"/></svg>
-      </span>
-    </button>
-
-    <!-- Klarna 3x -->
-    <button id="pm-klarna-btn" class="pm-method-btn pm-klarna" onclick="stripeCheckout('3x')">
-      <span class="pm-method-label">
-        <span>Payer en 3× sans frais</span>
-        <span class="pm-method-sub">Klarna — Divisé en 3 paiements égaux</span>
-      </span>
-      <svg width="52" height="20" viewBox="0 0 52 20" fill="none">
-        <rect width="52" height="20" rx="4" fill="#FFB3C7"/>
-        <text x="8" y="14" font-size="11" font-weight="700" fill="#17120E" font-family="sans-serif">klarna</text>
-      </svg>
-    </button>
-
-    <!-- Virement -->
-    <button id="pm-vir-btn" class="pm-method-btn">
-      <span class="pm-method-label">
-        <span>Virement bancaire</span>
-        <span class="pm-method-sub">Traitement sous 1-3 jours ouvrés</span>
-      </span>
-      <svg width="20" height="20" fill="none" stroke="#888" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-    </button>
-    <div id="pm-vir-info" class="pm-vir-info">
-      <strong>Coordonnées bancaires Talseume</strong><br>
-      IBAN : FR76 XXXX XXXX XXXX XXXX XXXX XXX<br>
-      BIC : XXXXXXXX<br>
-      Référence : ta commande + ton nom
-    </div>
-
-    <p class="pm-secure">🔒 Paiement 100% sécurisé · SSL · Données chiffrées par Stripe</p>
-  </div>
-</div>
-
-<style>
-#payModal{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
-#payModal.open{opacity:1;pointer-events:all}
-.pm-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
-.pm-box{position:relative;background:#fff;width:min(500px,95vw);max-height:90vh;overflow-y:auto;padding:44px 36px;font-family:'Suisse Intl','Helvetica Neue',sans-serif}
-.pm-close{position:absolute;top:18px;right:22px;font-size:24px;font-weight:300;color:#bbb;background:none;border:none;cursor:pointer;line-height:1}
-.pm-close:hover{color:#080808}
-.pm-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#aaa;margin-bottom:12px}
-.pm-lines{border-top:1px solid #f0f0f0;padding-top:14px;margin-bottom:14px;display:flex;flex-direction:column;gap:10px}
-.pm-line{display:flex;justify-content:space-between;gap:16px;font-size:13px;color:#333}
-.pm-total-row{display:flex;justify-content:space-between;font-size:14px;font-weight:600;border-top:1px solid #f0f0f0;padding-top:14px;margin-bottom:28px;color:#080808}
-.pm-method-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;border:1.5px solid #e8e8e8;background:#fff;padding:16px 18px;cursor:pointer;font-family:inherit;margin-bottom:10px;transition:border-color .2s,background .2s;text-align:left}
-.pm-method-btn:hover{border-color:#080808}
-.pm-method-label{display:flex;flex-direction:column;gap:3px}
-.pm-method-label>span:first-child{font-size:13px;font-weight:500;color:#080808}
-.pm-method-sub{font-size:11px;color:#aaa}
-.pm-method-icons{display:flex;gap:6px;align-items:center}
-.pm-klarna{border-color:#FFB3C7}
-.pm-klarna:hover{border-color:#ff80a0;background:#fff8fa}
-.pm-vir-info{display:none;background:#f7f7f5;padding:14px 18px;font-size:12px;line-height:1.9;color:#555;margin-top:-4px;margin-bottom:10px}
-.pm-secure{margin-top:18px;font-size:11px;color:#ccc;text-align:center}
-</style>
 </body>
 </html>
