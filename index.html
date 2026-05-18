@@ -194,7 +194,7 @@ nav.scrolled .nav-logo img{filter:none}
 
 /* ══ FULL PRODUCT GRID ══ */
 .pgrid-wrap{padding:0 48px 40px}
-.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.pgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
 
 /* ══ BRAND INTRO BAND ══ */
 .brand-band{background:var(--off);padding:90px 56px;text-align:center}
@@ -304,7 +304,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   footer{padding:70px 40px 28px}
 }
 @media(max-width:1024px){
-  .pgrid,.benefits,.carousel{grid-template-columns:repeat(2,1fr)}
+  .pgrid{grid-template-columns:repeat(3,1fr)}.benefits,.carousel{grid-template-columns:repeat(2,1fr)}
   .carousel{grid-auto-columns:calc((100% - 18px)/2)}
   .f-top{grid-template-columns:1fr 1fr;gap:32px}
   .megamenu{grid-template-columns:repeat(3,1fr);padding:28px}
@@ -714,6 +714,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 <div class="pgrid-wrap rv">
   <div class="pgrid">
 
+    <!-- SWEATS -->
     <div class="pcard" onclick="location='product.html?id=sweat-talseume-oversize'">
       <div class="badge-row"><span class="badge">GOTS</span></div>
       <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
@@ -722,17 +723,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       <div class="pcard-info">
         <div class="pcard-name">Sweat Talseume Oversize</div>
         <div class="pcard-footer"><span class="pcard-price">90,00 €</span></div>
-      </div>
-    </div>
-
-    <div class="pcard" onclick="location='product.html?id=tee-shirt-oversize'">
-      <div class="badge-row"><span class="badge">Bio</span></div>
-      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
-      <div class="pcard-img"><img src="images/products/tee-shirt-talseume-noir-oversise.jpg?v=rhude" alt="Tee-Shirt Talseume Oversize" loading="lazy"/></div>
-      <div class="pcard-quick">Choisir les options</div>
-      <div class="pcard-info">
-        <div class="pcard-name">Tee-Shirt Talseume Oversize</div>
-        <div class="pcard-footer"><span class="pcard-price">60,00 €</span></div>
       </div>
     </div>
 
@@ -747,6 +737,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       </div>
     </div>
 
+    <!-- T-SHIRTS -->
     <div class="pcard" onclick="location='product.html?id=tshirt-manches-longues'">
       <div class="badge-row"><span class="badge">240g Bio</span></div>
       <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
@@ -758,6 +749,29 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       </div>
     </div>
 
+    <div class="pcard" onclick="location='product.html?id=tee-shirt-oversize'">
+      <div class="badge-row"><span class="badge">Bio</span></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/tee-shirt-talseume-noir-oversise.jpg?v=rhude" alt="Tee-Shirt Talseume Oversize" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">Tee-Shirt Talseume Oversize</div>
+        <div class="pcard-footer"><span class="pcard-price">60,00 €</span></div>
+      </div>
+    </div>
+
+    <div class="pcard" onclick="location='product.html?id=tshirt-femme'">
+      <div class="badge-row"><span class="badge">Femme</span></div>
+      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+      <div class="pcard-img"><img src="images/products/tshirt-femme-talseume-009.jpg?v=rhude" alt="T-shirt Femme" loading="lazy"/></div>
+      <div class="pcard-quick">Choisir les options</div>
+      <div class="pcard-info">
+        <div class="pcard-name">T-shirt Femme</div>
+        <div class="pcard-footer"><span class="pcard-price">29,00 €</span></div>
+      </div>
+    </div>
+
+    <!-- VESTES -->
     <div class="pcard" onclick="location='product.html?id=veste-coach'">
       <div class="badge-row"><span class="badge">Recyclé</span></div>
       <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
@@ -780,6 +794,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       </div>
     </div>
 
+    <!-- DÉBARDEURS -->
     <div class="pcard" onclick="location='product.html?id=debardeur-femme'">
       <div class="badge-row"><span class="badge">Femme</span></div>
       <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
@@ -791,17 +806,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       </div>
     </div>
 
-    <div class="pcard" onclick="location='product.html?id=tshirt-femme'">
-      <div class="badge-row"><span class="badge">Femme</span></div>
-      <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
-      <div class="pcard-img"><img src="images/products/tshirt-femme-talseume-009.jpg?v=rhude" alt="T-shirt Femme" loading="lazy"/></div>
-      <div class="pcard-quick">Choisir les options</div>
-      <div class="pcard-info">
-        <div class="pcard-name">T-shirt Femme</div>
-        <div class="pcard-footer"><span class="pcard-price">29,00 €</span></div>
-      </div>
-    </div>
-
+    <!-- ACCESSOIRES -->
     <div class="pcard" onclick="location='product.html?id=cagoule'">
       <div class="badge-row"><span class="badge">Identité</span></div>
       <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
@@ -827,7 +832,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     <div class="pcard" onclick="location='product.html?id=casquette-trucker'">
       <div class="badge-row"></div>
       <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
-      <div class="pcard-img"><img src="images/products/IMG_7199.png" alt="Casquette Trucker" loading="lazy"/></div>
+      <div class="pcard-img"><img src="images/products/IMG_7199.jpg" alt="Casquette Trucker" loading="lazy"/></div>
       <div class="pcard-quick">Choisir les options</div>
       <div class="pcard-info">
         <div class="pcard-name">Casquette Trucker</div>
@@ -835,6 +840,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       </div>
     </div>
 
+    <!-- SAC -->
     <div class="pcard" onclick="location='product.html?id=talseume-bag'">
       <div class="badge-row"><span class="badge">80% recyclé</span></div>
       <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
