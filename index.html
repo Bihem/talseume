@@ -318,16 +318,16 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   .stl-grid{grid-template-columns:1fr;gap:24px}
 }
 @media(max-width:768px){
-  nav{padding:0 16px;height:82px;background:#fff;border-bottom:1px solid rgba(0,0,0,.08);box-shadow:0 1px 0 rgba(0,0,0,.04)}
+  nav{padding:0 16px;height:88px}
+  nav.scrolled{height:70px}
   .nav-menu,.nav-cc{display:none}
   .burger{display:flex}
-  .burger span{background:var(--black)}
-  .nav-left{flex:0;gap:14px}
-  .nav-logo{position:static;transform:none;flex:0 0 auto;margin-left:6px;display:flex;align-items:center}
-  .nav-logo img{height:46px;width:auto;filter:none}
-  nav .nav-icon{color:var(--black)}
-  .nav-right{gap:4px;flex:1;justify-content:flex-end}
+  nav .burger span{background:#fff}
+  nav.scrolled .burger span{background:var(--black)}
+  .nav-logo img{height:54px}
+  .nav-right{gap:6px;flex:1;justify-content:flex-end}
   nav .nav-right .nav-icon[aria-label="Recherche"]{display:none}
+  .nav-left{flex:0}
   .hero{height:100svh;min-height:540px}
   .hero-content{padding:0 22px 40px}
   .hero-tag,.hero-title{display:none}
