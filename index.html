@@ -318,18 +318,20 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   .stl-grid{grid-template-columns:1fr;gap:24px}
 }
 @media(max-width:768px){
-  nav{padding:0 16px;height:62px}
+  nav{padding:0 16px;height:82px;background:#fff;border-bottom:1px solid rgba(0,0,0,.08);box-shadow:0 1px 0 rgba(0,0,0,.04)}
   .nav-menu,.nav-cc{display:none}
   .burger{display:flex}
-  .nav-logo img{height:32px}
-  .nav-right{gap:6px;flex:0}
-  .nav-left{flex:0}
+  .burger span{background:var(--black)}
+  .nav-left{flex:0;gap:14px}
+  .nav-logo{position:static;transform:none;flex:0 0 auto;margin-left:6px;display:flex;align-items:center}
+  .nav-logo img{height:46px;width:auto;filter:none}
+  nav .nav-icon{color:var(--black)}
+  .nav-right{gap:4px;flex:1;justify-content:flex-end}
+  nav .nav-right .nav-icon[aria-label="Recherche"]{display:none}
   .hero{height:100svh;min-height:540px}
   .hero-content{padding:0 22px 40px}
-  .hero-tag{font-size:9px;letter-spacing:.24em;margin-bottom:14px}
-  .hero-title{font-size:clamp(42px,12vw,62px);line-height:.9;white-space:nowrap}
-  .hero-title br{display:none}
-  .hero-foot{flex-direction:column;align-items:flex-start;gap:18px;margin-top:24px}
+  .hero-tag,.hero-title{display:none}
+  .hero-foot{flex-direction:column;align-items:flex-start;gap:18px;margin-top:0}
   .hero-desc{font-size:12px;max-width:none}
   .hero-ctas{width:100%;gap:8px}
   .btn-primary,.btn-ghost{flex:1;padding:14px 18px;font-size:10px;letter-spacing:.18em;justify-content:center}
@@ -1125,6 +1127,18 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
 </style>
 
 <script>
+/* ── HERO VIDEO SEAMLESS LOOP ── */
+(() => {
+  const v = document.querySelector('.hero video');
+  if (!v) return;
+  v.addEventListener('timeupdate', () => {
+    if (v.duration && v.duration - v.currentTime < 0.18) {
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    }
+  });
+})();
+
 /* ── PRELOADER ── */
 window.addEventListener('load', () => {
   if(sessionStorage.getItem('visited')){
