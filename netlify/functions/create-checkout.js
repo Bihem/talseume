@@ -24,8 +24,8 @@ exports.handler = async (event) => {
       payment_method_types: ['card', 'klarna'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: successUrl || 'https://talseume.fr?commande=ok',
-      cancel_url: cancelUrl || 'https://talseume.fr',
+      success_url: successUrl || 'https://talseume.com?commande=ok',
+      cancel_url: cancelUrl || 'https://talseume.com',
       locale: 'fr',
       shipping_address_collection: {
         allowed_countries: ['FR', 'BE', 'CH', 'LU', 'MC'],
