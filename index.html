@@ -463,8 +463,6 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
 .search-footer{padding:12px 22px;border-top:1px solid rgba(0,0,0,.07);display:flex;justify-content:space-between;align-items:center}
 .search-footer span{font-size:10px;color:rgba(0,0,0,.3);letter-spacing:.08em}
 
-/* ══ SCROLL PROGRESS BAR ══ */
-#scroll-bar{position:fixed;top:0;left:0;height:1px;width:0%;background:var(--black);z-index:9996;pointer-events:none;transition:width .08s linear}
 
 /* ══ NAV UNDERLINE SLIDE ══ */
 .nav-menu>li>a{position:relative}
@@ -503,7 +501,6 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
 </head>
 <body>
 
-<div id="scroll-bar"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 <div class="cursor-dot" id="cursorDot"></div>
 
@@ -1409,27 +1406,6 @@ window.addEventListener('load',()=>{
   }
 })();
 
-/* ── LQIP BLUR-UP ── */
-(function(){
-  document.querySelectorAll('.pcard-img img,.shop-ton-produit-tile img').forEach(img=>{
-    if(img.complete&&img.naturalWidth>0) return;
-    img.style.cssText+='filter:blur(16px) saturate(0.5);opacity:.8';
-    img.addEventListener('load',()=>{
-      img.style.transition='filter .9s ease,opacity .7s';
-      img.style.filter='';
-      img.style.opacity='';
-    },{once:true});
-  });
-})();
-
-/* ── SCROLL PROGRESS BAR ── */
-(function(){
-  const bar=document.getElementById('scroll-bar');
-  window.addEventListener('scroll',()=>{
-    const pct=window.scrollY/(document.body.scrollHeight-innerHeight);
-    bar.style.width=(pct*100)+'%';
-  },{passive:true});
-})();
 
 /* ── BUTTON TEXT SLIDE ── */
 (function(){
