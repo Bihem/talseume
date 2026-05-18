@@ -141,7 +141,7 @@ nav.scrolled .nav-logo img{filter:none}
 .s-more:hover{border-color:var(--black)}
 
 /* ══ NEW ARRIVALS CAROUSEL ══ */
-.carousel-wrap{padding:0 56px 100px;position:relative}
+.carousel-wrap{padding:0 56px;position:relative}
 .carousel{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 36px)/3);gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:8px}
 .carousel::-webkit-scrollbar{display:none}
 .carousel .pcard{scroll-snap-align:start}
@@ -190,17 +190,17 @@ nav.scrolled .nav-logo img{filter:none}
 .catcard:hover .catcard-title::after{transform:translateX(8px);opacity:1}
 
 /* ══ FULL PRODUCT GRID ══ */
-.pgrid-wrap{padding:0 48px 100px}
+.pgrid-wrap{padding:0 48px}
 .pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 
 /* ══ BRAND INTRO BAND ══ */
-.brand-band{background:var(--off);padding:120px 56px 100px;text-align:center}
+.brand-band{background:var(--off);padding:120px 56px 0;text-align:center}
 .brand-band .s-eyebrow{justify-content:center;display:block;margin-bottom:22px}
 .brand-text{font-size:clamp(16px,1.5vw,22px);font-weight:300;line-height:1.6;max-width:680px;margin:0 auto;color:rgba(0,0,0,.75);letter-spacing:-.005em}
 .brand-text b{font-weight:400;color:var(--black);border-bottom:1px solid rgba(0,0,0,.15);padding-bottom:1px}
 
 /* ══ SHOP TON PRODUIT SECTION (marquee défilant) ══ */
-.shop-ton-produit{background:#fff;padding:120px 0 100px;overflow:hidden}
+.shop-ton-produit{background:#fff;padding:120px 0 0;overflow:hidden}
 .shop-ton-produit .s-head{padding:0 56px 36px}
 .stp-marquee-wrap{overflow:hidden}
 .stp-marquee{display:flex;width:max-content;animation:stpMarquee 40s linear infinite;gap:16px}
@@ -222,7 +222,7 @@ nav.scrolled .nav-logo img{filter:none}
 @media(max-width:768px){.editorial-pair-grid{grid-template-columns:1fr}}
 
 /* ══ MANIFESTO ══ */
-.manifesto{color:#fff;padding:120px 48px 100px;overflow:hidden;text-align:center;position:relative;background:#0a0a0a}
+.manifesto{color:#fff;padding:120px 48px 0;overflow:hidden;text-align:center;position:relative;background:#0a0a0a}
 .manifesto-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.55;filter:grayscale(.4) contrast(1.1)}
 .manifesto::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(10,10,10,.55) 0%,rgba(10,10,10,.85) 60%,rgba(10,10,10,.95) 100%);z-index:1;pointer-events:none}
 .m-content{position:relative;z-index:2;max-width:920px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:32px}
@@ -234,7 +234,7 @@ nav.scrolled .nav-logo img{filter:none}
 .m-cta-link:hover{border-color:#fff;color:#fff}
 
 /* ══ NEWSLETTER ══ */
-.newsletter{padding:120px 56px 100px;background:#fff;text-align:center;border-top:1px solid var(--line-l)}
+.newsletter{padding:120px 56px 0;background:#fff;text-align:center;border-top:1px solid var(--line-l)}
 .nl-eyebrow{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:rgba(0,0,0,.45);margin-bottom:20px;font-weight:400}
 .nl-title{font-size:clamp(24px,3.2vw,42px);font-weight:300;letter-spacing:-.02em;text-transform:none;line-height:1.1;margin-bottom:18px;color:var(--black)}
 .nl-sub{font-size:14px;color:rgba(0,0,0,.6);max-width:540px;margin:0 auto 40px;line-height:1.7;font-weight:300}
@@ -246,7 +246,8 @@ nav.scrolled .nav-logo img{filter:none}
 .nl-mini{font-size:11px;color:rgba(0,0,0,.4);margin-top:18px;letter-spacing:.04em}
 
 /* ══ BENEFITS ══ */
-.benefits{padding:120px 56px 100px;background:var(--off);border-top:1px solid var(--line-l);display:grid;grid-template-columns:repeat(4,1fr);gap:48px}
+.benefits{padding:120px 56px;background:var(--off);border-top:1px solid var(--line-l);display:grid;grid-template-columns:repeat(4,1fr);gap:48px}
+/* benefits = dernière section avant footer, on garde son padding-bottom 120 */
 .bn{text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px;padding:0 12px}
 .bn-icon{width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--black);opacity:.85}
 .bn-icon svg{width:32px;height:32px;stroke:currentColor;fill:none;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
@@ -293,8 +294,8 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 /* ══ RESPONSIVE ══ */
 @media(max-width:1200px){
   .s-head{padding:100px 40px 36px}
-  .carousel-wrap,.pgrid-wrap{padding-left:40px;padding-right:40px;padding-bottom:80px}
-  .brand-band,.newsletter,.manifesto,.benefits,.shop-ton-produit{padding-top:100px;padding-bottom:80px;padding-left:40px;padding-right:40px}
+  .carousel-wrap,.pgrid-wrap{padding:0 40px}
+  .brand-band,.newsletter,.manifesto,.benefits,.shop-ton-produit{padding:100px 40px}
   .shop-ton-produit{padding-left:0;padding-right:0}
   .stl{padding:100px 40px 80px}
   footer{padding:70px 40px 28px}
@@ -329,15 +330,15 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   .s-head{padding:64px 22px 24px;flex-direction:column;align-items:flex-start;gap:12px}
   .s-eyebrow{margin-bottom:10px}
   .s-title{font-size:clamp(28px,8vw,40px)}
-  .carousel-wrap{padding:0 22px 56px}
+  .carousel-wrap{padding:0 22px}
   .car-controls{display:none}
   .carousel{grid-auto-columns:calc((100% - 12px)/2);gap:12px}
-  .pgrid-wrap{padding:0 22px 56px}
+  .pgrid-wrap{padding:0 22px}
   .pgrid{grid-template-columns:repeat(2,1fr);gap:12px}
   .pcard-info{padding:14px 2px 6px}
   .pcard-name{font-size:12px}
   .pcard-price{font-size:12px}
-  .brand-band,.newsletter,.manifesto,.benefits,.shop-ton-produit{padding-top:64px;padding-bottom:56px;padding-left:22px;padding-right:22px}
+  .brand-band,.newsletter,.manifesto,.benefits,.shop-ton-produit{padding:64px 22px}
   .shop-ton-produit{padding-left:0;padding-right:0}
   .brand-text{font-size:18px;line-height:1.5}
   .stl{padding:70px 22px}
