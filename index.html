@@ -1411,7 +1411,7 @@ window.addEventListener('load',()=>{
 
 /* ── LQIP BLUR-UP ── */
 (function(){
-  document.querySelectorAll('.pcard-img img,.editorial-img img,.shop-ton-produit-tile img').forEach(img=>{
+  document.querySelectorAll('.pcard-img img,.shop-ton-produit-tile img').forEach(img=>{
     if(img.complete&&img.naturalWidth>0) return;
     img.style.cssText+='filter:blur(16px) saturate(0.5);opacity:.8';
     img.addEventListener('load',()=>{
