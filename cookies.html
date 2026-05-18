@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Politique cookies — TALSEUME</title>
+<meta name="description" content="Politique cookies — Talseume"/>
+<style>
+@font-face{font-family:'Suisse Intl';src:url('https://cdn.prod.website-files.com/6772f6efe246aaaa73ad2a98/67784f5e4c3068c2e2f22e60_SuisseIntl-Regular.otf')format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Suisse Intl';src:url('https://cdn.prod.website-files.com/6772f6efe246aaaa73ad2a98/67784f815ee57b4c18bdae11_SuisseIntl-Light.otf')format('opentype');font-weight:300;font-display:swap}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--black:#0a0a0a;--off:#faf9f6;--cream:#f4f2ec;--line-l:rgba(0,0,0,.08);--gold:#a8916a;--F:'Suisse Intl','Helvetica Neue',Helvetica,Arial,sans-serif}
+html{background:#fff;overflow-x:hidden;scroll-behavior:smooth}
+body{font-family:var(--F);-webkit-font-smoothing:antialiased;background:#fff;color:var(--black)}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+/* ══ NAV (même que product.html) ══ */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:#fff;padding:0 56px;display:flex;align-items:center;justify-content:space-between;height:96px;border-bottom:1px solid var(--line-l)}
+.nav-left,.nav-right{display:flex;align-items:center;gap:30px;flex:1}
+.nav-right{justify-content:flex-end}
+.nav-menu{display:flex;list-style:none;gap:36px;align-items:center}
+.nav-menu>li>a{font-size:11px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;padding:30px 0;color:var(--black);transition:opacity .25s}
+.nav-menu>li>a:hover,.nav-menu>li>a.active{opacity:.55}
+.nav-logo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+.nav-logo img{height:76px;width:auto}
+.nav-icon{width:38px;height:38px;display:flex;align-items:center;justify-content:center;position:relative;color:var(--black)}
+.nav-icon:hover{opacity:.6}
+.nav-icon svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.cart-count{position:absolute;top:4px;right:4px;background:var(--black);color:#fff;width:16px;height:16px;border-radius:50%;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
+.cart-count.show{opacity:1}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.burger span{width:22px;height:1px;background:var(--black)}
+
+/* ══ PAGE HEAD ══ */
+.page-head{padding:160px 56px 80px;text-align:center;background:#fff;border-bottom:1px solid var(--line-l)}
+.page-eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:rgba(0,0,0,.45);margin-bottom:24px;font-weight:400}
+.page-title{font-size:clamp(48px,8vw,120px);font-weight:300;letter-spacing:-.04em;line-height:1;margin-bottom:24px}
+.page-sub{font-size:15px;font-weight:300;color:rgba(0,0,0,.6);max-width:520px;margin:0 auto;line-height:1.7}
+
+/* ══ CONTACT LAYOUT ══ */
+.contact-wrap{display:grid;grid-template-columns:1fr 1.4fr;gap:80px;padding:100px 56px;max-width:1400px;margin:0 auto}
+@media(max-width:900px){.contact-wrap{grid-template-columns:1fr;gap:60px;padding:60px 24px}}
+
+.contact-info{display:flex;flex-direction:column;gap:48px}
+.info-block .info-eyebrow{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:rgba(0,0,0,.45);margin-bottom:14px;font-weight:400}
+.info-block .info-content{font-size:15px;font-weight:300;line-height:1.7;color:rgba(0,0,0,.85)}
+.info-block .info-content a{border-bottom:1px solid rgba(0,0,0,.15);padding-bottom:1px;transition:border-color .2s}
+.info-block .info-content a:hover{border-color:var(--black)}
+
+.contact-form{display:flex;flex-direction:column;gap:24px}
+.form-eyebrow{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:rgba(0,0,0,.45);margin-bottom:8px;font-weight:400}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:560px){.form-row{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:8px;position:relative}
+.field label{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(0,0,0,.55);font-weight:400}
+.field input,.field select,.field textarea{font-family:inherit;font-size:14px;font-weight:300;border:none;border-bottom:1px solid rgba(0,0,0,.18);background:transparent;padding:10px 0;outline:none;color:var(--black);transition:border-color .2s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--black)}
+.field textarea{resize:vertical;min-height:120px;line-height:1.6}
+.submit-btn{align-self:flex-start;background:var(--black);color:#fff;font-size:12px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;padding:0 38px;height:56px;transition:opacity .25s,transform .35s;border:none;cursor:pointer;margin-top:14px}
+.submit-btn:hover{opacity:.88}
+.form-note{font-size:11px;color:rgba(0,0,0,.45);font-weight:300;letter-spacing:.02em;margin-top:8px}
+.form-success{display:none;background:#0a0a0a;color:#fff;padding:18px 22px;margin-top:14px;font-size:13px;font-weight:300;letter-spacing:.02em}
+.form-success.show{display:block;animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══ MAP / BAND ══ */
+.contact-band{background:var(--off);padding:90px 56px;text-align:center}
+.band-eyebrow{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:rgba(0,0,0,.5);margin-bottom:18px;font-weight:400}
+.band-title{font-size:clamp(28px,3.5vw,46px);font-weight:300;letter-spacing:-.02em;line-height:1.2;max-width:780px;margin:0 auto 28px}
+.band-cta{display:inline-block;padding:18px 36px;border:1px solid var(--black);font-size:11px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--black);transition:background .25s,color .25s}
+.band-cta:hover{background:var(--black);color:#fff}
+
+/* ══ FOOTER (copié sur product.html) ══ */
+footer{background:#0a0a0a;color:#fff;padding:80px 56px 30px;position:relative;overflow:hidden;isolation:isolate}
+.footer-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;opacity:.45;filter:grayscale(.4) contrast(1.1)}
+footer::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(10,10,10,.55) 0%,rgba(10,10,10,.88) 60%,rgba(10,10,10,.96) 100%);z-index:-1;pointer-events:none}
+.f-top{display:grid;grid-template-columns:1.4fr repeat(4,1fr);gap:48px;margin-bottom:60px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.1)}
+.f-brand .f-logo{font-size:13px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;margin-bottom:14px}
+.f-brand p{font-size:13px;font-weight:300;color:rgba(255,255,255,.55);line-height:1.7;max-width:300px;margin-bottom:24px}
+.f-socials{display:flex;gap:12px}
+.f-socials a{width:38px;height:38px;border:1px solid rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;transition:.2s}
+.f-socials a:hover{background:#fff;color:var(--black);border-color:#fff}
+.f-socials svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5}
+.f-col h5{font-size:10px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:16px}
+.f-col ul{list-style:none}
+.f-col li{margin-bottom:10px}
+.f-col a{font-size:13px;font-weight:300;color:rgba(255,255,255,.85);transition:color .2s}
+.f-col a:hover{color:var(--gold)}
+.f-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px}
+.f-copy{font-size:11px;font-weight:300;color:rgba(255,255,255,.45);letter-spacing:.08em}
+.f-pay{display:flex;gap:8px;flex-wrap:wrap}
+.f-pay svg{height:22px}
+@media(max-width:1024px){.f-top{grid-template-columns:1fr 1fr;gap:32px}}
+@media(max-width:768px){
+  nav{padding:0 22px;height:74px}
+  .nav-logo img{height:56px}
+  .nav-menu{display:none}
+  .burger{display:flex}
+  .page-head{padding:120px 22px 60px}
+  footer{padding:60px 24px 24px}
+  .f-top{grid-template-columns:1fr;gap:32px;padding-bottom:32px;margin-bottom:32px}
+  .f-bottom{flex-direction:column;align-items:flex-start}
+}
+
+/* ══ PAGE TRANSITIONS ══ */
+@supports (view-transition-name:auto){
+  ::view-transition-old(root){animation:pt-out .45s cubic-bezier(.76,0,.24,1) forwards}
+  ::view-transition-new(root){animation:pt-in .55s cubic-bezier(.76,0,.24,1) .1s both}
+  @keyframes pt-out{to{opacity:0;transform:translateY(-12px) scale(.985);filter:blur(2px)}}
+  @keyframes pt-in{from{opacity:0;transform:translateY(14px) scale(.99)}}
+}
+.magnetic{will-change:transform;transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+
+/* ══ CURSOR PREMIUM ══ */
+@media (hover:hover) and (pointer:fine){
+  *,a,button,input,textarea,select{cursor:none !important}
+  .cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%);mix-blend-mode:difference;will-change:transform}
+  .cursor-dot{width:6px;height:6px;background:#fff;transition:width .25s cubic-bezier(.77,0,.18,1),height .25s cubic-bezier(.77,0,.18,1)}
+  .cursor-ring{width:34px;height:34px;border:1px solid rgba(255,255,255,.55);background:transparent;transition:width .35s cubic-bezier(.77,0,.18,1),height .35s cubic-bezier(.77,0,.18,1),border-color .25s,opacity .25s}
+  body.c-hover .cursor-dot{width:0;height:0}
+  body.c-hover .cursor-ring{width:54px;height:54px;border-color:rgba(255,255,255,.95)}
+  body.c-click .cursor-ring{width:22px;height:22px}
+}
+
+/* ══ LEGAL PAGE ══ */
+.legal-wrap{max-width:920px;margin:0 auto;padding:80px 56px 120px;font-weight:300;line-height:1.85;color:rgba(0,0,0,.82);font-size:17px}
+@media(max-width:768px){.legal-wrap{padding:60px 24px 80px;font-size:15.5px}}
+.legal-wrap h2{font-size:clamp(24px,2.8vw,34px);font-weight:300;letter-spacing:-.015em;color:var(--black);margin:60px 0 22px}
+.legal-wrap h2:first-child{margin-top:0}
+.legal-wrap h3{font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:var(--black);margin:36px 0 14px}
+.legal-wrap p{margin-bottom:14px}
+.legal-wrap ul{margin:14px 0 18px 22px}
+.legal-wrap li{margin-bottom:8px}
+.legal-wrap strong{font-weight:500;color:var(--black)}
+.legal-wrap a{border-bottom:1px solid rgba(0,0,0,.2);transition:border-color .2s}
+.legal-wrap a:hover{border-color:var(--black)}
+.legal-meta{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:rgba(0,0,0,.45);margin-bottom:40px;display:block}
+.legal-table{width:100%;border-collapse:collapse;margin:18px 0 28px;font-size:15px}
+.legal-table th,.legal-table td{text-align:left;padding:16px 20px;border-bottom:1px solid var(--line-l);vertical-align:top}
+.legal-table th{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:var(--black);background:#fafaf7}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+</head>
+<body>
+
+<!-- CURSOR PREMIUM -->
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <div class="burger" onclick="window.location='/'"><span></span><span></span><span></span></div>
+    <ul class="nav-menu">
+      <li><a href="/#shop">Produits</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+      <li><a href="/blog.html">Blog</a></li>
+    </ul>
+  </div>
+  <a href="/" class="nav-logo"><img src="images/talseume-logo.png" alt="TALSEUME"/></a>
+  <div class="nav-right">
+    <button class="nav-icon" aria-label="Recherche"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+    <button class="nav-icon" aria-label="Compte"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
+    <a href="/favoris.html" class="nav-icon" aria-label="Favoris">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      <span class="cart-count wish-count">0</span>
+    </a>
+    <a href="/" class="nav-icon" aria-label="Panier">
+      <svg viewBox="0 0 24 24"><path d="M4 7h16l-1.6 14H5.6L4 7z"/><path d="M9 7V5a3 3 0 016 0v2"/></svg>
+      <span class="cart-count">0</span>
+    </a>
+  </div>
+</nav>
+
+<!-- PAGE HEAD -->
+<section class="page-head">
+  <div class="page-eyebrow">Cookies & traceurs</div>
+  <h1 class="page-title">Politique cookies</h1>
+  <p class="page-sub">Quels cookies utilisons-nous, à quoi servent-ils, et comment gérer vos préférences.</p>
+</section>
+
+
+
+
+
+<section class="legal-wrap">
+
+<span class="legal-meta">Dernière mise à jour : 18 mai 2026</span>
+
+<h2>1. Qu'est-ce qu'un cookie ?</h2>
+<p>Un cookie est un petit fichier texte déposé sur votre terminal (ordinateur, smartphone, tablette) lors de votre visite sur talseume.fr. Il permet au site de mémoriser certaines informations relatives à votre navigation, afin de faciliter votre expérience, de sécuriser les transactions et de mesurer l'audience.</p>
+<p>Certains cookies sont strictement nécessaires au fonctionnement du site et ne nécessitent pas votre consentement ; d'autres ne sont déposés qu'avec votre <strong>consentement explicite</strong>, exprimé via le bandeau dédié.</p>
+
+<h2>2. Cadre légal</h2>
+<p>L'usage des cookies est régi par l'article 82 de la loi Informatique et Libertés et par les <strong>lignes directrices et recommandations de la CNIL</strong> (notamment celles du 17 septembre 2020). Le consentement, lorsqu'il est requis, est libre, spécifique, éclairé, univoque, et peut être retiré à tout moment.</p>
+
+<h2>3. Cookies utilisés sur talseume.fr</h2>
+<table class="legal-table">
+  <tr><th>Cookie</th><th>Émetteur</th><th>Finalité</th><th>Durée</th><th>Type</th></tr>
+  <tr><td><code>tls-cart</code></td><td>Talseume</td><td>Mémoriser le contenu du panier d'achat entre les visites</td><td>1 an</td><td>Essentiel</td></tr>
+  <tr><td><code>tls-wishlist</code></td><td>Talseume</td><td>Mémoriser les produits ajoutés aux favoris</td><td>1 an</td><td>Essentiel</td></tr>
+  <tr><td><code>tls-cookies</code></td><td>Talseume</td><td>Conserver le choix exprimé sur le bandeau de consentement</td><td>6 mois</td><td>Essentiel</td></tr>
+  <tr><td><code>visited</code></td><td>Talseume</td><td>Ne pas réafficher le preloader d'accueil à chaque visite</td><td>Session</td><td>Essentiel</td></tr>
+  <tr><td><code>__stripe_mid</code>, <code>__stripe_sid</code></td><td>Stripe</td><td>Sécuriser le paiement, prévenir la fraude</td><td>1 an / 30 min</td><td>Essentiel (tiers)</td></tr>
+  <tr><td><code>_ga</code>, <code>_ga_*</code></td><td>Google Analytics</td><td>Mesure d'audience anonymisée (visites uniques, parcours)</td><td>13 mois</td><td>Mesure (sous consentement)</td></tr>
+  <tr><td><code>_fbp</code></td><td>Meta (Facebook)</td><td>Mesure des campagnes publicitaires Instagram/Facebook</td><td>90 jours</td><td>Marketing (sous consentement)</td></tr>
+  <tr><td><code>_gcl_au</code></td><td>Google Ads</td><td>Attribution des conversions publicitaires</td><td>90 jours</td><td>Marketing (sous consentement)</td></tr>
+</table>
+
+<h2>4. Catégories de cookies</h2>
+
+<h3>4.1 — Cookies strictement nécessaires</h3>
+<p>Ils permettent le bon fonctionnement du site (panier, favoris, paiement, sécurité). Conformément à l'article 82 de la loi Informatique et Libertés, ils sont exemptés de consentement. Ils ne peuvent être désactivés sans dégrader fortement votre expérience (impossibilité d'ajouter au panier, par exemple).</p>
+
+<h3>4.2 — Cookies de mesure d'audience</h3>
+<p>Ils nous permettent d'analyser de manière statistique l'utilisation du site (pages les plus consultées, parcours d'achat, taux de conversion) afin d'en améliorer l'ergonomie et le contenu. Les données sont agrégées et anonymisées. Ces cookies ne sont déposés qu'avec votre consentement explicite.</p>
+
+<h3>4.3 — Cookies marketing &amp; publicitaires</h3>
+<p>Ils permettent de mesurer l'efficacité de nos campagnes publicitaires (Instagram, Facebook, Google Ads) et, le cas échéant, de vous adresser des publicités personnalisées en lien avec vos centres d'intérêt. Ils ne sont déposés qu'après votre consentement explicite.</p>
+
+<h2>5. Gérer votre consentement</h2>
+<p>Lors de votre première visite, un bandeau de consentement vous permet&nbsp;:</p>
+<ul>
+  <li>d'<strong>accepter</strong> l'ensemble des cookies en un clic,</li>
+  <li>de <strong>refuser</strong> les cookies non essentiels en un clic,</li>
+  <li>de <strong>personnaliser</strong> finement vos préférences par catégorie.</li>
+</ul>
+<p>Vous pouvez à tout moment modifier ou retirer votre consentement&nbsp;:</p>
+<ul>
+  <li>en effaçant les cookies depuis votre navigateur (vous reverrez alors le bandeau),</li>
+  <li>en cliquant sur le lien « Gérer mes cookies » présent en pied de page (à venir),</li>
+  <li>via les paramètres avancés de votre navigateur.</li>
+</ul>
+<p>Le retrait du consentement n'affecte pas la licéité des traitements effectués avant ce retrait.</p>
+
+<h2>6. Désactivation depuis votre navigateur</h2>
+<p>Vous pouvez bloquer ou supprimer les cookies directement depuis les réglages de votre navigateur. <strong>Attention</strong>&nbsp;: le blocage des cookies essentiels peut empêcher le bon fonctionnement du site (ajout au panier, paiement).</p>
+<ul>
+  <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener">Google Chrome</a></li>
+  <li><a href="https://support.apple.com/fr-fr/guide/safari/sfri11471/mac" target="_blank" rel="noopener">Safari</a></li>
+  <li><a href="https://support.mozilla.org/fr/kb/cookies-informations-sites-enregistrent" target="_blank" rel="noopener">Mozilla Firefox</a></li>
+  <li><a href="https://support.microsoft.com/fr-fr/microsoft-edge/supprimer-les-cookies-dans-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09" target="_blank" rel="noopener">Microsoft Edge</a></li>
+</ul>
+
+<h2>7. Durée de conservation</h2>
+<p>La durée de validité de chaque cookie est précisée dans le tableau de la section 3. Conformément à la recommandation CNIL, la durée maximale est limitée à <strong>13 mois</strong>. À l'expiration, le cookie est automatiquement supprimé et un nouveau consentement vous est demandé.</p>
+
+<h2>8. Réclamation</h2>
+<p>En cas de litige relatif à l'usage des cookies sur le site, vous pouvez contacter Talseume à <a href="mailto:talseumeclothes@gmail.com">talseumeclothes@gmail.com</a> ou saisir la <strong>CNIL</strong>&nbsp;: <a href="https://www.cnil.fr/fr/plaintes" target="_blank" rel="noopener">www.cnil.fr/fr/plaintes</a>.</p>
+
+<h2>9. Modification</h2>
+<p>La présente Politique cookies peut être mise à jour pour refléter l'évolution des outils tiers utilisés ou de la réglementation. La date de dernière mise à jour figure en tête du document.</p>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <img class="footer-bg" src="https://images.unsplash.com/photo-1539389004540-770367e1bccb?w=2000&q=80&auto=format&fit=crop" alt="" aria-hidden="true" loading="lazy"/>
+  <div class="f-top">
+    <div class="f-brand">
+      <div class="f-logo">Talseume</div>
+      <p>Streetwear éco-responsable né à Paris. Coton bio GOTS, matériaux recyclés, fabriqué pour durer.</p>
+      <div class="f-socials">
+        <a href="https://www.instagram.com/talseumeclothing" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="mailto:talseumeclothes@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg></a>
+        <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg></a>
+      </div>
+    </div>
+    <div class="f-col"><h5>Boutique</h5><ul>
+      <li><a href="/#shop">Tous les produits</a></li>
+      <li><a href="/#shop">Homme</a></li>
+      <li><a href="/#shop">Femme</a></li>
+      <li><a href="/#shop">Accessoires</a></li>
+    </ul></div>
+    <div class="f-col"><h5>Aide</h5><ul>
+      <li><a href="#">Livraison & Retours</a></li>
+      <li><a href="#">Suivi de commande</a></li>
+      <li><a href="#">Guide des tailles</a></li>
+      <li><a href="#">FAQ</a></li>
+    </ul></div>
+    <div class="f-col"><h5>La Marque</h5><ul>
+      <li><a href="/#manifesto">Notre histoire</a></li>
+      <li><a href="/blog.html">Journal</a></li>
+      <li><a href="/#newsletter">Newsletter</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+    </ul></div>
+    <div class="f-col"><h5>Légal</h5><ul>
+      <li><a href="/mentions-legales.html">Mentions légales</a></li>
+      <li><a href="/cgv.html">CGV</a></li>
+      <li><a href="/confidentialite.html">Politique de confidentialité</a></li>
+      <li><a href="/cookies.html">Cookies</a></li>
+    </ul></div>
+  </div>
+  <div class="f-bottom">
+    <span class="f-copy">©2026 Talseume — Tous droits réservés</span>
+    <div class="f-pay">
+      <svg viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#1A1F71"/><text x="8" y="26" font-family="Arial" font-size="16" font-weight="bold" fill="white">VISA</text></svg>
+      <svg viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#fff"/><circle cx="23" cy="19" r="11" fill="#EB001B"/><circle cx="37" cy="19" r="11" fill="#F79E1B"/><path d="M30 9.8a11 11 0 010 18.4A11 11 0 0130 9.8z" fill="#FF5F00"/></svg>
+      <svg viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#000"/><text x="8" y="22" font-family="Arial" font-size="11" fill="white">Apple</text><text x="8" y="33" font-family="Arial" font-size="10" fill="white">Pay</text></svg>
+      <svg viewBox="0 0 60 38"><rect width="60" height="38" rx="5" fill="#FFB3C7"/><text x="6" y="25" font-family="Arial" font-size="12" font-weight="bold" fill="#17120E">Klarna</text></svg>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── LENIS + GSAP ── */
+const reduceMotion = matchMedia('(prefers-reduced-motion:reduce)').matches;
+if (!reduceMotion && typeof Lenis !== 'undefined') {
+  const lenis = new Lenis({duration:1.15, easing:t=>Math.min(1, 1.001 - Math.pow(2,-10*t)), smoothWheel:true, smoothTouch:false});
+  function raf(time){ lenis.raf(time); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+  if (typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(time => lenis.raf(time*1000));
+    gsap.ticker.lagSmoothing(0);
+  }
+}
+if (!reduceMotion && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+  gsap.fromTo('.page-eyebrow,.page-title,.page-sub', {y:30,opacity:0}, {y:0,opacity:1,duration:1,ease:'power3.out',stagger:.15,delay:.1});
+  gsap.utils.toArray('.info-block').forEach(el => gsap.fromTo(el, {y:30,opacity:0}, {y:0,opacity:1,duration:.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 88%'}}));
+  gsap.fromTo('.band-eyebrow,.band-title,.band-cta', {y:30,opacity:0}, {y:0,opacity:1,duration:.9,ease:'power3.out',stagger:.12,scrollTrigger:{trigger:'.contact-band',start:'top 80%'}});
+}
+
+/* ── PAGE TRANSITIONS ── */
+if (document.startViewTransition) {
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href]');
+    if (!a) return;
+    const url = new URL(a.href, location.href);
+    if (url.origin !== location.origin) return;
+    if (a.target === '_blank' || a.hasAttribute('download')) return;
+    if (url.pathname === location.pathname && url.hash) return;
+    e.preventDefault();
+    document.startViewTransition(() => { location.href = a.href; });
+  });
+}
+
+/* ── MAGNETIC ── */
+if (!reduceMotion && matchMedia('(hover:hover) and (pointer:fine)').matches) {
+  document.querySelectorAll('.submit-btn, .band-cta, .nav-icon, .magnetic').forEach(btn => {
+    btn.classList.add('magnetic');
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      const x = e.clientX - r.left - r.width/2;
+      const y = e.clientY - r.top - r.height/2;
+      btn.style.transform = `translate(${x*.22}px,${y*.32}px)`;
+    });
+    btn.addEventListener('mouseleave', () => btn.style.transform = '');
+  });
+}
+
+/* ── CURSOR PREMIUM ── */
+(function(){
+  if (!matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  if (!dot || !ring) return;
+  let mx = innerWidth/2, my = innerHeight/2, rx = mx, ry = my;
+  addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`; });
+  (function tick(){ rx += (mx-rx)*.18; ry += (my-ry)*.18; ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`; requestAnimationFrame(tick); })();
+  const hoverSel = 'a,button,[onclick],.nav-icon,input,textarea,select,label,.magnetic';
+  document.body.addEventListener('mouseover', e => { if (e.target.closest(hoverSel)) document.body.classList.add('c-hover'); });
+  document.body.addEventListener('mouseout', e => { if (e.target.closest(hoverSel)) document.body.classList.remove('c-hover'); });
+  addEventListener('mousedown', () => document.body.classList.add('c-click'));
+  addEventListener('mouseup', () => document.body.classList.remove('c-click'));
+  addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
+  addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
+})();
+
+/* ── SUBMIT FORM (placeholder, à brancher sur Netlify Forms ou Function) ── */
+function submitContact(e){
+  e.preventDefault();
+  const f = e.target;
+  // TODO: brancher sur Netlify Forms / Function / Resend
+  document.getElementById('formSuccess').classList.add('show');
+  setTimeout(() => f.reset(), 300);
+  return false;
+}
+</script>
+</body>
+</html>

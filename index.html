@@ -401,9 +401,39 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 /* ══ ED Variants (for product pages compat) ══ */
 .vpill{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;border:1px solid rgba(0,0,0,.2);padding:6px 14px;cursor:pointer;background:#fff}
 .vpill:hover,.vpill.sel{background:var(--black);border-color:var(--black);color:#fff}
+
+/* ══ PAGE TRANSITIONS ══ */
+@supports (view-transition-name:auto){
+  ::view-transition-old(root){animation:pt-out .45s cubic-bezier(.76,0,.24,1) forwards}
+  ::view-transition-new(root){animation:pt-in .55s cubic-bezier(.76,0,.24,1) .1s both}
+  @keyframes pt-out{to{opacity:0;transform:translateY(-12px) scale(.985);filter:blur(2px)}}
+  @keyframes pt-in{from{opacity:0;transform:translateY(14px) scale(.99)}}
+}
+
+/* ══ CURSOR ══ */
+@media (hover:hover) and (pointer:fine){
+  *,a,button,input,textarea,select{cursor:none !important}
+  .cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%);mix-blend-mode:difference;will-change:transform}
+  .cursor-dot{width:6px;height:6px;background:#fff;transition:width .25s,height .25s}
+  .cursor-ring{width:34px;height:34px;border:1px solid rgba(255,255,255,.55);background:transparent;transition:width .35s,height .35s,opacity .25s}
+  body.c-hover .cursor-dot{width:0;height:0}
+  body.c-hover .cursor-ring{width:54px;height:54px;border-color:rgba(255,255,255,.95)}
+  body.c-click .cursor-ring{width:22px;height:22px}
+}
+
+/* ══ WISHLIST HEART ══ */
+.pcard-fav{opacity:.85 !important;background:rgba(255,255,255,.92) !important;backdrop-filter:blur(6px);color:var(--black) !important}
+.pcard-fav svg{stroke:var(--black);fill:none;stroke-width:1.4;transition:fill .2s}
+.pcard-fav.active svg{fill:var(--black)}
+.pcard-fav:hover{transform:scale(1.08);transition:transform .25s}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.0.42/dist/lenis.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
 </head>
 <body>
+
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-dot" id="cursorDot"></div>
 
 <!-- PRELOADER -->
 <div id="preloader">
@@ -522,8 +552,12 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     <button class="nav-icon" aria-label="Compte">
       <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
     </button>
+    <a href="/favoris.html" class="nav-icon" aria-label="Favoris">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      <span class="cart-count wish-count">0</span>
+    </a>
     <button class="nav-icon" onclick="openCart()" aria-label="Panier">
-      <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M4 7h16l-1.6 14H5.6L4 7z"/><path d="M9 7V5a3 3 0 016 0v2"/></svg>
       <span id="cartCount" class="cart-count">0</span>
     </button>
   </div>
@@ -632,7 +666,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     <div class="pcard" onclick="location='product.html?id=tee-shirt-oversize'">
       <div class="badge-row"><span class="badge">Bio</span></div>
       <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
-      <div class="pcard-img"><img src="images/products/tee-shirt-talseume-noir-oversise.jpg" alt="Tee-Shirt Talseume Oversize" loading="lazy"/></div>
+      <div class="pcard-img"><img src="images/products/tee-shirt-talseume-noir-oversise.jpg?v=rhude" alt="Tee-Shirt Talseume Oversize" loading="lazy"/></div>
       <div class="pcard-quick">Choisir les options</div>
       <div class="pcard-info">
         <div class="pcard-name">Tee-Shirt Talseume Oversize</div>
@@ -716,7 +750,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     <div class="pcard" onclick="location='product.html?id=tee-shirt-oversize'">
       <div class="badge-row"><span class="badge">Bio</span></div>
       <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
-      <div class="pcard-img"><img src="images/products/tee-shirt-talseume-noir-oversise.jpg" alt="Tee-Shirt Talseume Oversize" loading="lazy"/></div>
+      <div class="pcard-img"><img src="images/products/tee-shirt-talseume-noir-oversise.jpg?v=rhude" alt="Tee-Shirt Talseume Oversize" loading="lazy"/></div>
       <div class="pcard-quick">Choisir les options</div>
       <div class="pcard-info">
         <div class="pcard-name">Tee-Shirt Talseume Oversize</div>
@@ -782,7 +816,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     <div class="pcard" onclick="location='product.html?id=tshirt-femme'">
       <div class="badge-row"><span class="badge">Femme</span></div>
       <button class="pcard-fav" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
-      <div class="pcard-img"><img src="images/products/tshirt-femme-talseume-009.jpg" alt="T-shirt Femme" loading="lazy"/></div>
+      <div class="pcard-img"><img src="images/products/tshirt-femme-talseume-009.jpg?v=rhude" alt="T-shirt Femme" loading="lazy"/></div>
       <div class="pcard-quick">Choisir les options</div>
       <div class="pcard-info">
         <div class="pcard-name">T-shirt Femme</div>
@@ -1182,14 +1216,87 @@ document.getElementById('pm-vir-btn').addEventListener('click',function(){
 /* ── COOKIE BANNER ── */
 function cookieDecide(choice){
   localStorage.setItem('tls-cookies', choice);
-  document.getElementById('cookie-wrap').classList.remove('show');
-  setTimeout(()=>document.getElementById('cookie-wrap').remove(), 400);
+  const cw = document.getElementById('cookie-wrap');
+  cw?.classList.remove('show');
+  setTimeout(()=>cw?.remove(), 400);
 }
-if(!localStorage.getItem('tls-cookies')){
-  requestAnimationFrame(()=>document.getElementById('cookie-wrap').classList.add('show'));
-}else{
-  document.getElementById('cookie-wrap').remove();
+document.addEventListener('DOMContentLoaded', () => {
+  const cw = document.getElementById('cookie-wrap');
+  if(!localStorage.getItem('tls-cookies')){
+    requestAnimationFrame(()=> cw?.classList.add('show'));
+  }else{
+    cw?.remove();
+  }
+});
+
+/* ── WISHLIST ── */
+let wishlist = JSON.parse(localStorage.getItem('tls-wishlist') || '[]');
+function saveWish(){ localStorage.setItem('tls-wishlist', JSON.stringify(wishlist)); renderWishUI(); }
+function toggleWish(pid, btn){
+  const i = wishlist.indexOf(pid);
+  if (i > -1) wishlist.splice(i, 1); else wishlist.push(pid);
+  saveWish();
+  if (btn) btn.classList.toggle('active', wishlist.includes(pid));
 }
+function renderWishUI(){
+  document.querySelectorAll('.wish-count').forEach(el => {
+    el.textContent = wishlist.length;
+    el.classList.toggle('show', wishlist.length > 0);
+  });
+  document.querySelectorAll('.pcard-fav[data-pid]').forEach(b => {
+    b.classList.toggle('active', wishlist.includes(b.dataset.pid));
+  });
+}
+document.querySelectorAll('.pcard').forEach(card => {
+  const link = card.querySelector('a[href*="product.html"]');
+  const fav = card.querySelector('.pcard-fav');
+  if (!fav || !link) return;
+  const m = link.href.match(/[?&]id=([^&#]+)/);
+  if (!m) return;
+  const pid = decodeURIComponent(m[1]);
+  fav.dataset.pid = pid;
+  fav.classList.toggle('active', wishlist.includes(pid));
+  fav.onclick = e => { e.preventDefault(); e.stopPropagation(); toggleWish(pid, fav); };
+});
+renderWishUI();
+
+/* ── LENIS SMOOTH SCROLL ── */
+const reduceMotion = matchMedia('(prefers-reduced-motion:reduce)').matches;
+if (!reduceMotion && typeof Lenis !== 'undefined') {
+  const lenis = new Lenis({duration:1.15, easing:t=>Math.min(1, 1.001 - Math.pow(2,-10*t)), smoothWheel:true, smoothTouch:false});
+  function raf(time){ lenis.raf(time); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+}
+
+/* ── PAGE TRANSITIONS ── */
+if (document.startViewTransition) {
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href]');
+    if (!a) return;
+    const url = new URL(a.href, location.href);
+    if (url.origin !== location.origin) return;
+    if (a.target === '_blank' || a.hasAttribute('download')) return;
+    if (url.pathname === location.pathname && url.hash) return;
+    e.preventDefault();
+    document.startViewTransition(() => { location.href = a.href; });
+  });
+}
+
+/* ── CURSOR CUSTOM ── */
+(function(){
+  if (!matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  if (!dot || !ring) return;
+  let mx = innerWidth/2, my = innerHeight/2, rx = mx, ry = my;
+  addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`; });
+  (function tick(){ rx += (mx-rx)*.18; ry += (my-ry)*.18; ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`; requestAnimationFrame(tick); })();
+  const hoverSel = 'a,button,.pcard,.pcard-fav,.cswatch,.pill,.vpill,.cookie-btn,.nav-icon';
+  document.body.addEventListener('mouseover', e => { if (e.target.closest(hoverSel)) document.body.classList.add('c-hover'); });
+  document.body.addEventListener('mouseout', e => { if (e.target.closest(hoverSel)) document.body.classList.remove('c-hover'); });
+  addEventListener('mousedown', () => document.body.classList.add('c-click'));
+  addEventListener('mouseup', () => document.body.classList.remove('c-click'));
+})();
 </script>
 
 <!-- COOKIE BANNER -->

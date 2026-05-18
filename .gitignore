@@ -2,3 +2,6 @@
 CLAUDE.md
 .claude/
 hero.mov
+
+# Local Netlify folder
+.netlify
