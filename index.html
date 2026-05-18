@@ -462,6 +462,41 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
 .search-item-price{font-size:11px;color:rgba(0,0,0,.45)}
 .search-footer{padding:12px 22px;border-top:1px solid rgba(0,0,0,.07);display:flex;justify-content:space-between;align-items:center}
 .search-footer span{font-size:10px;color:rgba(0,0,0,.3);letter-spacing:.08em}
+
+/* ══ SCROLL PROGRESS BAR ══ */
+#scroll-bar{position:fixed;top:0;left:0;height:1px;width:0%;background:var(--black);z-index:9996;pointer-events:none;transition:width .08s linear}
+
+/* ══ NAV UNDERLINE SLIDE ══ */
+.nav-menu>li>a{position:relative}
+.nav-menu>li>a::after{content:'';position:absolute;bottom:26px;left:0;width:0;height:1px;background:currentColor;transition:width .45s cubic-bezier(.16,1,.3,1)}
+.nav-menu>li>a:hover::after{width:100%}
+
+/* ══ BUTTON TEXT SLIDE ══ */
+.btn-slide{overflow:hidden}
+.btn-slide .bs-txt{display:flex;align-items:center;gap:14px;transition:transform .52s cubic-bezier(.16,1,.3,1)}
+.btn-slide .bs-clone{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:14px;transform:translateY(110%);transition:transform .52s cubic-bezier(.16,1,.3,1)}
+.btn-slide:hover .bs-txt{transform:translateY(-110%)}
+.btn-slide:hover .bs-clone{transform:translateY(0)}
+
+/* ══ PCARD INFO LIFT ══ */
+.pcard-info{transition:transform .55s cubic-bezier(.16,1,.3,1)}
+.pcard:hover .pcard-info{transform:translateY(-4px)}
+
+/* ══ EDITORIAL CLIP REVEAL ══ */
+.editorial-img{clip-path:inset(0 0 100% 0);transition:clip-path 1.4s cubic-bezier(.16,1,.3,1)}
+.editorial-img.clip-in{clip-path:inset(0 0 0% 0)}
+.editorial-img:nth-child(2).clip-in{transition-delay:.12s}
+.editorial-img:nth-child(3).clip-in{transition-delay:.24s}
+.editorial-img:nth-child(4).clip-in{transition-delay:.36s}
+
+/* ══ FOOTER LINKS ══ */
+.f-col a{position:relative;display:inline-block}
+.f-col a::after{content:'';position:absolute;bottom:-1px;left:0;width:0;height:1px;background:var(--gold);transition:width .4s cubic-bezier(.16,1,.3,1)}
+.f-col a:hover::after{width:100%}
+
+/* ══ PCARD FAV PULSE ══ */
+@keyframes wishPulse{0%{transform:scale(1)}40%{transform:scale(1.28)}70%{transform:scale(.92)}100%{transform:scale(1)}}
+.pcard-fav.pulse{animation:wishPulse .4s cubic-bezier(.16,1,.3,1)}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.0.42/dist/lenis.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
@@ -469,6 +504,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
 </head>
 <body>
 
+<div id="scroll-bar"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 <div class="cursor-dot" id="cursorDot"></div>
 
@@ -1385,6 +1421,72 @@ window.addEventListener('load',()=>{
       img.style.opacity='';
     },{once:true});
   });
+})();
+
+/* ── SCROLL PROGRESS BAR ── */
+(function(){
+  const bar=document.getElementById('scroll-bar');
+  window.addEventListener('scroll',()=>{
+    const pct=window.scrollY/(document.body.scrollHeight-innerHeight);
+    bar.style.width=(pct*100)+'%';
+  },{passive:true});
+})();
+
+/* ── BUTTON TEXT SLIDE ── */
+(function(){
+  if(!matchMedia('(hover:hover)').matches) return;
+  document.querySelectorAll('.btn-primary,.btn-ghost').forEach(btn=>{
+    const html=btn.innerHTML;
+    btn.innerHTML=`<span class="bs-txt">${html}</span><span class="bs-clone" aria-hidden="true">${html}</span>`;
+    btn.classList.add('btn-slide');
+    btn.style.position='relative';
+  });
+})();
+
+/* ── MAGNETIC BUTTONS ── */
+(function(){
+  if(!matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  document.querySelectorAll('.btn-primary,.btn-ghost,.nav-icon').forEach(el=>{
+    el.addEventListener('mousemove',e=>{
+      const r=el.getBoundingClientRect();
+      const x=(e.clientX-r.left-r.width/2)*.22;
+      const y=(e.clientY-r.top-r.height/2)*.28;
+      el.style.transform=`translate(${x}px,${y}px)`;
+      el.style.transition='transform .1s ease';
+    });
+    el.addEventListener('mouseleave',()=>{
+      el.style.transform='';
+      el.style.transition='transform .65s cubic-bezier(.16,1,.3,1)';
+    });
+  });
+})();
+
+/* ── EDITORIAL CLIP-PATH REVEAL ── */
+(function(){
+  const editObs=new IntersectionObserver(es=>es.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('clip-in');editObs.unobserve(e.target);}
+  }),{threshold:.08});
+  document.querySelectorAll('.editorial-img').forEach(el=>editObs.observe(el));
+})();
+
+/* ── WISHLIST HEART PULSE ── */
+const origToggle=toggleWish;
+window.toggleWish=function(pid,btn){
+  origToggle(pid,btn);
+  if(btn){btn.classList.remove('pulse');void btn.offsetWidth;btn.classList.add('pulse');}
+};
+
+/* ── HERO PARALLAX ── */
+(function(){
+  const hc=document.querySelector('.hero-content');
+  const hg=document.querySelector('.hero-grad');
+  if(!hc) return;
+  window.addEventListener('scroll',()=>{
+    const y=Math.min(window.scrollY,innerHeight);
+    hc.style.transform=`translateY(${y*.18}px)`;
+    hc.style.opacity=1-y/innerHeight*1.4;
+    if(hg) hg.style.opacity=.6+y/innerHeight*.4;
+  },{passive:true});
 })();
 </script>
 
