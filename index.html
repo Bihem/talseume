@@ -1232,12 +1232,19 @@ function renderWishUI(){
   });
 }
 document.querySelectorAll('.pcard').forEach(card => {
-  const link = card.querySelector('a[href*="product.html"]');
   const fav = card.querySelector('.pcard-fav');
-  if (!fav || !link) return;
-  const m = link.href.match(/[?&]id=([^&#]+)/);
-  if (!m) return;
-  const pid = decodeURIComponent(m[1]);
+  if (!fav) return;
+  let pid;
+  const link = card.querySelector('a[href*="product.html"]');
+  if (link) {
+    const m = link.href.match(/[?&]id=([^&#]+)/);
+    if (m) pid = decodeURIComponent(m[1]);
+  } else {
+    const oc = card.getAttribute('onclick') || '';
+    const m = oc.match(/id=([^'"&#]+)/);
+    if (m) pid = decodeURIComponent(m[1]);
+  }
+  if (!pid) return;
   fav.dataset.pid = pid;
   fav.classList.toggle('active', wishlist.includes(pid));
   fav.onclick = e => { e.preventDefault(); e.stopPropagation(); toggleWish(pid, fav); };
