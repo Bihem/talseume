@@ -443,14 +443,6 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
 .s-title .sw-wrap:nth-child(4) .sw{transition-delay:.24s}
 .s-title .sw-wrap:nth-child(5) .sw{transition-delay:.32s}
 
-/* ══ COUNTDOWN ══ */
-.hero-drop{display:flex;align-items:center;gap:20px;margin-bottom:20px}
-.drop-label{font-size:9px;letter-spacing:.36em;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:400}
-.drop-timer{display:flex;align-items:baseline;gap:4px}
-.drop-unit{text-align:center;min-width:32px}
-.drop-num{font-size:20px;font-weight:300;color:#fff;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
-.drop-sep{font-size:14px;color:rgba(255,255,255,.25);font-weight:300;margin:0 2px}
-.drop-lbl{font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);display:block;margin-top:2px}
 
 /* ══ SEARCH MODAL ══ */
 #search-modal{position:fixed;inset:0;z-index:8500;display:flex;align-items:flex-start;justify-content:center;padding-top:14vh;background:rgba(250,249,246,.94);backdrop-filter:saturate(1.8) blur(24px);opacity:0;pointer-events:none;transition:opacity .28s}
@@ -614,18 +606,6 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
   <div class="hero-grad"></div>
   <div class="hero-content">
     <div class="hero-tag">Streetwear Éco-Responsable · Paris · SS26</div>
-    <div class="hero-drop">
-      <span class="drop-label">Prochain drop</span>
-      <div class="drop-timer" id="drop-nums">
-        <div class="drop-unit"><span class="drop-num">00</span><span class="drop-lbl">Jours</span></div>
-        <span class="drop-sep">:</span>
-        <div class="drop-unit"><span class="drop-num">00</span><span class="drop-lbl">Heures</span></div>
-        <span class="drop-sep">:</span>
-        <div class="drop-unit"><span class="drop-num">00</span><span class="drop-lbl">Min</span></div>
-        <span class="drop-sep">:</span>
-        <div class="drop-unit"><span class="drop-num">00</span><span class="drop-lbl">Sec</span></div>
-      </div>
-    </div>
     <h1 class="hero-title">TAL<br>SEU<br>ME</h1>
     <div class="hero-foot">
       <p class="hero-desc">Coton bio GOTS. Matériaux recyclés.<br>Fabriqué pour durer.</p>
@@ -1358,22 +1338,6 @@ window.addEventListener('load',()=>{
   }
 });
 
-/* ── COUNTDOWN ── */
-(function(){
-  const DROP=new Date('2026-06-21T10:00:00');
-  const nn=document.getElementById('drop-nums');
-  if(!nn) return;
-  const units=nn.querySelectorAll('.drop-num');
-  function tick(){
-    let d=Math.max(0,DROP-new Date());
-    const days=Math.floor(d/864e5);d-=days*864e5;
-    const hrs=Math.floor(d/36e5);d-=hrs*36e5;
-    const min=Math.floor(d/6e4);d-=min*6e4;
-    const sec=Math.floor(d/1e3);
-    [days,hrs,min,sec].forEach((v,i)=>units[i].textContent=String(v).padStart(2,'0'));
-  }
-  tick();setInterval(tick,1000);
-})();
 
 /* ── SEARCH Cmd+K ── */
 (function(){
