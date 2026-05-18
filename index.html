@@ -338,7 +338,8 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   .s-title{font-size:clamp(28px,8vw,40px)}
   .carousel-wrap{padding:0 22px 60px}
   .car-controls{display:none}
-  .carousel{grid-auto-columns:calc(50vw - 28px);gap:12px}
+  .carousel{display:flex;flex-wrap:nowrap;gap:12px}
+  .carousel .pcard{flex:0 0 calc(50vw - 28px);width:calc(50vw - 28px)}
   .pgrid-wrap{padding:0 22px 60px}
   .pgrid{grid-template-columns:repeat(2,1fr);gap:12px}
   .pcard-info{padding:14px 2px 6px}
