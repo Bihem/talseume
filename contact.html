@@ -148,6 +148,13 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.0.42/dist/lenis.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<link rel="canonical" href="https://talseume.com/contact.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://talseume.com/contact.html"/>
+<meta property="og:title" content="Contact — TALSEUME"/>
+<meta property="og:description" content="Contactez Talseume — collaboration, presse, service client, B2B."/>
+<meta property="og:image" content="https://talseume.com/images/talseume-logo.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
 </head>
 <body>
 
@@ -220,7 +227,9 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     </div>
   </aside>
 
-  <form class="contact-form" id="contactForm" onsubmit="return submitContact(event)">
+  <form class="contact-form" id="contactForm" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="return submitContact(event)">
+    <input type="hidden" name="form-name" value="contact"/>
+    <p style="display:none"><label>Ne pas remplir : <input name="bot-field"/></label></p>
     <div class="form-eyebrow">— Formulaire</div>
     <div class="form-row">
       <div class="field">
@@ -377,13 +386,21 @@ if (!reduceMotion && matchMedia('(hover:hover) and (pointer:fine)').matches) {
   addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
 })();
 
-/* ── SUBMIT FORM (placeholder, à brancher sur Netlify Forms ou Function) ── */
+/* ── SUBMIT FORM (Netlify Forms) ── */
 function submitContact(e){
   e.preventDefault();
   const f = e.target;
-  // TODO: brancher sur Netlify Forms / Function / Resend
-  document.getElementById('formSuccess').classList.add('show');
-  setTimeout(() => f.reset(), 300);
+  const data = new FormData(f);
+  fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams(data).toString()})
+    .then(() => {
+      document.getElementById('formSuccess').classList.add('show');
+      setTimeout(() => f.reset(), 300);
+    })
+    .catch(err => {
+      const s = document.getElementById('formSuccess');
+      s.textContent = 'Erreur — réessaye ou écris-nous directement à talseumeclothes@gmail.com.';
+      s.classList.add('show');
+    });
   return false;
 }
 

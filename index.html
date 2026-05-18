@@ -510,6 +510,13 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.0.42/dist/lenis.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js" defer></script>
+<link rel="canonical" href="https://talseume.com/"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://talseume.com/"/>
+<meta property="og:title" content="TALSEUME — Streetwear Éco-Responsable Paris"/>
+<meta property="og:description" content="Streetwear éco-responsable né à Paris. Coton bio GOTS, matériaux recyclés. Fabriqué pour durer."/>
+<meta property="og:image" content="https://talseume.com/images/talseume-logo.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
 </head>
 <body>
 
@@ -949,8 +956,10 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
   <div class="nl-eyebrow">Rejoindre la maison</div>
   <h2 class="nl-title">10% de réduction<br>sur ta première commande</h2>
   <p class="nl-sub">Drops en avant-première, accès aux éditions limitées et offres réservées à la communauté Talseume.</p>
-  <form class="nl-form" onsubmit="event.preventDefault();this.querySelector('button').textContent='Merci ✓';this.querySelector('input').value=''">
-    <input type="email" placeholder="Ton adresse email" required/>
+  <form class="nl-form" name="newsletter" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="submitNewsletter(event)">
+    <input type="hidden" name="form-name" value="newsletter"/>
+    <p style="display:none"><label>Ne pas remplir : <input name="bot-field"/></label></p>
+    <input type="email" name="email" placeholder="Ton adresse email" required/>
     <button type="submit">S'inscrire</button>
   </form>
   <p class="nl-mini">Pas de spam. Désinscription en un clic.</p>
@@ -1112,6 +1121,16 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
 </style>
 
 <script>
+/* ── NEWSLETTER (Netlify Forms) ── */
+function submitNewsletter(e){
+  e.preventDefault();
+  const f = e.target;
+  const data = new FormData(f);
+  fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams(data).toString()})
+    .then(() => { f.querySelector('button').textContent = 'Merci ✓'; f.querySelector('input[type=email]').value = ''; })
+    .catch(() => { f.querySelector('button').textContent = 'Erreur — réessaye'; });
+}
+
 /* ── HERO VIDEO SEAMLESS LOOP ── */
 (() => {
   const v = document.querySelector('.hero video');
