@@ -34,6 +34,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:#fff;padding:0 56
 .cart-count.show{opacity:1}
 .burger{display:none;flex-direction:column;gap:5px;cursor:pointer}
 .burger span{width:22px;height:1px;background:var(--black)}
+.nav-icon[aria-label="Recherche"]{display:none}
+
+/* ══ MOBILE MENU ══ */
+.mobile-menu{position:fixed;top:0;right:0;bottom:0;width:min(82vw,360px);background:#fff;z-index:600;transform:translateX(100%);transition:transform .4s cubic-bezier(.76,0,.24,1);overflow-y:auto;padding:80px 28px 40px;box-shadow:-12px 0 48px rgba(0,0,0,.08)}
+.mobile-menu.open{transform:none}
+.mobile-menu-close{position:absolute;top:24px;right:24px;font-size:32px;font-weight:300;line-height:1}
+.mm-mobile-section{margin-bottom:32px;border-bottom:1px solid var(--line-l);padding-bottom:24px}
+.mm-mobile-section a{display:block;font-size:18px;font-weight:400;padding:10px 0;color:var(--black)}
 
 /* ══ PAGE HEAD ══ */
 .page-head{padding:160px 56px 80px;text-align:center;background:#fff}
@@ -100,11 +108,17 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .f-pay svg{height:22px}
 @media(max-width:1024px){.f-top{grid-template-columns:1fr 1fr;gap:32px}}
 @media(max-width:768px){
-  nav{padding:0 22px;height:74px}
-  .nav-logo img{height:56px}
+  nav{padding:0 16px;height:96px}
   .nav-menu{display:none}
   .burger{display:flex}
-  .page-head{padding:120px 22px 60px}
+  .nav-left{order:3;flex:0 0 auto;margin-left:2px}
+  .nav-right{order:2;flex:0 0 auto;gap:6px;justify-content:flex-end}
+  .nav-logo{position:static;transform:none;order:1;flex:0 0 auto;margin-right:auto;display:flex;align-items:center}
+  .nav-logo img{height:72px;width:auto}
+  .page-head{padding:120px 22px 50px}
+  .page-title{font-size:clamp(40px,11vw,64px)}
+  .page-sub{font-size:15px}
+  .contact-band{padding:60px 22px}
   footer{padding:60px 24px 24px}
   .f-top{grid-template-columns:1fr;gap:32px;padding-bottom:32px;margin-bottom:32px}
   .f-bottom{flex-direction:column;align-items:flex-start}
@@ -144,7 +158,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 <!-- NAV -->
 <nav>
   <div class="nav-left">
-    <div class="burger" onclick="window.location='/'"><span></span><span></span><span></span></div>
+    <div class="burger" onclick="document.getElementById('mobileMenu').classList.add('open')"><span></span><span></span><span></span></div>
     <ul class="nav-menu">
       <li><a href="/#shop">Boutique</a></li>
       <li><a href="/contact.html" class="active">Contacte</a></li>
@@ -165,6 +179,16 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     </a>
   </div>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" onclick="document.getElementById('mobileMenu').classList.remove('open')">×</button>
+  <div class="mm-mobile-section">
+    <a href="/#shop">Boutique</a>
+    <a href="/contact.html">Contacte</a>
+    <a href="/blog.html">Blog</a>
+  </div>
+</div>
 
 <!-- PAGE HEAD -->
 <section class="page-head">
