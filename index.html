@@ -309,17 +309,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .pcard{transition:transform .6s cubic-bezier(.16,1,.3,1)}
 .pcard:hover{transform:translateY(-4px)}
 
-/* ══ MARQUEE SS26 ══ */
-.marquee-band{background:var(--black);color:#fff;overflow:hidden;padding:34px 0;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
-.marquee-track{display:flex;width:max-content;animation:marqueeSlide 38s linear infinite;gap:48px;white-space:nowrap;align-items:center}
-.marquee-track span{font-size:clamp(48px,8vw,120px);font-weight:300;letter-spacing:-.04em;text-transform:uppercase;font-family:var(--F);line-height:1;color:rgba(255,255,255,.92)}
-.marquee-track .dot{font-size:clamp(20px,2.2vw,36px);color:rgba(255,255,255,.4);letter-spacing:0}
-@keyframes marqueeSlide{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
-.marquee-band:hover .marquee-track{animation-play-state:paused}
-@media(max-width:768px){
-  .marquee-band{padding:22px 0}
-  .marquee-track{gap:28px}
-}
 
 /* ══ MOBILE MENU ══ */
 .mobile-menu{position:fixed;top:0;right:0;bottom:0;width:min(82vw,360px);background:#fff;z-index:600;transform:translateX(100%);transition:transform .4s cubic-bezier(.76,0,.24,1);overflow-y:auto;padding:80px 28px 40px;box-shadow:-12px 0 48px rgba(0,0,0,.08)}
@@ -804,13 +793,6 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
   <div class="s-eyebrow">Talseume — Paris</div>
   <p class="brand-text">Vêtements éco-responsables, modernes, avec du <b>coton 100% organique vegan certifié GOTS</b> et des matériaux recyclés tels que le <b>modal</b> et le <b>polyester recyclé</b>.</p>
 </div>
-
-<!-- MARQUEE SS26 -->
-<section class="marquee-band" aria-hidden="true">
-  <div class="marquee-track">
-    <span>TALSEUME</span><span class="dot">●</span><span>SS26</span><span class="dot">●</span><span>PARIS</span><span class="dot">●</span><span>CRAFTED FOR LONGEVITY</span><span class="dot">●</span><span>TALSEUME</span><span class="dot">●</span><span>SS26</span><span class="dot">●</span><span>PARIS</span><span class="dot">●</span><span>CRAFTED FOR LONGEVITY</span><span class="dot">●</span>
-  </div>
-</section>
 
 <!-- EDITORIAL HERO PAIR -->
 <section class="editorial-pair rv">
