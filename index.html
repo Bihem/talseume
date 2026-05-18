@@ -327,7 +327,8 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   .hero{height:100svh;min-height:540px}
   .hero-content{padding:0 22px 40px}
   .hero-tag{font-size:9px;letter-spacing:.24em;margin-bottom:14px}
-  .hero-title{font-size:clamp(56px,16vw,110px);line-height:.88}
+  .hero-title{font-size:clamp(42px,12vw,62px);line-height:.9;white-space:nowrap}
+  .hero-title br{display:none}
   .hero-foot{flex-direction:column;align-items:flex-start;gap:18px;margin-top:24px}
   .hero-desc{font-size:12px;max-width:none}
   .hero-ctas{width:100%;gap:8px}
@@ -337,7 +338,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   .s-title{font-size:clamp(28px,8vw,40px)}
   .carousel-wrap{padding:0 22px 60px}
   .car-controls{display:none}
-  .carousel{grid-auto-columns:calc((100% - 12px)/2);gap:12px}
+  .carousel{grid-auto-columns:calc(50vw - 28px);gap:12px}
   .pgrid-wrap{padding:0 22px 60px}
   .pgrid{grid-template-columns:repeat(2,1fr);gap:12px}
   .pcard-info{padding:14px 2px 6px}
