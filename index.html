@@ -309,6 +309,18 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .pcard{transition:transform .6s cubic-bezier(.16,1,.3,1)}
 .pcard:hover{transform:translateY(-4px)}
 
+/* ══ MARQUEE SS26 ══ */
+.marquee-band{background:var(--black);color:#fff;overflow:hidden;padding:34px 0;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
+.marquee-track{display:flex;width:max-content;animation:marqueeSlide 38s linear infinite;gap:48px;white-space:nowrap;align-items:center}
+.marquee-track span{font-size:clamp(48px,8vw,120px);font-weight:300;letter-spacing:-.04em;text-transform:uppercase;font-family:var(--F);line-height:1;color:rgba(255,255,255,.92)}
+.marquee-track .dot{font-size:clamp(20px,2.2vw,36px);color:rgba(255,255,255,.4);letter-spacing:0}
+@keyframes marqueeSlide{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+.marquee-band:hover .marquee-track{animation-play-state:paused}
+@media(max-width:768px){
+  .marquee-band{padding:22px 0}
+  .marquee-track{gap:28px}
+}
+
 /* ══ MOBILE MENU ══ */
 .mobile-menu{position:fixed;top:0;right:0;bottom:0;width:min(82vw,360px);background:#fff;z-index:600;transform:translateX(100%);transition:transform .4s cubic-bezier(.76,0,.24,1);overflow-y:auto;padding:80px 28px 40px;box-shadow:-12px 0 48px rgba(0,0,0,.08)}
 .mobile-menu.open{transform:none}
@@ -447,10 +459,14 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   *,a,button,input,textarea,select{cursor:none !important}
   .cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%);mix-blend-mode:difference;will-change:transform}
   .cursor-dot{width:6px;height:6px;background:#fff;transition:width .25s,height .25s}
-  .cursor-ring{width:34px;height:34px;border:1px solid rgba(255,255,255,.55);background:transparent;transition:width .35s,height .35s,opacity .25s}
+  .cursor-ring{width:34px;height:34px;border:1px solid rgba(255,255,255,.55);background:transparent;transition:width .4s cubic-bezier(.34,1.56,.64,1),height .4s cubic-bezier(.34,1.56,.64,1),opacity .25s,background .35s,border-color .35s}
+  .cursor-ring::after{content:'';font-size:10px;letter-spacing:.28em;font-weight:500;color:#fff;opacity:0;transition:opacity .25s;text-transform:uppercase}
   body.c-hover .cursor-dot{width:0;height:0}
   body.c-hover .cursor-ring{width:54px;height:54px;border-color:rgba(255,255,255,.95)}
   body.c-click .cursor-ring{width:22px;height:22px}
+  body.c-view .cursor-dot{width:0;height:0}
+  body.c-view .cursor-ring{width:96px;height:96px;background:rgba(255,255,255,.96);border-color:rgba(255,255,255,.96);mix-blend-mode:normal}
+  body.c-view .cursor-ring::after{content:'VIEW';opacity:1;color:#0a0a0a}
 }
 
 /* ══ WISHLIST HEART ══ */
@@ -530,6 +546,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
 @keyframes wishPulse{0%{transform:scale(1)}40%{transform:scale(1.28)}70%{transform:scale(.92)}100%{transform:scale(1)}}
 .pcard-fav.pulse{animation:wishPulse .4s cubic-bezier(.16,1,.3,1)}
 </style>
+<script src="https://unpkg.com/@lottiefiles/lottie-player@2.0.4/dist/lottie-player.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.0.42/dist/lenis.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
@@ -787,6 +804,13 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
   <div class="s-eyebrow">Talseume — Paris</div>
   <p class="brand-text">Vêtements éco-responsables, modernes, avec du <b>coton 100% organique vegan certifié GOTS</b> et des matériaux recyclés tels que le <b>modal</b> et le <b>polyester recyclé</b>.</p>
 </div>
+
+<!-- MARQUEE SS26 -->
+<section class="marquee-band" aria-hidden="true">
+  <div class="marquee-track">
+    <span>TALSEUME</span><span class="dot">●</span><span>SS26</span><span class="dot">●</span><span>PARIS</span><span class="dot">●</span><span>CRAFTED FOR LONGEVITY</span><span class="dot">●</span><span>TALSEUME</span><span class="dot">●</span><span>SS26</span><span class="dot">●</span><span>PARIS</span><span class="dot">●</span><span>CRAFTED FOR LONGEVITY</span><span class="dot">●</span>
+  </div>
+</section>
 
 <!-- EDITORIAL HERO PAIR -->
 <section class="editorial-pair rv">
@@ -1145,13 +1169,18 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
 </style>
 
 <script>
-/* ── NEWSLETTER (Netlify Forms) ── */
+/* ── NEWSLETTER (Netlify Forms + Lottie success) ── */
 function submitNewsletter(e){
   e.preventDefault();
   const f = e.target;
   const data = new FormData(f);
   fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams(data).toString()})
-    .then(() => { f.querySelector('button').textContent = 'Merci ✓'; f.querySelector('input[type=email]').value = ''; })
+    .then(() => {
+      f.querySelector('input[type=email]').value = '';
+      const btn = f.querySelector('button');
+      btn.innerHTML = '<lottie-player src="https://assets1.lottiefiles.com/packages/lf20_jbrw3hcz.json" background="transparent" speed="1.1" style="width:42px;height:42px;display:inline-block;vertical-align:middle" autoplay></lottie-player><span style="margin-left:8px;vertical-align:middle">Inscrit</span>';
+      btn.disabled = true;
+    })
     .catch(() => { f.querySelector('button').textContent = 'Erreur — réessaye'; });
 }
 
@@ -1412,9 +1441,16 @@ if (document.startViewTransition) {
   let mx = innerWidth/2, my = innerHeight/2, rx = mx, ry = my;
   addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`; });
   (function tick(){ rx += (mx-rx)*.18; ry += (my-ry)*.18; ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`; requestAnimationFrame(tick); })();
-  const hoverSel = 'a,button,.pcard,.pcard-fav,.cswatch,.pill,.vpill,.cookie-btn,.nav-icon';
-  document.body.addEventListener('mouseover', e => { if (e.target.closest(hoverSel)) document.body.classList.add('c-hover'); });
-  document.body.addEventListener('mouseout', e => { if (e.target.closest(hoverSel)) document.body.classList.remove('c-hover'); });
+  const hoverSel = 'a,button,.pcard-fav,.cswatch,.pill,.vpill,.cookie-btn,.nav-icon';
+  const viewSel = '.pcard,.catcard,.editorial-img,.shop-ton-produit-tile';
+  document.body.addEventListener('mouseover', e => {
+    if (e.target.closest(viewSel)) document.body.classList.add('c-view');
+    else if (e.target.closest(hoverSel)) document.body.classList.add('c-hover');
+  });
+  document.body.addEventListener('mouseout', e => {
+    if (e.target.closest(viewSel)) document.body.classList.remove('c-view');
+    else if (e.target.closest(hoverSel)) document.body.classList.remove('c-hover');
+  });
   addEventListener('mousedown', () => document.body.classList.add('c-click'));
   addEventListener('mouseup', () => document.body.classList.remove('c-click'));
 })();
