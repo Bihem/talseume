@@ -1444,18 +1444,6 @@ window.toggleWish=function(pid,btn){
   if(btn){btn.classList.remove('pulse');void btn.offsetWidth;btn.classList.add('pulse');}
 };
 
-/* ── HERO PARALLAX ── */
-(function(){
-  const hc=document.querySelector('.hero-content');
-  const hg=document.querySelector('.hero-grad');
-  if(!hc) return;
-  window.addEventListener('scroll',()=>{
-    const y=Math.min(window.scrollY,innerHeight);
-    hc.style.transform=`translateY(${y*.18}px)`;
-    hc.style.opacity=1-y/innerHeight*1.4;
-    if(hg) hg.style.opacity=.6+y/innerHeight*.4;
-  },{passive:true});
-})();
 </script>
 
 <!-- COOKIE BANNER -->
