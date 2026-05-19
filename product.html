@@ -105,8 +105,18 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;background:#fff;padding:0 56
 .qty-btn{width:32px;height:32px;font-size:18px;font-weight:300;display:flex;align-items:center;justify-content:center;color:var(--black);transition:opacity .2s;border:none;background:none;cursor:pointer}
 .qty-btn:hover{opacity:.5}
 .qty-val{width:32px;height:32px;text-align:center;font-size:14px;font-weight:500;border:none;outline:none;font-family:inherit;background:transparent;color:var(--black)}
-.add-btn{width:100%;background:var(--black);color:#fff;font-size:12px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;padding:0;height:60px;transition:opacity .2s}
-.add-btn:hover{opacity:.85}
+.add-btn{width:100%;background:#fff;color:var(--black);font-size:12px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;padding:0;height:60px;transition:.2s;border:1px solid var(--black)}
+.add-btn:hover{background:var(--black);color:#fff}
+
+/* Bouton express checkout (Apple Pay / Google Pay) */
+.express-pay-btn{display:none;width:100%;background:var(--black);color:#fff;font-size:14px;font-weight:500;border:none;padding:0;height:56px;margin-top:10px;cursor:pointer;align-items:center;justify-content:center;gap:8px;transition:opacity .2s;font-family:inherit}
+.express-pay-btn.show{display:flex}
+.express-pay-btn:hover{opacity:.85}
+.express-pay-btn:disabled{opacity:.5;cursor:wait}
+.express-pay-btn .ap-logo{height:20px;width:auto;fill:#fff}
+.more-pay-link{display:none;text-align:center;width:100%;font-size:12px;color:rgba(0,0,0,.6);text-decoration:underline;margin-top:14px;cursor:pointer;background:none;border:none;font-family:inherit;padding:6px}
+.more-pay-link.show{display:block}
+.more-pay-link:hover{color:var(--black)}
 
 /* Engagements (replaces colored eco labels) */
 .engagements{padding:24px 0;border-top:1px solid var(--line-l);border-bottom:1px solid var(--line-l);margin-bottom:28px;display:flex;flex-wrap:wrap;gap:24px 32px}
@@ -501,6 +511,17 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <button class="qty-btn" onclick="changeQty(1)" aria-label="Augmenter">+</button>
       </div>
       <button class="add-btn" onclick="addProductToCart()">Ajouter au panier</button>
+
+      <!-- Express checkout (Apple Pay / Google Pay) — visible si supporté -->
+      <button id="expressPayBtn" class="express-pay-btn" type="button" onclick="quickBuyExpress()" aria-label="Acheter avec Apple Pay">
+        <span>Acheter avec</span>
+        <svg class="ap-logo" viewBox="0 0 60 24" aria-hidden="true">
+          <path d="M11.05 4.4c.7-.85 1.16-2.04.96-3.2-1.02.04-2.27.68-2.99 1.5-.65.74-1.21 1.94-1.06 3.08 1.14.09 2.32-.55 3.09-1.38zm.95 1.5c-1.67-.1-3.09.95-3.89.95-.81 0-2.04-.9-3.36-.88-1.73.03-3.34 1-4.23 2.56-1.8 3.13-.46 7.76 1.3 10.3.86 1.24 1.89 2.62 3.24 2.57 1.3-.05 1.79-.84 3.36-.84 1.57 0 2 .84 3.37.81 1.39-.02 2.27-1.26 3.12-2.5.99-1.42 1.39-2.81 1.41-2.88-.03-.01-2.7-1.04-2.73-4.13-.03-2.58 2.11-3.82 2.21-3.88-1.21-1.79-3.08-1.99-3.74-2.03zM23.74 2.8h-3.93v18.4h2.46v-6.32h3.4c3.11 0 5.29-2.13 5.29-6.05 0-3.91-2.14-6.03-5.22-6.03zm-1.47 2.1h2.83c2.16 0 3.39 1.16 3.39 3.94 0 2.79-1.23 3.96-3.39 3.96h-2.83V4.9zm14.94 8.42c-.18.92-1.05 1.51-2.27 1.51-1.41 0-2.27-.71-2.27-1.78 0-1.11.84-1.69 2.42-1.79l1.42-.09v-.5c0-.83-.55-1.32-1.51-1.32-.85 0-1.46.4-1.61 1.03h-2.27c.07-1.84 1.71-3.06 3.96-3.06 2.43 0 3.97 1.31 3.97 3.27v7.81h-2.32v-1.95h-.05c-.6 1.28-1.8 2.04-3.31 2.04-2.06 0-3.49-1.32-3.49-3.34 0-2.05 1.45-3.18 4.18-3.34l1.85-.1v-.39h-.85zm5.66 9.84v-2.04c.21.04.59.06.79.06.99 0 1.55-.4 1.85-1.4l.18-.58-3.34-9.27h2.59l2.32 7.46h.06l2.32-7.46h2.51L48.46 20c-.81 2.28-1.74 3-3.93 3-.16 0-.71-.02-.66-.04z" />
+        </svg>
+      </button>
+
+      <!-- Lien alternatif : tous les modes de paiement -->
+      <button id="morePayLink" class="more-pay-link" type="button" onclick="quickBuyMore()">Plus de moyens de paiement</button>
     </div>
 
     <!-- ENGAGEMENTS -->
@@ -890,15 +911,42 @@ function getVariant() {
   return 'Taille unique';
 }
 
-function addProductToCart() {
+function addProductToCart(silent) {
   const variant = getVariant();
   const img = p.colors.find(c=>c.name===selectedColor)?.img || p.colors[0]?.img || '';
   const ex = cart.find(i => i.name===p.name && i.variant===variant);
   if (ex) { ex.qty += qty; } else { cart.push({name:p.name, variant, price:p.price, img, qty}); }
   saveCart(); renderCart();
+  if (silent === true) return;
   showToast(`${qty}× ajouté au panier`);
   setTimeout(openCart, 350);
 }
+
+/* Quick buy via Apple Pay / Google Pay : ajoute au panier silencieusement et lance Stripe Checkout direct */
+async function quickBuyExpress() {
+  addProductToCart(true);
+  await stripeCheckout();
+}
+
+/* Quick buy classique : ajoute + ouvre la modale paiement avec tous les modes */
+function quickBuyMore() {
+  addProductToCart(true);
+  setTimeout(showPayModal, 100);
+}
+
+/* Affiche les boutons express si Apple Pay (ou autre wallet équivalent) est disponible côté client */
+function initExpressPayDetection(){
+  const expressBtn = document.getElementById('expressPayBtn');
+  const moreLink = document.getElementById('morePayLink');
+  if (!expressBtn || !moreLink) return;
+  const hasApplePay = typeof window.ApplePaySession !== 'undefined' && ApplePaySession.canMakePayments && ApplePaySession.canMakePayments();
+  if (hasApplePay){
+    expressBtn.classList.add('show');
+    moreLink.classList.add('show');
+  }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initExpressPayDetection);
+else initExpressPayDetection();
 
 function removeFromCart(idx) { cart.splice(idx,1); saveCart(); renderCart(); }
 
