@@ -222,8 +222,8 @@ nav.scrolled .nav-logo img{filter:none}
 .editorial-img{height:100vh;overflow:hidden;position:relative;background:#1a1a1a}
 .editorial-img img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;transition:transform 1.6s cubic-bezier(.16,1,.3,1)}
 .editorial-img:hover img{transform:scale(1.03)}
-@media(max-width:768px){.editorial-pair-grid{grid-template-columns:1fr}.editorial-img{height:65vh}}
-@media(max-width:480px){.editorial-img{height:55vh}}
+@media(max-width:768px){.editorial-pair-grid{grid-template-columns:1fr}.editorial-img{height:80vh}}
+@media(max-width:480px){.editorial-img{height:72vh}}
 
 /* ══ MANIFESTO ══ */
 .manifesto{color:#fff;padding:120px 48px 130px;overflow:hidden;text-align:center;position:relative;background:#0a0a0a}
@@ -376,13 +376,15 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   .s-eyebrow{font-size:10px;letter-spacing:.34em;margin-bottom:8px;color:rgba(0,0,0,.5);font-weight:400}
   .s-title{font-size:clamp(40px,11vw,56px);line-height:1;letter-spacing:-.035em;font-weight:300}
   /* CAROUSEL — generous cards */
-  .carousel-wrap{padding:0 26px 96px}
+  .carousel-wrap{padding:0 22px 96px}
   .car-controls{display:none}
   .carousel{display:flex;flex-wrap:nowrap;gap:18px}
-  .carousel .pcard{flex:0 0 70vw;width:70vw}
+  .carousel .pcard{flex:0 0 84vw;width:84vw}
   .pcard-img{border-radius:6px;overflow:hidden}
-  .pgrid-wrap{padding:0 26px 96px}
-  .pgrid{grid-template-columns:repeat(2,1fr);gap:18px}
+  .pgrid-wrap{padding:0 22px 96px}
+  .pgrid{grid-template-columns:1fr;gap:32px}
+  .catgrid{padding:0 22px 90px;grid-template-columns:1fr;gap:18px}
+  .catcard{aspect-ratio:4/5}
   .pcard-info{padding:18px 6px 10px}
   .pcard-name{font-size:14px;line-height:1.4;font-weight:400}
   .pcard-price{font-size:14px;font-weight:400}
