@@ -176,25 +176,73 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 <!-- NAV -->
 <nav>
   <div class="nav-left">
-    <div class="burger" onclick="document.getElementById('mobileMenu').classList.add('open')"><span></span><span></span><span></span></div>
+    <div class="burger" onclick="document.getElementById('mobileMenu').classList.add('open')">
+      <span></span><span></span><span></span>
+    </div>
     <ul class="nav-menu">
-      <li><a href="/#shop">Boutique</a></li>
+      <li>
+        <a href="/#shop">Boutique</a>
+      </li>
+      <li style="display:none">
+        <button>Mode &amp; Accessoires <span class="caret">▼</span></button>
+        <div class="megamenu">
+          <div class="mm-col">
+            <h4>Nouveautés</h4>
+            <ul>
+              <li><a href="/#new">No Limit 0.27</a></li>
+              <li><a href="/#new">Voir tout</a></li>
+            </ul>
+          </div>
+          <div class="mm-col">
+            <h4>Homme</h4>
+            <ul>
+              <li><a href="/#shop">Sweats à capuche</a></li>
+              <li><a href="/#shop">T-shirts</a></li>
+              <li><a href="/#shop">Manches longues</a></li>
+              <li><a href="/#shop">Vestes</a></li>
+            </ul>
+          </div>
+          <div class="mm-col">
+            <h4>Femme</h4>
+            <ul>
+              <li><a href="/#shop">T-shirts</a></li>
+              <li><a href="/#shop">Débardeurs</a></li>
+              <li><a href="/#shop">Voir tout</a></li>
+            </ul>
+          </div>
+          <div class="mm-feat">
+            <a href="/#new" class="mm-feat-card">
+              <img src="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg" alt="Nouveautés"/>
+              <span>Nouveautés</span>
+            </a>
+            <a href="/#shop" class="mm-feat-card">
+              <img src="images/products/Jacket-By-TALSEUMENWAR.jpg" alt="Vestes"/>
+              <span>Vestes</span>
+            </a>
+          </div>
+        </div>
+      </li>
       <li><a href="/contact.html">Contacte</a></li>
-      <li><a href="/blog.html" class="active">Blog</a></li>
+      <li><a href="/blog.html">Blog</a></li>
     </ul>
   </div>
   <a href="/" class="nav-logo"><img src="images/talseume-logo.png" alt="TALSEUME"/></a>
   <div class="nav-right">
-    <button class="nav-icon" aria-label="Recherche"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
-    <button class="nav-icon" aria-label="Compte"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
+    <span class="nav-cc">FR / EUR</span>
+    <button class="nav-icon" aria-label="Recherche">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="nav-icon" aria-label="Compte">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </button>
     <a href="/favoris.html" class="nav-icon" aria-label="Favoris">
       <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
       <span class="cart-count wish-count">0</span>
     </a>
-    <a href="/" class="nav-icon" aria-label="Panier">
+    <button class="nav-icon" onclick="openCart()" aria-label="Panier">
       <svg viewBox="0 0 24 24"><path d="M4 7h16l-1.6 14H5.6L4 7z"/><path d="M9 7V5a3 3 0 016 0v2"/></svg>
-      <span class="cart-count">0</span>
-    </a>
+      <span id="cartCount" class="cart-count">0</span>
+    </button>
   </div>
 </nav>
 
