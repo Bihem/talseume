@@ -1105,34 +1105,64 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
 <div id="payModal">
   <div class="pm-backdrop" onclick="closePayModal()"></div>
   <div class="pm-box">
-    <button class="pm-close" onclick="closePayModal()">×</button>
-    <p class="pm-label">Récapitulatif</p>
+    <button class="pm-close" onclick="closePayModal()" aria-label="Fermer">×</button>
+
+    <p class="pm-label">Récapitulatif de commande</p>
     <div id="pm-lines" class="pm-lines"></div>
-    <div class="pm-total-row"><span>Total</span><span id="pm-total"></span></div>
-    <p class="pm-label" style="margin-bottom:14px">Mode de paiement</p>
-    <button id="pm-card-btn" class="pm-method-btn" onclick="stripeCheckout('card')">
-      <span class="pm-method-label"><span>Carte bancaire</span><span class="pm-method-sub">Visa, Mastercard, Apple Pay</span></span>
-      <span class="pm-method-icons">
-        <svg width="34" height="22" viewBox="0 0 34 22"><rect width="34" height="22" rx="3" fill="#1A1F71"/><rect y="7" width="34" height="6" fill="#F7B600"/></svg>
-        <svg width="34" height="22" viewBox="0 0 34 22"><rect width="34" height="22" rx="3" fill="#f2f2f2"/><circle cx="13" cy="11" r="7" fill="#EB001B"/><circle cx="21" cy="11" r="7" fill="#F79E1B"/></svg>
-      </span>
+    <div class="pm-total-row"><span>Total TTC</span><span id="pm-total"></span></div>
+
+    <button id="pm-pay-btn" class="pm-pay-btn" onclick="stripeCheckout()">
+      <span>Continuer vers le paiement</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
     </button>
-    <button id="pm-klarna-btn" class="pm-method-btn pm-klarna" onclick="stripeCheckout('3x')">
-      <span class="pm-method-label"><span>Payer en 3× sans frais</span><span class="pm-method-sub">Klarna — Divisé en 3 paiements égaux</span></span>
-      <svg width="52" height="20" viewBox="0 0 52 20"><rect width="52" height="20" rx="4" fill="#FFB3C7"/><text x="8" y="14" font-size="11" font-weight="700" fill="#17120E" font-family="sans-serif">klarna</text></svg>
-    </button>
-    <button id="pm-vir-btn" class="pm-method-btn">
-      <span class="pm-method-label"><span>Virement bancaire</span><span class="pm-method-sub">Traitement sous 1-3 jours ouvrés</span></span>
-      <svg width="20" height="20" fill="none" stroke="#888" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-    </button>
-    <div id="pm-vir-info" class="pm-vir-info">
-      <strong>Coordonnées bancaires Talseume</strong><br>
-      Titulaire : EI BOUZANGA Mes reves / Dikenga design<br>
-      IBAN : FR76 1695 8000 0197 8135 2569 203<br>
-      BIC : QNTOFRP1XXX<br>
-      Référence : ta commande + ton nom
+
+    <p class="pm-methods-label">Modes de paiement acceptés</p>
+    <div class="pm-methods-row" aria-label="Modes de paiement acceptés">
+      <!-- Visa -->
+      <span class="pm-logo" title="Visa"><svg viewBox="0 0 48 30" width="44" height="28"><rect width="48" height="30" rx="4" fill="#1A1F71"/><text x="24" y="20" text-anchor="middle" fill="#fff" font-family="Helvetica,Arial,sans-serif" font-weight="700" font-size="11" letter-spacing="1">VISA</text></svg></span>
+      <!-- Mastercard -->
+      <span class="pm-logo" title="Mastercard"><svg viewBox="0 0 48 30" width="44" height="28"><rect width="48" height="30" rx="4" fill="#fff" stroke="#e5e5e5"/><circle cx="20" cy="15" r="8" fill="#EB001B"/><circle cx="28" cy="15" r="8" fill="#F79E1B"/><path d="M24 9.5a8 8 0 0 0 0 11" stroke="#FF5F00" stroke-width="1.5" fill="none"/></svg></span>
+      <!-- American Express -->
+      <span class="pm-logo" title="American Express"><svg viewBox="0 0 48 30" width="44" height="28"><rect width="48" height="30" rx="4" fill="#006FCF"/><text x="24" y="19" text-anchor="middle" fill="#fff" font-family="Helvetica,Arial,sans-serif" font-weight="700" font-size="8" letter-spacing=".3">AMEX</text></svg></span>
+      <!-- Apple Pay -->
+      <span class="pm-logo" title="Apple Pay"><svg viewBox="0 0 48 30" width="44" height="28"><rect width="48" height="30" rx="4" fill="#000"/><text x="24" y="19" text-anchor="middle" fill="#fff" font-family="-apple-system,Helvetica,Arial,sans-serif" font-weight="500" font-size="11"> Pay</text></svg></span>
+      <!-- Google Pay -->
+      <span class="pm-logo" title="Google Pay"><svg viewBox="0 0 48 30" width="44" height="28"><rect width="48" height="30" rx="4" fill="#fff" stroke="#e5e5e5"/><text x="24" y="19" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-weight="600" font-size="9"><tspan fill="#4285F4">G</tspan><tspan fill="#EA4335">o</tspan><tspan fill="#FBBC04">o</tspan><tspan fill="#4285F4">g</tspan><tspan fill="#34A853">l</tspan><tspan fill="#EA4335">e</tspan><tspan fill="#000"> Pay</tspan></text></svg></span>
+      <!-- PayPal -->
+      <span class="pm-logo" title="PayPal"><svg viewBox="0 0 48 30" width="44" height="28"><rect width="48" height="30" rx="4" fill="#fff" stroke="#e5e5e5"/><text x="24" y="19" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-weight="700" font-size="9"><tspan fill="#003087">Pay</tspan><tspan fill="#009CDE">Pal</tspan></text></svg></span>
+      <!-- Klarna -->
+      <span class="pm-logo" title="Klarna — Payez en 3×"><svg viewBox="0 0 48 30" width="44" height="28"><rect width="48" height="30" rx="4" fill="#FFB3C7"/><text x="24" y="19" text-anchor="middle" fill="#17120E" font-family="Helvetica,Arial,sans-serif" font-weight="700" font-size="9">klarna</text></svg></span>
+      <!-- SEPA -->
+      <span class="pm-logo" title="SEPA — Prélèvement"><svg viewBox="0 0 48 30" width="44" height="28"><rect width="48" height="30" rx="4" fill="#10298E"/><text x="24" y="19" text-anchor="middle" fill="#FFCC00" font-family="Helvetica,Arial,sans-serif" font-weight="700" font-size="10">SEPA</text></svg></span>
     </div>
-    <p class="pm-secure">🔒 Paiement 100% sécurisé · SSL · Données chiffrées par Stripe</p>
+
+    <p class="pm-klarna-note">Avec <strong>Klarna</strong>, paie en <strong>3× sans frais</strong> à partir de 35 € — choisis l'option à l'étape suivante.</p>
+
+    <details class="pm-vir-details">
+      <summary>Préférer un virement bancaire&nbsp;?</summary>
+      <div class="pm-vir-info">
+        <strong>Coordonnées bancaires Talseume</strong><br>
+        Titulaire&nbsp;: EI BOUZANGA Mes reves / Dikenga design<br>
+        IBAN&nbsp;: FR76 1695 8000 0197 8135 2569 203<br>
+        BIC&nbsp;: QNTOFRP1XXX<br>
+        Référence&nbsp;: ta commande + ton nom<br>
+        <em>Commande validée à réception du virement (1 à 3 jours ouvrés).</em>
+      </div>
+    </details>
+
+    <div class="pm-trust">
+      <span class="pm-trust-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        SSL 256 bits
+      </span>
+      <span class="pm-trust-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L4 6v6c0 5 3.5 9.5 8 10 4.5-.5 8-5 8-10V6l-8-4z"/></svg>
+        3D Secure
+      </span>
+      <span class="pm-trust-item">
+        Powered by <strong>Stripe</strong>
+      </span>
+    </div>
   </div>
 </div>
 
@@ -1146,17 +1176,34 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
 .pm-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#aaa;margin-bottom:12px}
 .pm-lines{border-top:1px solid #f0f0f0;padding-top:14px;margin-bottom:14px;display:flex;flex-direction:column;gap:10px}
 .pm-line{display:flex;justify-content:space-between;gap:16px;font-size:13px;color:#333}
-.pm-total-row{display:flex;justify-content:space-between;font-size:14px;font-weight:600;border-top:1px solid #f0f0f0;padding-top:14px;margin-bottom:28px}
-.pm-method-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;border:1.5px solid #e8e8e8;background:#fff;padding:16px 18px;margin-bottom:10px;transition:border-color .2s;text-align:left}
-.pm-method-btn:hover{border-color:#080808}
-.pm-method-label{display:flex;flex-direction:column;gap:3px}
-.pm-method-label>span:first-child{font-size:13px;font-weight:500;color:#080808}
-.pm-method-sub{font-size:11px;color:#aaa}
-.pm-method-icons{display:flex;gap:6px;align-items:center}
-.pm-klarna{border-color:#FFB3C7}
-.pm-klarna:hover{border-color:#ff80a0;background:#fff8fa}
-.pm-vir-info{display:none;background:#f7f7f5;padding:14px 18px;font-size:12px;line-height:1.9;color:#555;margin-bottom:10px}
-.pm-secure{margin-top:18px;font-size:11px;color:#ccc;text-align:center}
+.pm-total-row{display:flex;justify-content:space-between;font-size:15px;font-weight:500;border-top:1px solid #f0f0f0;padding-top:14px;margin-bottom:24px;color:#080808}
+.pm-pay-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#080808;color:#fff;padding:18px 22px;border:none;cursor:pointer;font-family:inherit;font-size:12px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;transition:opacity .2s;margin-bottom:22px}
+.pm-pay-btn:hover{opacity:.85}
+.pm-pay-btn:disabled{opacity:.5;cursor:wait}
+.pm-pay-btn svg{transition:transform .25s}
+.pm-pay-btn:hover svg{transform:translateX(4px)}
+.pm-methods-label{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.4);margin-bottom:10px;text-align:center;font-weight:400}
+.pm-methods-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:16px}
+.pm-logo{display:inline-flex;align-items:center;justify-content:center}
+.pm-logo svg{display:block}
+.pm-klarna-note{font-size:12px;line-height:1.6;color:rgba(0,0,0,.6);text-align:center;margin-bottom:22px;padding:10px 14px;background:#FFF5F8;border-radius:2px}
+.pm-klarna-note strong{color:#080808;font-weight:500}
+.pm-vir-details{margin-bottom:22px;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;padding:14px 0}
+.pm-vir-details summary{cursor:pointer;font-size:13px;font-weight:500;color:#080808;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.pm-vir-details summary::-webkit-details-marker{display:none}
+.pm-vir-details summary::after{content:'+';font-size:18px;font-weight:300;color:#999;transition:transform .2s}
+.pm-vir-details[open] summary::after{content:'−'}
+.pm-vir-info{background:#faf9f6;padding:14px 16px;font-size:12.5px;line-height:1.85;color:#444;margin-top:10px;border-left:2px solid #080808}
+.pm-vir-info strong{color:#080808;font-weight:500}
+.pm-vir-info em{color:#888;font-style:normal;font-size:11.5px}
+.pm-trust{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;font-size:11px;color:rgba(0,0,0,.5);padding-top:8px;border-top:1px solid #f5f5f5}
+.pm-trust-item{display:inline-flex;align-items:center;gap:5px;letter-spacing:.04em}
+.pm-trust-item svg{flex-shrink:0;opacity:.7}
+.pm-trust-item strong{color:#080808;font-weight:500}
+@media(max-width:560px){
+  .pm-box{padding:36px 24px}
+  .pm-trust{flex-direction:column;gap:8px;align-items:center}
+}
 </style>
 
 <script>
@@ -1355,10 +1402,11 @@ function showPayModal(){
 }
 function closePayModal(){document.getElementById('payModal').classList.remove('open');}
 
-async function stripeCheckout(mode){
-  const btn = document.getElementById(mode==='3x'?'pm-klarna-btn':'pm-card-btn');
-  btn.disabled=true;
-  btn.querySelector('.pm-method-label>span').textContent='Chargement…';
+async function stripeCheckout(){
+  const btn = document.getElementById('pm-pay-btn');
+  const originalLabel = btn.querySelector('span').textContent;
+  btn.disabled = true;
+  btn.querySelector('span').textContent = 'Chargement…';
   try{
     const res = await fetch('/.netlify/functions/create-checkout',{
       method:'POST',headers:{'Content-Type':'application/json'},
@@ -1369,19 +1417,14 @@ async function stripeCheckout(mode){
       })
     });
     const data = await res.json();
-    if(data.url) window.location.href=data.url;
-    else throw new Error(data.error||'Erreur');
+    if(data.url) window.location.href = data.url;
+    else throw new Error(data.error || 'Erreur de paiement');
   }catch(e){
-    alert('Erreur paiement : '+e.message);
-    btn.disabled=false;
-    btn.querySelector('.pm-method-label>span').textContent=mode==='3x'?'Payer en 3× sans frais':'Carte bancaire';
+    alert('Erreur paiement : ' + e.message);
+    btn.disabled = false;
+    btn.querySelector('span').textContent = originalLabel;
   }
 }
-
-document.getElementById('pm-vir-btn').addEventListener('click',function(){
-  const i=document.getElementById('pm-vir-info');
-  i.style.display=i.style.display==='block'?'none':'block';
-});
 
 /* ── COOKIE BANNER ── */
 function cookieDecide(choice){
