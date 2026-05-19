@@ -228,6 +228,26 @@ nav.scrolled .nav-logo img{filter:none}
 @media(max-width:768px){.editorial-pair-grid{grid-template-columns:1fr}.editorial-img{height:80vh}}
 @media(max-width:480px){.editorial-img{height:72vh}}
 
+/* ══ LOOKBOOK HERO — pleine page, parallax + reveal premium ══ */
+.lookbook-hero{position:relative;height:100svh;min-height:680px;overflow:hidden;background:#000;clip-path:inset(0 0 0 0);isolation:isolate}
+.lookbook-hero-img-wrap{position:absolute;inset:0;width:100%;height:112%;top:-6%;overflow:hidden;will-change:transform}
+.lookbook-hero-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transform:scale(1.03);will-change:transform}
+.lookbook-hero-grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.25) 0%,transparent 30%,transparent 55%,rgba(0,0,0,.65) 100%);z-index:1;pointer-events:none}
+.lookbook-hero-content{position:absolute;left:0;right:0;bottom:64px;z-index:2;color:#fff;text-align:center;padding:0 32px}
+.lookbook-eyebrow{font-size:11px;letter-spacing:.34em;text-transform:uppercase;opacity:.85;margin-bottom:18px;font-weight:400}
+.lookbook-title{font-size:clamp(28px,5vw,56px);font-weight:300;letter-spacing:-.025em;line-height:1.05;margin-bottom:28px;max-width:760px;margin-left:auto;margin-right:auto}
+.lookbook-title em{font-style:normal;opacity:.7}
+.lookbook-cta{display:inline-flex;align-items:center;gap:10px;padding:16px 32px;border:1px solid rgba(255,255,255,.7);color:#fff;font-size:11px;letter-spacing:.28em;text-transform:uppercase;transition:background .35s,color .35s,border-color .35s,transform .35s;font-weight:500}
+.lookbook-cta:hover{background:#fff;color:#0a0a0a;border-color:#fff;transform:translateY(-2px)}
+.lookbook-cta svg{transition:transform .35s}
+.lookbook-cta:hover svg{transform:translateX(4px)}
+@media(max-width:768px){
+  .lookbook-hero{min-height:640px}
+  .lookbook-hero-content{bottom:48px;padding:0 22px}
+  .lookbook-title{font-size:clamp(28px,9vw,42px);margin-bottom:22px}
+  .lookbook-cta{padding:14px 26px;font-size:10.5px;letter-spacing:.24em}
+}
+
 /* ══ MANIFESTO ══ */
 .manifesto{color:#fff;padding:120px 48px 130px;overflow:hidden;text-align:center;position:relative;background:#0a0a0a}
 .manifesto-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.55;filter:grayscale(.4) contrast(1.1)}
@@ -997,6 +1017,22 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
   </div>
 </section>
 
+<!-- LOOKBOOK HERO — Rooftop Paris -->
+<section class="lookbook-hero" id="lookbook-hero">
+  <div class="lookbook-hero-img-wrap">
+    <img src="images/lookbook/rooftop-paris-sweat-bleu.jpg" alt="Talseume — Sweat oversize bleu, Paris rooftop nuit" loading="lazy"/>
+  </div>
+  <div class="lookbook-hero-grad"></div>
+  <div class="lookbook-hero-content">
+    <div class="lookbook-eyebrow">Lookbook · SS26</div>
+    <h2 class="lookbook-title">Paris ne dort jamais.<br><em>Talseume non plus.</em></h2>
+    <a href="#shop" class="lookbook-cta">
+      <span>Shop the look</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+    </a>
+  </div>
+</section>
+
 <!-- MANIFESTO -->
 <section class="manifesto" id="manifesto">
   <img class="manifesto-bg" src="https://images.unsplash.com/photo-1539389004540-770367e1bccb?w=2000&q=80&auto=format&fit=crop" alt="" aria-hidden="true" loading="lazy"/>
@@ -1657,6 +1693,54 @@ window.toggleWish=function(pid,btn){
           scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true }
         });
       });
+    }
+
+    /* — Lookbook hero : reveal premium (mask qui se lève + parallax image + texte stagger) — */
+    if (typeof ScrollTrigger !== 'undefined') {
+      const lbHero = document.querySelector('.lookbook-hero');
+      if (lbHero) {
+        const lbImg = lbHero.querySelector('.lookbook-hero-img-wrap img');
+        const lbWrap = lbHero.querySelector('.lookbook-hero-img-wrap');
+
+        // Reveal mask : clip-path inset s'ouvre du bas vers le haut au scroll-into-view
+        gsap.fromTo(lbHero,
+          { clipPath: 'inset(0 0 100% 0)' },
+          {
+            clipPath: 'inset(0 0 0% 0)',
+            duration: 1.4,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: lbHero, start: 'top 80%', once: true }
+          }
+        );
+
+        // Image scale-out subtle au reveal (élégant)
+        gsap.fromTo(lbImg,
+          { scale: 1.15 },
+          {
+            scale: 1.03,
+            duration: 1.8,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: lbHero, start: 'top 80%', once: true }
+          }
+        );
+
+        // Parallax doux sur l'image au scroll (Ken Burns subtle)
+        gsap.to(lbWrap, {
+          yPercent: -6,
+          ease: 'none',
+          scrollTrigger: { trigger: lbHero, start: 'top bottom', end: 'bottom top', scrub: 0.8 }
+        });
+
+        // Texte overlay stagger fade-up
+        gsap.from('.lookbook-eyebrow, .lookbook-title, .lookbook-cta', {
+          y: 40,
+          opacity: 0,
+          duration: 1.2,
+          ease: 'power3.out',
+          stagger: 0.18,
+          scrollTrigger: { trigger: lbHero, start: 'top 55%', once: true }
+        });
+      }
     }
 
     /* — Section titles letterspacing breath on enter — */
