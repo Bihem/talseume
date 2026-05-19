@@ -207,15 +207,16 @@ nav.scrolled .nav-logo img{filter:none}
 .brand-text b{font-weight:400;color:var(--black);border-bottom:1px solid rgba(0,0,0,.15);padding-bottom:1px}
 
 /* ══ SHOP TON PRODUIT SECTION ══ */
-.shop-ton-produit{background:#fff;padding:16px 12px 50px}
+.shop-ton-produit{background:#fff;padding:16px 0 50px}
+.shop-ton-produit .stp-eyebrow-wrap{padding:0 48px 18px}
 .shop-ton-produit .s-head{padding:0 0 36px}
-.stp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.stp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px}
 .shop-ton-produit-tile{aspect-ratio:4/5;overflow:hidden;background:var(--cream);cursor:pointer}
 .shop-ton-produit-tile img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;transition:transform 1.4s cubic-bezier(.16,1,.3,1)}
 .shop-ton-produit-tile:hover img{transform:scale(1.04)}
 @keyframes stpMarquee{0%{transform:translateX(0)}100%{transform:translateX(calc(-50% - 8px))}}
-@media(max-width:1200px){.shop-ton-produit{padding:12px 12px 40px}}
-@media(max-width:768px){.shop-ton-produit{padding:8px 6px 32px}.stp-grid{grid-template-columns:1fr;gap:6px}}
+@media(max-width:1200px){.shop-ton-produit{padding:12px 0 40px}.shop-ton-produit .stp-eyebrow-wrap{padding:0 40px 16px}}
+@media(max-width:768px){.shop-ton-produit{padding:8px 0 32px}.shop-ton-produit .stp-eyebrow-wrap{padding:0 22px 14px}.stp-grid{grid-template-columns:1fr;gap:2px}}
 
 
 /* ══ EDITORIAL HERO PAIR ══ */
@@ -985,8 +986,11 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
   </div>
 </div>
 
-<!-- SHOP TON PRODUIT (header supprimé) -->
+<!-- SHOP TON PRODUIT (eyebrow conservé, titre h2 supprimé) -->
 <section class="shop-ton-produit">
+  <div class="stp-eyebrow-wrap rv">
+    <div class="s-eyebrow">Campagne · SS26</div>
+  </div>
   <div class="stp-grid rv">
     <div class="shop-ton-produit-tile"><img src="images/lookbook/06-beanie-femme.png?v=2" alt="Casquette — BMX Skatepark" loading="lazy"/></div>
     <div class="shop-ton-produit-tile"><img src="images/lookbook/ai-tee-mockneck-femme-blanche.png?v=2" alt="Tee-shirt — Rooftop Paris" loading="lazy"/></div>
