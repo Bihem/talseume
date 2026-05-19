@@ -104,12 +104,12 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .f-pay svg{height:22px;width:auto}
 @media(max-width:1024px){.f-top{grid-template-columns:1fr 1fr;gap:32px}}
 @media(max-width:768px){
-  nav{padding:0 16px;height:96px}
+  nav{padding:0 16px;height:108px}
   .nav-menu{display:none}
   .burger{display:flex}
-  .nav-left{order:3;flex:0 0 auto;margin-left:2px}
+  .nav-left{order:1;flex:0 0 auto;margin:0}
   .nav-right{order:2;flex:0 0 auto;gap:6px;justify-content:flex-end}
-  .nav-logo{position:static;transform:none;order:1;flex:0 0 auto;margin-right:auto;display:flex;align-items:center}
+  .nav-logo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;margin:0}
   .nav-logo img{height:72px;width:auto}
   .page-head{padding:120px 22px 50px}
   .page-title{font-size:clamp(40px,11vw,64px)}
