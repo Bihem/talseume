@@ -108,12 +108,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;background:#fff;padding:0 56
 .add-btn{width:100%;background:#fff;color:var(--black);font-size:12px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;padding:0;height:60px;transition:.2s;border:1px solid var(--black)}
 .add-btn:hover{background:var(--black);color:#fff}
 
-/* Bouton express checkout (Apple Pay / Google Pay) */
-.express-pay-btn{display:none;width:100%;background:var(--black);color:#fff;font-size:14px;font-weight:500;border:none;padding:0;height:56px;margin-top:10px;cursor:pointer;align-items:center;justify-content:center;gap:8px;transition:opacity .2s;font-family:inherit}
-.express-pay-btn.show{display:flex}
-.express-pay-btn:hover{opacity:.85}
-.express-pay-btn:disabled{opacity:.5;cursor:wait}
-.express-pay-btn .ap-logo{height:20px;width:auto;fill:#fff}
+/* Container Express Checkout (Apple Pay / Google Pay / Link) — Stripe gère le rendu interne */
+.express-checkout-wrap{margin-top:10px;min-height:0}
+.express-checkout-wrap:empty{display:none}
 .more-pay-link{display:none;text-align:center;width:100%;font-size:12px;color:rgba(0,0,0,.6);text-decoration:underline;margin-top:14px;cursor:pointer;background:none;border:none;font-family:inherit;padding:6px}
 .more-pay-link.show{display:block}
 .more-pay-link:hover{color:var(--black)}
@@ -369,6 +366,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 </style>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.0.42/dist/lenis.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://js.stripe.com/v3/"></script>
 <link rel="canonical" href="https://talseume.com/product.html"/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://talseume.com/product.html"/>
@@ -512,13 +510,8 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       </div>
       <button class="add-btn" onclick="addProductToCart()">Ajouter au panier</button>
 
-      <!-- Express checkout (Apple Pay / Google Pay) — visible si supporté -->
-      <button id="expressPayBtn" class="express-pay-btn" type="button" onclick="quickBuyExpress()" aria-label="Acheter avec Apple Pay">
-        <span>Acheter avec</span>
-        <svg class="ap-logo" viewBox="0 0 60 24" aria-hidden="true">
-          <path d="M11.05 4.4c.7-.85 1.16-2.04.96-3.2-1.02.04-2.27.68-2.99 1.5-.65.74-1.21 1.94-1.06 3.08 1.14.09 2.32-.55 3.09-1.38zm.95 1.5c-1.67-.1-3.09.95-3.89.95-.81 0-2.04-.9-3.36-.88-1.73.03-3.34 1-4.23 2.56-1.8 3.13-.46 7.76 1.3 10.3.86 1.24 1.89 2.62 3.24 2.57 1.3-.05 1.79-.84 3.36-.84 1.57 0 2 .84 3.37.81 1.39-.02 2.27-1.26 3.12-2.5.99-1.42 1.39-2.81 1.41-2.88-.03-.01-2.7-1.04-2.73-4.13-.03-2.58 2.11-3.82 2.21-3.88-1.21-1.79-3.08-1.99-3.74-2.03zM23.74 2.8h-3.93v18.4h2.46v-6.32h3.4c3.11 0 5.29-2.13 5.29-6.05 0-3.91-2.14-6.03-5.22-6.03zm-1.47 2.1h2.83c2.16 0 3.39 1.16 3.39 3.94 0 2.79-1.23 3.96-3.39 3.96h-2.83V4.9zm14.94 8.42c-.18.92-1.05 1.51-2.27 1.51-1.41 0-2.27-.71-2.27-1.78 0-1.11.84-1.69 2.42-1.79l1.42-.09v-.5c0-.83-.55-1.32-1.51-1.32-.85 0-1.46.4-1.61 1.03h-2.27c.07-1.84 1.71-3.06 3.96-3.06 2.43 0 3.97 1.31 3.97 3.27v7.81h-2.32v-1.95h-.05c-.6 1.28-1.8 2.04-3.31 2.04-2.06 0-3.49-1.32-3.49-3.34 0-2.05 1.45-3.18 4.18-3.34l1.85-.1v-.39h-.85zm5.66 9.84v-2.04c.21.04.59.06.79.06.99 0 1.55-.4 1.85-1.4l.18-.58-3.34-9.27h2.59l2.32 7.46h.06l2.32-7.46h2.51L48.46 20c-.81 2.28-1.74 3-3.93 3-.16 0-.71-.02-.66-.04z" />
-        </svg>
-      </button>
+      <!-- Express Checkout Stripe : Apple Pay natif iOS / Google Pay Android (s'affiche auto si dispo) -->
+      <div id="express-checkout-element" class="express-checkout-wrap"></div>
 
       <!-- Lien alternatif : tous les modes de paiement -->
       <button id="morePayLink" class="more-pay-link" type="button" onclick="quickBuyMore()">Plus de moyens de paiement</button>
@@ -922,31 +915,93 @@ function addProductToCart(silent) {
   setTimeout(openCart, 350);
 }
 
-/* Quick buy via Apple Pay / Google Pay : ajoute au panier silencieusement et lance Stripe Checkout direct */
-async function quickBuyExpress() {
-  addProductToCart(true);
-  await stripeCheckout();
-}
-
 /* Quick buy classique : ajoute + ouvre la modale paiement avec tous les modes */
 function quickBuyMore() {
   addProductToCart(true);
   setTimeout(showPayModal, 100);
 }
 
-/* Affiche les boutons express si Apple Pay (ou autre wallet équivalent) est disponible côté client */
-function initExpressPayDetection(){
-  const expressBtn = document.getElementById('expressPayBtn');
+/* Express Checkout Stripe : monte un bouton Apple Pay natif iOS / Google Pay Android.
+   Click → ouvre directement le Apple Pay sheet (Face ID / Touch ID) sans quitter la page. */
+let _stripeInstance = null;
+let _stripeElements = null;
+async function initStripeExpress(){
+  const container = document.getElementById('express-checkout-element');
   const moreLink = document.getElementById('morePayLink');
-  if (!expressBtn || !moreLink) return;
-  const hasApplePay = typeof window.ApplePaySession !== 'undefined' && ApplePaySession.canMakePayments && ApplePaySession.canMakePayments();
-  if (hasApplePay){
-    expressBtn.classList.add('show');
-    moreLink.classList.add('show');
+  if (!container || typeof Stripe === 'undefined' || typeof p === 'undefined' || !p) return;
+
+  try {
+    const cfg = await fetch('/.netlify/functions/stripe-config').then(r => r.json());
+    if (!cfg.publishableKey){
+      console.warn('STRIPE_PUBLISHABLE_KEY non configurée dans Netlify env vars');
+      return;
+    }
+
+    _stripeInstance = Stripe(cfg.publishableKey);
+    const amountCents = Math.max(50, Math.round((p.price || 1) * 100));
+
+    _stripeElements = _stripeInstance.elements({
+      mode: 'payment',
+      amount: amountCents,
+      currency: 'eur',
+      paymentMethodCreation: 'manual',
+      appearance: { theme: 'flat', variables: { colorPrimary: '#0a0a0a', borderRadius: '0px' } },
+    });
+
+    const expressCheckout = _stripeElements.create('expressCheckout', {
+      buttonHeight: 56,
+      buttonType: { applePay: 'buy', googlePay: 'buy' },
+      buttonTheme: { applePay: 'black', googlePay: 'black' },
+      layout: { maxColumns: 1, maxRows: 2 },
+      paymentMethods: { applePay: 'always', googlePay: 'always', link: 'auto', paypal: 'auto', amazonPay: 'never' },
+    });
+    expressCheckout.mount('#express-checkout-element');
+
+    expressCheckout.on('ready', (e) => {
+      // Si au moins un mode express est dispo (Apple Pay, Google Pay, Link...), on affiche aussi le lien "Plus de moyens"
+      if (e.availablePaymentMethods && Object.values(e.availablePaymentMethods).some(Boolean)){
+        moreLink && moreLink.classList.add('show');
+      }
+    });
+
+    expressCheckout.on('confirm', async (event) => {
+      try {
+        // Valider le formulaire d'élément
+        const { error: submitError } = await _stripeElements.submit();
+        if (submitError) throw new Error(submitError.message);
+
+        // Créer le PaymentIntent côté serveur (montant = prix produit × qté actuelle)
+        const variant = getVariant();
+        const productName = `${p.name} — ${variant}`;
+        const productImage = (p.colors.find(c=>c.name===selectedColor)?.img || p.colors[0]?.img || '');
+        const amount = p.price * (typeof qty === 'number' ? qty : 1);
+
+        const resp = await fetch('/.netlify/functions/create-payment-intent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount, productName, productImage }),
+        });
+        const data = await resp.json();
+        if (!data.clientSecret) throw new Error(data.error || 'PaymentIntent introuvable');
+
+        // Confirmer le paiement (Stripe affiche Face ID / Touch ID dans la popup système iOS)
+        const { error: confirmError } = await _stripeInstance.confirmPayment({
+          elements: _stripeElements,
+          clientSecret: data.clientSecret,
+          confirmParams: { return_url: window.location.origin + '/?commande=ok' },
+        });
+        if (confirmError) throw new Error(confirmError.message);
+      } catch (e){
+        console.error('Express Checkout error:', e);
+        alert('Erreur paiement : ' + (e.message || e));
+      }
+    });
+  } catch (e){
+    console.error('initStripeExpress error:', e);
   }
 }
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initExpressPayDetection);
-else initExpressPayDetection();
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initStripeExpress);
+else initStripeExpress();
 
 function removeFromCart(idx) { cart.splice(idx,1); saveCart(); renderCart(); }
 
