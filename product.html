@@ -48,11 +48,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;background:#fff;padding:0 56
 .nav-icon[aria-label="Compte"]{display:none}
 
 /* ══ MOBILE MENU ══ */
-.mobile-menu{position:fixed;top:0;right:0;bottom:0;width:min(82vw,360px);background:#fff;z-index:600;transform:translateX(100%);transition:transform .4s cubic-bezier(.76,0,.24,1);overflow-y:auto;padding:80px 28px 40px;box-shadow:-12px 0 48px rgba(0,0,0,.08)}
+.mobile-menu{position:fixed;top:0;left:0;bottom:0;width:min(82vw,360px);background:#fff;z-index:600;transform:translateX(-100%);transition:transform .4s cubic-bezier(.76,0,.24,1);overflow-y:auto;padding:80px 28px 40px;box-shadow:12px 0 48px rgba(0,0,0,.08)}
 .mobile-menu.open{transform:none}
 .mobile-menu-close{position:absolute;top:24px;right:24px;font-size:32px;font-weight:300;line-height:1}
 .mm-mobile-section{margin-bottom:32px;border-bottom:1px solid var(--line-l);padding-bottom:24px}
-.mm-mobile-section a{display:block;font-size:18px;font-weight:400;padding:10px 0;color:var(--black)}
+.mm-mobile-section a{display:block;font-size:13px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;padding:22px 0;color:var(--black);border-bottom:1px solid rgba(0,0,0,.06);transition:letter-spacing .4s cubic-bezier(.16,1,.3,1),padding-left .35s cubic-bezier(.16,1,.3,1),color .25s} .mm-mobile-section a:hover,.mm-mobile-section a:active{letter-spacing:.28em;padding-left:8px} .mm-mobile-section a:last-child{border-bottom:none}
 
 /* ══ BREADCRUMB ══ */
 .breadcrumb{padding:110px 56px 0;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(0,0,0,.45);display:flex;gap:10px;align-items:center}
