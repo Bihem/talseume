@@ -391,15 +391,18 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 <script>
 /* ── LENIS + GSAP ── */
 const reduceMotion = matchMedia('(prefers-reduced-motion:reduce)').matches;
-if (!reduceMotion && typeof Lenis !== 'undefined') {
-  const lenis = new Lenis({duration:1.15, easing:t=>Math.min(1, 1.001 - Math.pow(2,-10*t)), smoothWheel:true, smoothTouch:false});
-  function raf(time){ lenis.raf(time); requestAnimationFrame(raf); }
-  requestAnimationFrame(raf);
-  if (typeof ScrollTrigger !== 'undefined') {
-    gsap.registerPlugin(ScrollTrigger);
-    lenis.on('scroll', ScrollTrigger.update);
+if (!reduceMotion && typeof Lenis !== 'undefined' && !matchMedia('(hover:none) and (pointer:coarse)').matches) {
+  const lenis = new Lenis({duration:1.15, easing:t=>Math.min(1, 1.001 - Math.pow(2,-10*t)), smoothWheel:true});
+  if (typeof gsap !== 'undefined') {
     gsap.ticker.add(time => lenis.raf(time*1000));
     gsap.ticker.lagSmoothing(0);
+    if (typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+      lenis.on('scroll', ScrollTrigger.update);
+    }
+  } else {
+    function raf(time){ lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
   }
 }
 if (!reduceMotion && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
