@@ -350,7 +350,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 }
 @media(max-width:768px){
   nav{padding:0 16px;height:96px}
-  nav.scrolled{height:80px}
+  nav.scrolled{height:96px}
   .nav-menu,.nav-cc{display:none}
   .burger{display:flex}
   nav .burger span{background:#fff}
@@ -697,7 +697,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
 
 <!-- HERO -->
 <section class="hero">
-  <video autoplay muted loop playsinline><source src="hero.mp4" type="video/mp4"/></video>
+  <video autoplay muted loop playsinline preload="auto" disablePictureInPicture><source src="hero.mp4" type="video/mp4"/></video>
   <div class="hero-grad"></div>
   <div class="hero-content">
     <div class="hero-tag">Paris · SS26</div>
@@ -1189,16 +1189,31 @@ function submitNewsletter(e){
   }).observe(drawer, {attributes:true, attributeFilter:['class']});
 })();
 
-/* ── HERO VIDEO SEAMLESS LOOP ── */
+/* ── HERO VIDEO BULLETPROOF (seamless loop + auto-resume) ── */
 (() => {
   const v = document.querySelector('.hero video');
   if (!v) return;
+  // 1. Seamless loop trick
   v.addEventListener('timeupdate', () => {
     if (v.duration && v.duration - v.currentTime < 0.18) {
       v.currentTime = 0;
       v.play().catch(() => {});
     }
   });
+  // 2. Auto-resume on pause (Safari iOS power saver, foreground switch)
+  v.addEventListener('pause', () => {
+    if (!v.ended) v.play().catch(() => {});
+  });
+  // 3. Resume on tab visibility change
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && v.paused) v.play().catch(() => {});
+  });
+  // 4. Ensure playing after metadata load
+  v.addEventListener('loadedmetadata', () => v.play().catch(() => {}));
+  // 5. Periodic safety check
+  setInterval(() => {
+    if (!document.hidden && v.paused && !v.ended) v.play().catch(() => {});
+  }, 2000);
 })();
 
 /* ── PRELOADER ── */
