@@ -123,9 +123,10 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   .f-top{grid-template-columns:1fr 1fr;gap:32px;padding-bottom:32px;margin-bottom:32px}
   .f-brand{grid-column:span 2}
   footer{padding:56px 24px 24px !important}
-  footer .f-top{display:grid !important;grid-template-columns:1fr 1fr !important;gap:32px !important;align-items:start}
+  footer .f-top{display:grid !important;grid-template-columns:auto auto !important;justify-content:space-between !important;gap:32px !important;align-items:start}
   footer .f-brand{grid-column:1 / -1 !important;width:100%}
   footer .f-col{padding:0;min-width:0;text-align:left}
+  footer .f-col:last-child{text-align:right}
   footer .f-col h5{margin-bottom:14px}
   footer .f-col li{margin-bottom:8px}
   footer .f-col a{font-size:12.5px;line-height:1.4;display:inline-block}
