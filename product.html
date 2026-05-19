@@ -270,6 +270,8 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   footer{padding:56px 20px 22px}
   .f-top{grid-template-columns:1fr 1fr;gap:28px}
   .f-brand{grid-column:span 2}
+  footer .f-top{display:grid !important;grid-template-columns:1fr 1fr !important;gap:28px 16px !important}
+  footer .f-brand{grid-column:1 / -1 !important}
   .toast{bottom:20px;font-size:11px;padding:12px 22px}
 }
 @media(max-width:480px){
