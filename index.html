@@ -1252,8 +1252,8 @@ document.querySelectorAll('.carousel, .pgrid, .stp-grid, .editorial-pair-grid, .
   obs.observe(el);
 });
 
-/* ── SPLIT WORD REVEAL on titles ── */
-document.querySelectorAll('.s-title, .hero-desc, .nl-title, .band-title, .m-body').forEach(el => {
+/* ── SPLIT WORD REVEAL on titles (hero-desc exclu pour préserver <br>) ── */
+document.querySelectorAll('.s-title, .nl-title, .band-title, .m-body').forEach(el => {
   if (el.dataset.split) return;
   el.dataset.split = '1';
   const words = el.textContent.trim().split(/\s+/);
