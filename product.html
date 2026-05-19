@@ -925,20 +925,41 @@ function quickBuyMore() {
    Click → ouvre directement le Apple Pay sheet (Face ID / Touch ID) sans quitter la page. */
 let _stripeInstance = null;
 let _stripeElements = null;
+
+const _DEBUG_ECE = new URLSearchParams(location.search).get('debug') === '1';
+function _ecedbg(msg, data){
+  if (!_DEBUG_ECE) return;
+  let el = document.getElementById('ece-debug');
+  if (!el){
+    el = document.createElement('div');
+    el.id = 'ece-debug';
+    el.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#000;color:#0f0;font:11px/1.4 SF Mono,monospace;padding:10px;z-index:99999;max-height:50vh;overflow:auto;white-space:pre-wrap;border-top:2px solid #0f0';
+    document.body.appendChild(el);
+  }
+  el.textContent += '\n[' + new Date().toISOString().slice(11,19) + '] ' + msg + (data !== undefined ? ' → ' + JSON.stringify(data) : '');
+}
+
 async function initStripeExpress(){
   const container = document.getElementById('express-checkout-element');
   const moreLink = document.getElementById('morePayLink');
-  if (!container || typeof Stripe === 'undefined' || typeof p === 'undefined' || !p) return;
+  _ecedbg('init start', { hasContainer: !!container, hasStripeJs: typeof Stripe !== 'undefined', hasProduct: typeof p !== 'undefined' && !!p, ua: navigator.userAgent.slice(0,80), isSafari: /^((?!chrome|android).)*safari/i.test(navigator.userAgent), applePaySession: typeof window.ApplePaySession !== 'undefined' });
+  if (!container) { _ecedbg('skip: no container'); return; }
+  if (typeof Stripe === 'undefined') { _ecedbg('skip: Stripe.js not loaded'); return; }
+  if (typeof p === 'undefined' || !p) { _ecedbg('skip: product (p) undefined'); return; }
 
   try {
+    _ecedbg('fetching stripe-config...');
     const cfg = await fetch('/.netlify/functions/stripe-config').then(r => r.json());
+    _ecedbg('stripe-config received', { hasPk: !!cfg.publishableKey, pkPrefix: cfg.publishableKey ? cfg.publishableKey.slice(0,12) : null });
     if (!cfg.publishableKey){
+      _ecedbg('skip: no publishableKey returned');
       console.warn('STRIPE_PUBLISHABLE_KEY non configurée dans Netlify env vars');
       return;
     }
 
     _stripeInstance = Stripe(cfg.publishableKey);
     const amountCents = Math.max(50, Math.round((p.price || 1) * 100));
+    _ecedbg('Stripe initialized', { amountCents });
 
     _stripeElements = _stripeInstance.elements({
       mode: 'payment',
@@ -947,6 +968,7 @@ async function initStripeExpress(){
       paymentMethodCreation: 'manual',
       appearance: { theme: 'flat', variables: { colorPrimary: '#0a0a0a', borderRadius: '0px' } },
     });
+    _ecedbg('elements created');
 
     const expressCheckout = _stripeElements.create('expressCheckout', {
       buttonHeight: 56,
@@ -956,12 +978,18 @@ async function initStripeExpress(){
       paymentMethods: { applePay: 'always', googlePay: 'always', link: 'auto', paypal: 'auto', amazonPay: 'never' },
     });
     expressCheckout.mount('#express-checkout-element');
+    _ecedbg('expressCheckout.mount() called');
 
     expressCheckout.on('ready', (e) => {
+      _ecedbg('ready event', { availablePaymentMethods: e.availablePaymentMethods });
       // Si au moins un mode express est dispo (Apple Pay, Google Pay, Link...), on affiche aussi le lien "Plus de moyens"
       if (e.availablePaymentMethods && Object.values(e.availablePaymentMethods).some(Boolean)){
         moreLink && moreLink.classList.add('show');
       }
+    });
+
+    expressCheckout.on('loaderror', (e) => {
+      _ecedbg('loaderror', { error: String(e.error && e.error.message || e) });
     });
 
     expressCheckout.on('confirm', async (event) => {
