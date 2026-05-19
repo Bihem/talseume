@@ -1,0 +1,72 @@
+/* ════════════════════════════════════════════════════════════════
+   Talseume — Bannière cookies (CNIL-compliant)
+   Tous les boutons ont un poids visuel équivalent (CNIL 2020-091).
+   Le consentement granulaire est exposé via un modal de préférences.
+   ════════════════════════════════════════════════════════════════ */
+
+#tls-cookie-banner{
+  position:fixed; left:24px; right:24px; bottom:24px; z-index:9000;
+  background:#fff; border:1px solid rgba(0,0,0,.08);
+  box-shadow:0 12px 40px rgba(0,0,0,.14);
+  padding:22px 26px; display:grid; grid-template-columns:1fr auto; gap:24px;
+  align-items:center; max-width:1180px; margin:0 auto;
+  font-family:'Suisse Intl','Helvetica Neue',Helvetica,Arial,sans-serif;
+  transform:translateY(140%); transition:transform .4s cubic-bezier(.4,0,.2,1);
+}
+#tls-cookie-banner.show{transform:translateY(0)}
+#tls-cookie-banner .tls-cb-text strong{display:block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:500;margin-bottom:8px;color:#0a0a0a}
+#tls-cookie-banner .tls-cb-text p{font-size:13px;line-height:1.6;color:rgba(0,0,0,.7);font-weight:300;margin:0}
+#tls-cookie-banner .tls-cb-text p a{color:#0a0a0a;border-bottom:1px solid #0a0a0a;padding-bottom:1px}
+#tls-cookie-banner .tls-cb-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+.tls-cb-btn{
+  font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;
+  padding:13px 20px;cursor:pointer;transition:opacity .2s;font-family:inherit;
+  border:1px solid #0a0a0a;background:#fff;color:#0a0a0a;line-height:1;
+  white-space:nowrap;
+}
+.tls-cb-btn:hover{opacity:.65}
+.tls-cb-btn.is-primary{background:#0a0a0a;color:#fff}
+.tls-cb-btn.is-primary:hover{opacity:.85}
+
+@media(max-width:768px){
+  #tls-cookie-banner{left:12px;right:12px;bottom:12px;grid-template-columns:1fr;padding:18px 20px;gap:14px}
+  #tls-cookie-banner .tls-cb-actions{flex-direction:column;width:100%}
+  .tls-cb-btn{width:100%;padding:14px 16px;text-align:center}
+}
+
+/* ── Modal préférences granulaires ── */
+#tls-cookie-prefs{position:fixed;inset:0;z-index:9100;display:none;align-items:center;justify-content:center;padding:24px}
+#tls-cookie-prefs.show{display:flex}
+.tls-cp-backdrop{position:absolute;inset:0;background:rgba(10,10,10,.62);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);cursor:pointer}
+.tls-cp-modal{position:relative;background:#fff;max-width:560px;width:100%;max-height:calc(100vh - 48px);overflow-y:auto;padding:36px;font-family:'Suisse Intl','Helvetica Neue',Helvetica,Arial,sans-serif;animation:tlsCpIn .25s ease}
+@keyframes tlsCpIn{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
+.tls-cp-modal h3{font-size:24px;font-weight:300;letter-spacing:-.012em;margin-bottom:12px;color:#0a0a0a}
+.tls-cp-modal>p{font-size:13px;line-height:1.65;color:rgba(0,0,0,.7);font-weight:300;margin-bottom:28px}
+.tls-cp-modal>p a{color:#0a0a0a;border-bottom:1px solid #0a0a0a;padding-bottom:1px}
+
+.tls-cp-cat{border-top:1px solid rgba(0,0,0,.08);padding:20px 0}
+.tls-cp-cat-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:12px;flex-wrap:wrap}
+.tls-cp-cat-header strong{font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;color:#0a0a0a;flex:1;min-width:140px}
+.tls-cp-cat p{font-size:12.5px;line-height:1.65;color:rgba(0,0,0,.6);font-weight:300;margin:0}
+.tls-cp-locked{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(0,0,0,.45);font-weight:400;padding:6px 10px;border:1px solid rgba(0,0,0,.15);border-radius:2px;white-space:nowrap;flex-shrink:0}
+
+.tls-cp-switch{position:relative;display:inline-block;width:46px;height:26px;cursor:pointer;flex-shrink:0}
+.tls-cp-switch input{position:absolute;opacity:0;width:0;height:0}
+.tls-cp-slider{position:absolute;inset:0;background:rgba(0,0,0,.2);border-radius:26px;transition:background .25s}
+.tls-cp-slider:before{content:'';position:absolute;height:20px;width:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .25s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.tls-cp-switch input:checked + .tls-cp-slider{background:#0a0a0a}
+.tls-cp-switch input:checked + .tls-cp-slider:before{transform:translateX(20px)}
+.tls-cp-switch input:focus-visible + .tls-cp-slider{outline:2px solid #0a0a0a;outline-offset:2px}
+
+.tls-cp-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;padding-top:20px;border-top:1px solid rgba(0,0,0,.08)}
+.tls-cp-actions .tls-cb-btn{flex:1;min-width:140px}
+.tls-cp-close{position:absolute;top:14px;right:14px;background:transparent;border:none;font-size:24px;line-height:1;cursor:pointer;color:rgba(0,0,0,.5);padding:8px;font-family:inherit;transition:color .2s}
+.tls-cp-close:hover{color:#0a0a0a}
+
+@media(max-width:768px){
+  .tls-cp-modal{padding:30px 22px}
+  .tls-cp-modal h3{font-size:20px}
+  .tls-cp-actions{flex-direction:column}
+  .tls-cp-actions .tls-cb-btn{width:100%}
+}

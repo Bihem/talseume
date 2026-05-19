@@ -175,6 +175,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 <meta property="og:description" content="Politique cookies — Talseume"/>
 <meta property="og:image" content="https://talseume.com/images/talseume-logo.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
+<link rel="stylesheet" href="/cookies-banner.css">
 </head>
 <body>
 
@@ -318,11 +319,17 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   <li>de <strong>refuser</strong> les cookies non essentiels en un clic,</li>
   <li>de <strong>personnaliser</strong> finement vos préférences par catégorie.</li>
 </ul>
-<p>Vous pouvez à tout moment modifier ou retirer votre consentement&nbsp;:</p>
+<p>Vous pouvez à tout moment modifier ou retirer votre consentement directement depuis cette page&nbsp;:</p>
+
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin:24px 0 32px">
+  <button type="button" class="tls-cb-btn" data-action="open-cookie-prefs">Modifier mes préférences</button>
+  <button type="button" class="tls-cb-btn is-primary" data-action="reset-cookies">Réinitialiser mon choix</button>
+</div>
+
 <ul>
-  <li>en effaçant les cookies depuis votre navigateur (vous reverrez alors le bandeau),</li>
-  <li>en cliquant sur le lien « Gérer mes cookies » présent en pied de page (à venir),</li>
-  <li>via les paramètres avancés de votre navigateur.</li>
+  <li>« Modifier mes préférences »&nbsp;: ouvre le panneau granulaire pour activer/désactiver chaque catégorie.</li>
+  <li>« Réinitialiser »&nbsp;: efface votre choix et fait réapparaître la bannière de consentement.</li>
+  <li>Vous pouvez aussi effacer les cookies depuis votre navigateur ou utiliser ses paramètres avancés.</li>
 </ul>
 <p>Le retrait du consentement n'affecte pas la licéité des traitements effectués avant ce retrait.</p>
 
@@ -368,19 +375,19 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     <div class="f-col">
       <h5>Aide</h5>
       <ul>
-        <li><a href="#">Livraison &amp; Retours</a></li>
-        <li><a href="#">Suivi de commande</a></li>
-        <li><a href="#">Guide des tailles</a></li>
-        <li><a href="#">FAQ</a></li>
+        <li><a href="livraison-retours.html">Livraison &amp; Retours</a></li>
+        <li><a href="suivi-commande.html">Suivi de commande</a></li>
+        <li><a href="guide-tailles.html">Guide des tailles</a></li>
+        <li><a href="faq.html">FAQ</a></li>
       </ul>
     </div>
     <div class="f-col">
       <h5>Légal</h5>
       <ul>
-        <li><a href="#">Mentions légales</a></li>
-        <li><a href="#">CGV</a></li>
-        <li><a href="#">Politique de confidentialité</a></li>
-        <li><a href="#">Cookies</a></li>
+        <li><a href="mentions-legales.html">Mentions légales</a></li>
+        <li><a href="cgv.html">CGV</a></li>
+        <li><a href="confidentialite.html">Politique de confidentialité</a></li>
+        <li><a href="cookies.html">Cookies</a></li>
       </ul>
     </div>
   </div>
@@ -465,5 +472,6 @@ function submitContact(e){
   return false;
 }
 </script>
+<script src="/cookies-banner.js" defer></script>
 </body>
 </html>

@@ -346,6 +346,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 <meta property="og:description" content="Streetwear éco-responsable Talseume. Coton bio GOTS, matériaux recyclés, fabriqué pour durer."/>
 <meta property="og:image" content="https://talseume.com/images/talseume-logo.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
+<link rel="stylesheet" href="/cookies-banner.css">
 </head>
 <body>
 
@@ -550,19 +551,19 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     <div class="f-col">
       <h5>Aide</h5>
       <ul>
-        <li><a href="#">Livraison &amp; Retours</a></li>
-        <li><a href="#">Suivi de commande</a></li>
-        <li><a href="#">Guide des tailles</a></li>
-        <li><a href="#">FAQ</a></li>
+        <li><a href="livraison-retours.html">Livraison &amp; Retours</a></li>
+        <li><a href="suivi-commande.html">Suivi de commande</a></li>
+        <li><a href="guide-tailles.html">Guide des tailles</a></li>
+        <li><a href="faq.html">FAQ</a></li>
       </ul>
     </div>
     <div class="f-col">
       <h5>Légal</h5>
       <ul>
-        <li><a href="#">Mentions légales</a></li>
-        <li><a href="#">CGV</a></li>
-        <li><a href="#">Politique de confidentialité</a></li>
-        <li><a href="#">Cookies</a></li>
+        <li><a href="mentions-legales.html">Mentions légales</a></li>
+        <li><a href="cgv.html">CGV</a></li>
+        <li><a href="confidentialite.html">Politique de confidentialité</a></li>
+        <li><a href="cookies.html">Cookies</a></li>
       </ul>
     </div>
   </div>
@@ -1004,7 +1005,7 @@ if (document.startViewTransition) {
   </div>
   <div class="cookie-modal">
     <h3 class="cookie-title">Consentement aux cookies</h3>
-    <p class="cookie-desc">Talseume et ses partenaires utilisent des cookies et d'autres technologies pour personnaliser votre expérience, vous afficher des publicités et effectuer des analyses. Nous n'utiliserons pas de cookies à ces fins sans votre consentement. En savoir plus dans notre <a href="#">Politique de confidentialité</a>.</p>
+    <p class="cookie-desc">Talseume et ses partenaires utilisent des cookies et d'autres technologies pour personnaliser votre expérience, vous afficher des publicités et effectuer des analyses. Nous n'utiliserons pas de cookies à ces fins sans votre consentement. En savoir plus dans notre <a href="confidentialite.html">Politique de confidentialité</a>.</p>
     <div class="cookie-actions">
       <a class="cookie-prefs" onclick="cookieDecide('prefs')">Gérer vos préférences</a>
       <button class="cookie-btn" onclick="cookieDecide('refuse')">Refuser</button>
@@ -1012,5 +1013,6 @@ if (document.startViewTransition) {
     </div>
   </div>
 </div>
+<script src="/cookies-banner.js" defer></script>
 </body>
 </html>
