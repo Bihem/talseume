@@ -52,6 +52,9 @@ exports.handler = async (event) => {
         description: 'Commande Talseume',
         statement_descriptor_suffix: 'TALSEUME',
       },
+      consent_collection: {
+        terms_of_service: 'required',
+      },
     });
 
     return {
