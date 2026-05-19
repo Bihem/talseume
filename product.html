@@ -528,7 +528,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <input class="qty-val" id="qty-val" type="number" value="1" min="1" max="10" readonly/>
         <button class="qty-btn" onclick="changeQty(1)" aria-label="Augmenter">+</button>
       </div>
-      <button class="add-btn" onclick="addProductToCart()">Ajouter au panier</button>
+      <button class="add-btn" id="add-btn" onclick="addProductToCart()">Ajouter au panier</button>
 
       <!-- Express Checkout Stripe : Apple Pay natif iOS / Google Pay Android (s'affiche auto si dispo) -->
       <div id="express-checkout-element" class="express-checkout-wrap"></div>
@@ -698,9 +698,9 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 
 <script>
 const COLOR_HEX = {
-  'ROUGE':'#C0392B','BLANC':'#FFFFFF','NOIR':'#1A1A1A','BLEUE':'#2C5F8A',
+  'ROUGE':'#6B1F26','BLANC':'#F4F2EC','NOIR':'#1A1A1A','BLEUE':'#1C2845',
   'BEIGE':'#D4B896','Natural Raw':'#E8D5B0','Stargazer':'#2C3E50','Noir':'#1A1A1A',
-  'Bleu':'#2C5F8A','Blanc':'#FFFFFF','Orange':'#E8621A','Jaune':'#F0D020',
+  'Bleu':'#2C5F8A','Blanc':'#F4F2EC','Orange':'#E8621A','Jaune':'#E8C547',
   'FRENCH NAVY':'#1B2A6B','KAKI':'#6B7C3B','Rouge':'#C0392B'
 };
 
@@ -744,15 +744,15 @@ const PRODUCTS = {
   'veste-coach':{
     name:'Veste Coach Unisexe Talseume',price:90,badge:'Recyclé',
     desc:'La veste coach redéfinie. Matière recyclée premium, coupe unisexe intemporelle. Entre la rue et le vestiaire.',
-    material:'Polyester recyclé · Unisexe · 3 coloris',
-    materials:'Polyester recyclé. Coupe unisexe. Disponible en NOIR, FRENCH NAVY et KAKI.',
+    material:'Polyester recyclé · Unisexe · Coloris Noir',
+    materials:'Polyester recyclé. Coupe unisexe. Coloris Noir.',
     sizeGuide:'S · M · L · XL · XXL. Coupe ajustée — prendre sa taille habituelle.',
     sizes:['S','M','L','XL','XXL'],
-    colors:[{name:'NOIR',img:'images/products/Coach-Jacket-By-talseumecopie2.jpg'},{name:'FRENCH NAVY',img:'images/products/Coach-Jacket-By-talseumecopie3.jpg'},{name:'KAKI',img:'images/products/Coach-Jacket-By-talseumecopie.jpg'}]
+    colors:[{name:'NOIR',img:'images/products/Coach-Jacket-By-talseumecopie2.jpg'}]
   },
   'veste-coach-ultra':{
-    name:'Veste Coach Talseume Ultra',price:130,badge:'Ultra',
-    desc:'Ultra légère. Ultra propre. Ultra Talseume. 75g/m² en plain weave 100% polyester recyclé — se glisse partout, se porte toujours.',
+    name:'Veste Coach Talseume Ultra',price:130,badge:'Ultra',unavailable:true,
+    desc:'Ultra légère. Ultra propre. Ultra Talseume. 75g/m² en plain weave 100% polyester recyclé — se glisse partout, se porte toujours. **Fin de série — produit plus disponible.**',
     material:'100% polyester recyclé · 75g/m² · Unisexe',
     materials:'100% polyester recyclé plain weave 75g/m². Ultra légère et compressible.',
     sizeGuide:'XS · S · M · L. Coupe ajustée.',
@@ -857,6 +857,24 @@ function render() {
   }
 
   renderRelated();
+
+  /* Produit indisponible (fin de série / rupture) : désactive l'achat */
+  if (p.unavailable){
+    const btn = document.getElementById('add-btn');
+    if (btn){
+      btn.disabled = true;
+      btn.textContent = 'Plus disponible';
+      btn.style.opacity = '0.45';
+      btn.style.cursor = 'not-allowed';
+      btn.onclick = null;
+    }
+    const exp = document.getElementById('express-checkout-element');
+    if (exp) exp.style.display = 'none';
+    const more = document.getElementById('morePayLink');
+    if (more) more.style.display = 'none';
+    const qtyRow = document.querySelector('.qty-row');
+    if (qtyRow) qtyRow.style.opacity = '0.4';
+  }
 }
 
 function renderMainImg(){
@@ -975,6 +993,7 @@ function getVariant() {
 }
 
 function addProductToCart(silent) {
+  if (p.unavailable){ showToast && showToast('Produit plus disponible'); return; }
   const variant = getVariant();
   const img = p.colors.find(c=>c.name===selectedColor)?.img || p.colors[0]?.img || '';
   const ex = cart.find(i => i.name===p.name && i.variant===variant);
