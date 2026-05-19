@@ -26,9 +26,13 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 img{display:block;max-width:100%}
 
 /* ══ NAV (copie de la home) ══ */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;background:transparent;padding:0 56px;display:flex;align-items:center;justify-content:space-between;height:116px;border-bottom:1px solid transparent;transition:transform .35s cubic-bezier(.4,0,.2,1),height .35s,background .35s,border-color .35s,box-shadow .35s,backdrop-filter .35s}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;background:#fff;padding:0 56px;display:flex;align-items:center;justify-content:space-between;height:116px;border-bottom:1px solid var(--line-l);transition:transform .35s cubic-bezier(.4,0,.2,1),height .35s,background .35s,border-color .35s,box-shadow .35s,backdrop-filter .35s}
 nav.nav-hidden{transform:translateY(-100%)}
-nav.scrolled{background:rgba(255,255,255,.96);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom-color:var(--line-l);box-shadow:0 4px 24px rgba(0,0,0,.04)}
+/* Mobile-only : nav transparente en haut → blanche au scroll (pattern hero) */
+@media(max-width:768px){
+  nav{background:transparent;border-bottom:1px solid transparent}
+  nav.scrolled{background:rgba(255,255,255,.96);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom-color:var(--line-l);box-shadow:0 4px 24px rgba(0,0,0,.04)}
+}
 .nav-left{display:flex;align-items:center;gap:32px;flex:1}
 .nav-menu{display:flex;list-style:none;gap:36px;align-items:center}
 .nav-menu li{position:relative}
@@ -62,22 +66,29 @@ nav.scrolled{background:rgba(255,255,255,.96);backdrop-filter:saturate(1.4) blur
 .breadcrumb span{opacity:.4}
 
 /* ══ PRODUCT LAYOUT ══ */
-.product-page{display:grid;grid-template-columns:1.25fr 1fr;gap:0;min-height:calc(100vh - 82px);padding:0 56px 60px}
-@media(max-width:1024px){.product-page{grid-template-columns:1fr 1fr;padding:0 32px 40px;gap:24px}}
+/* DESKTOP layout — version originale conservée */
+.product-page{display:grid;grid-template-columns:1.25fr 1fr;gap:0;min-height:calc(100vh - 82px);padding:32px 56px 60px}
+@media(max-width:1024px){.product-page{grid-template-columns:1fr 1fr;padding:24px 32px 40px;gap:24px}}
 @media(max-width:768px){.product-page{grid-template-columns:1fr;padding:0 0 40px;gap:0}}
 
-/* ══ IMAGE SIDE ══ */
+/* ══ IMAGE SIDE — DESKTOP : image unique centrée, sticky, padding 40px (original) ══ */
 .prod-img-side{position:relative;display:block}
 .prod-thumbs{display:none}
-.prod-main-img-wrap{width:100%;background:#fff;overflow:hidden;position:sticky;top:0;height:100vh;display:block;padding:0}
-.prod-gallery{display:flex;width:100%;height:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.prod-gallery::-webkit-scrollbar{display:none}
-.prod-slide{flex:0 0 100%;height:100%;scroll-snap-align:start;display:flex;align-items:center;justify-content:center;background:#fff;position:relative}
-.prod-slide img{width:100%;height:100%;object-fit:cover;object-position:center}
-.prod-indicator{position:absolute;bottom:18px;right:18px;background:rgba(255,255,255,.85);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);font-size:11px;letter-spacing:.08em;padding:7px 14px;border-radius:30px;color:var(--black);z-index:5;font-weight:500;pointer-events:none;transition:opacity .25s}
-.prod-indicator.hide{opacity:0}
+.prod-main-img-wrap{width:100%;background:#fff;overflow:hidden;position:sticky;top:104px;min-height:calc(100vh - 140px);display:flex;align-items:center;justify-content:center;padding:40px}
+#prod-main-img{max-width:100%;max-height:calc(100vh - 220px);width:auto;height:auto;object-fit:contain;transition:opacity .35s}
+.prod-gallery{display:none}
+.prod-indicator{display:none}
+
+/* ══ MOBILE — galerie carousel full-bleed (nouveau) ══ */
 @media(max-width:768px){
-  .prod-main-img-wrap{position:relative;top:0;height:auto;aspect-ratio:4/5;width:100%}
+  .prod-main-img-wrap{position:relative;top:0;min-height:auto;width:100%;aspect-ratio:4/5;padding:0;display:block;height:auto}
+  #prod-main-img{display:none}
+  .prod-gallery{display:flex;width:100%;height:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .prod-gallery::-webkit-scrollbar{display:none}
+  .prod-slide{flex:0 0 100%;height:100%;scroll-snap-align:start;display:flex;align-items:center;justify-content:center;background:#fff;position:relative}
+  .prod-slide img{width:100%;height:100%;object-fit:cover;object-position:center}
+  .prod-indicator{display:block;position:absolute;bottom:18px;right:18px;background:rgba(255,255,255,.85);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);font-size:11px;letter-spacing:.08em;padding:7px 14px;border-radius:30px;color:var(--black);z-index:5;font-weight:500;pointer-events:none;transition:opacity .25s}
+  .prod-indicator.hide{opacity:0}
 }
 
 /* ══ INFO SIDE ══ */
@@ -481,6 +492,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   <div class="prod-img-side">
     <div class="prod-thumbs" id="prod-thumbs"></div>
     <div class="prod-main-img-wrap">
+      <img id="prod-main-img" src="" alt=""/>
       <div class="prod-gallery" id="prod-gallery" data-lenis-prevent></div>
       <div class="prod-indicator" id="prod-indicator">1 / 1</div>
     </div>
@@ -848,7 +860,14 @@ function render() {
 }
 
 function renderMainImg(){
-  /* Galerie carousel : 1 slide par couleur, swipe horizontal */
+  /* DESKTOP : image unique qui change au clic swatch */
+  const mainImg = document.getElementById('prod-main-img');
+  if (mainImg){
+    const img = p.colors.find(c=>c.name===selectedColor)?.img || p.colors[0]?.img || '';
+    mainImg.src = img;
+    mainImg.alt = `${p.name} — ${selectedColor}`;
+  }
+  /* MOBILE : galerie carousel — 1 slide par couleur, swipe horizontal */
   const gallery = document.getElementById('prod-gallery');
   const indicator = document.getElementById('prod-indicator');
   if (!gallery) return;
@@ -909,9 +928,15 @@ function selectColor(name) {
   document.getElementById('selected-color').textContent = '— ' + name;
   document.querySelectorAll('.cswatch').forEach(b => b.classList.toggle('sel', b.title===name));
   document.querySelectorAll('.prod-thumb').forEach(t => t.classList.toggle('sel', t.querySelector('img').alt===name));
-  /* Scroll la galerie vers le slide de cette couleur (set direct — l'API smooth est interceptée par Lenis sur desktop, sur mobile touch c'est natif) */
+  /* DESKTOP : change la src de l'image unique */
+  const mainImg = document.getElementById('prod-main-img');
+  if (mainImg){
+    const c = p.colors.find(col => col.name === name);
+    if (c) mainImg.src = c.img;
+  }
+  /* MOBILE : scroll la galerie vers le slide de cette couleur */
   const gallery = document.getElementById('prod-gallery');
-  if (gallery){
+  if (gallery && gallery.clientWidth > 0){
     const idx = p.colors.findIndex(c => c.name === name);
     if (idx >= 0){
       gallery.scrollLeft = idx * gallery.clientWidth;
@@ -1172,31 +1197,16 @@ function renderWishUI(){
 }
 renderWishUI();
 
-/* ── NAV SMART HIDE/SHOW (style Gucci) ── */
+/* ── NAV : barre blanche apparaît au scroll (mobile uniquement, desktop reste blanc fixe) ── */
 (function navScrollBehavior(){
   const nav = document.querySelector('nav');
   if (!nav) return;
-  let lastY = window.scrollY;
-  let ticking = false;
   function onScroll(){
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      const y = window.scrollY;
-      const goingDown = y > lastY;
-      if (y < 80){
-        nav.classList.remove('nav-hidden');
-        nav.classList.remove('scrolled');
-      } else if (Math.abs(y - lastY) > 6){
-        if (goingDown) nav.classList.add('nav-hidden');
-        else nav.classList.remove('nav-hidden');
-        nav.classList.add('scrolled');
-      }
-      lastY = y;
-      ticking = false;
-    });
+    if (window.scrollY > 40) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
   }
   window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 })();
 
 /* ── LENIS SMOOTH SCROLL ── */
