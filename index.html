@@ -353,41 +353,44 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   .nav-left{order:3;flex:0 0 auto;margin-left:2px}
   nav .burger{width:19px;height:14px}
   nav .burger span{height:1.4px}
-  .hero{height:100svh;min-height:540px}
-  .hero-content{padding:0 22px 40px}
-  .hero-foot{flex-direction:column;align-items:flex-start;gap:18px;margin-top:0}
-  .hero-desc{font-size:12px;max-width:none}
-  .hero-ctas{width:100%;gap:8px}
-  .btn-primary,.btn-ghost{flex:1;padding:14px 18px;font-size:10px;letter-spacing:.18em;justify-content:center}
-  .s-head{padding:64px 22px 22px;flex-direction:column;align-items:flex-start;gap:12px}
-  .s-eyebrow{margin-bottom:10px}
-  .s-title{font-size:clamp(28px,8vw,40px)}
-  .carousel-wrap{padding:0 22px 60px}
+  .hero{height:100svh;min-height:580px}
+  .hero-content{padding:0 24px 48px}
+  .hero-foot{flex-direction:column;align-items:stretch;gap:22px;margin-top:0}
+  .hero-desc{font-size:14px;line-height:1.65;max-width:none;color:rgba(255,255,255,.78);font-weight:300}
+  .hero-ctas{width:100%;gap:10px;flex-direction:column}
+  .btn-primary,.btn-ghost{padding:18px 24px;font-size:11px;letter-spacing:.22em;justify-content:center;width:100%}
+  .s-head{padding:90px 24px 28px;flex-direction:column;align-items:flex-start;gap:14px}
+  .s-eyebrow{font-size:10px;letter-spacing:.28em;margin-bottom:12px;color:rgba(0,0,0,.55)}
+  .s-title{font-size:clamp(32px,9vw,46px);line-height:1.02;letter-spacing:-.03em}
+  .carousel-wrap{padding:0 24px 72px}
   .car-controls{display:none}
-  .carousel{display:flex;flex-wrap:nowrap;gap:12px}
-  .carousel .pcard{flex:0 0 calc(50vw - 28px);width:calc(50vw - 28px)}
-  .pgrid-wrap{padding:0 22px 60px}
-  .pgrid{grid-template-columns:repeat(2,1fr);gap:12px}
-  .pcard-info{padding:14px 2px 6px}
-  .pcard-name{font-size:12px}
-  .pcard-price{font-size:12px}
-  .brand-band{padding:80px 22px}
-  .brand-text{font-size:18px;line-height:1.5}
-  .manifesto{padding:90px 22px 100px}
-  .newsletter{padding:80px 22px}
-  .stl{padding:70px 22px}
-  .stl-items{grid-template-columns:1fr 1fr;gap:10px}
-  .m-content{gap:32px}
+  .carousel{display:flex;flex-wrap:nowrap;gap:14px}
+  .carousel .pcard{flex:0 0 calc(58vw - 24px);width:calc(58vw - 24px)}
+  .pcard-img{border-radius:3px;overflow:hidden}
+  .pgrid-wrap{padding:0 24px 72px}
+  .pgrid{grid-template-columns:repeat(2,1fr);gap:14px}
+  .pcard-info{padding:16px 4px 8px}
+  .pcard-name{font-size:13px;line-height:1.4}
+  .pcard-price{font-size:13px}
+  .brand-band{padding:96px 24px}
+  .brand-text{font-size:18px;line-height:1.6}
+  .manifesto{padding:110px 24px 120px}
+  .newsletter{padding:96px 24px}
+  .stl{padding:80px 24px}
+  .stl-items{grid-template-columns:1fr 1fr;gap:12px}
+  .m-content{gap:36px}
   .m-eyebrow{font-size:10px;letter-spacing:.32em;gap:12px}
   .m-eyebrow::before,.m-eyebrow::after{width:22px}
-  .m-body{font-size:16px;line-height:1.7}
-  .nl-title{font-size:clamp(24px,7vw,36px)}
-  .nl-sub{font-size:13px}
-  .nl-form{flex-direction:column;border:none;gap:10px}
-  .nl-form input{border-bottom:1px solid var(--black);padding:14px 0}
-  .nl-form button{background:var(--black);color:#fff;padding:16px}
-  .benefits{grid-template-columns:repeat(2,1fr);gap:28px 16px;padding:48px 22px}
-  .bn-sub{font-size:11px}
+  .m-body{font-size:16px;line-height:1.75}
+  .nl-title{font-size:clamp(28px,8vw,42px);line-height:1.05;letter-spacing:-.025em}
+  .nl-sub{font-size:14px;line-height:1.65}
+  .nl-form{flex-direction:column;border:none;gap:12px}
+  .nl-form input{border-bottom:1px solid var(--black);padding:16px 0;font-size:15px}
+  .nl-form button{background:var(--black);color:#fff;padding:18px;font-size:11px;letter-spacing:.22em}
+  .benefits{grid-template-columns:repeat(2,1fr);gap:36px 18px;padding:64px 24px}
+  .bn-sub{font-size:11px;line-height:1.55}
+  .bn-icon svg{width:30px;height:30px}
+  .bn-title{font-size:13px;letter-spacing:.18em}
   footer{padding:56px 22px 24px}
   .f-top{grid-template-columns:1fr 1fr;gap:32px;padding-bottom:32px;margin-bottom:32px}
   .f-brand{grid-column:span 2}
@@ -1543,17 +1546,18 @@ window.toggleWish=function(pid,btn){
     if (typeof gsap === 'undefined') return setTimeout(boot, 80);
     if (typeof ScrollTrigger !== 'undefined') gsap.registerPlugin(ScrollTrigger);
 
-    /* — Parallax hero video — */
+    /* — Parallax hero video (desktop only, mobile keeps stable) — */
     const heroVid = document.querySelector('.hero video');
-    if (heroVid && typeof ScrollTrigger !== 'undefined') {
+    const isDesktop = matchMedia('(min-width:769px)').matches;
+    if (heroVid && typeof ScrollTrigger !== 'undefined' && isDesktop) {
       gsap.to(heroVid, {
         yPercent: 18,
         ease: 'none',
         scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
       });
-      // subtle scale-in on load
-      gsap.from(heroVid, { scale: 1.08, duration: 1.8, ease: 'power2.out' });
     }
+    // subtle scale-in on load (all viewports — adds premium feel without scroll cost)
+    if (heroVid) gsap.from(heroVid, { scale: 1.08, duration: 1.8, ease: 'power2.out' });
 
     /* — Hero content fade-up on load — */
     gsap.from('.hero-content > *', {
