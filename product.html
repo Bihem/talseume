@@ -61,9 +61,11 @@ nav.nav-hidden{transform:translateY(-100%)}
 .mm-mobile-section a{display:block;font-size:13px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;padding:22px 0;color:var(--black);border-bottom:1px solid rgba(0,0,0,.06);transition:letter-spacing .4s cubic-bezier(.16,1,.3,1),padding-left .35s cubic-bezier(.16,1,.3,1),color .25s} .mm-mobile-section a:hover,.mm-mobile-section a:active{letter-spacing:.28em;padding-left:8px} .mm-mobile-section a:last-child{border-bottom:none}
 
 /* ══ BREADCRUMB ══ */
-.breadcrumb{padding:110px 56px 0;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(0,0,0,.45);display:flex;gap:10px;align-items:center}
+.breadcrumb{padding:118px 56px 0;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.78);display:flex;gap:10px;align-items:center;font-weight:500}
+.breadcrumb a{color:rgba(0,0,0,.78);transition:color .2s}
 .breadcrumb a:hover{color:var(--black)}
-.breadcrumb span{opacity:.4}
+.breadcrumb span{opacity:.45;font-weight:400}
+.breadcrumb .current{color:var(--black);opacity:1;font-weight:600}
 
 /* ══ PRODUCT LAYOUT ══ */
 /* DESKTOP layout — version originale conservée */
@@ -484,7 +486,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 
 <!-- BREADCRUMB -->
 <div class="breadcrumb">
-  <a href="/">Accueil</a><span>/</span><a href="/#shop">Boutique</a><span>/</span><span id="bc-product"></span>
+  <a href="/">Accueil</a><span>/</span><a href="/#shop">Boutique</a><span>/</span><span id="bc-product" class="current"></span>
 </div>
 
 <!-- PRODUCT LAYOUT -->
