@@ -81,6 +81,8 @@ nav.nav-hidden{transform:translateY(-100%)}
 
 /* ══ MOBILE — galerie carousel full-bleed (nouveau) ══ */
 @media(max-width:768px){
+  /* Tire la photo sous la nav fixed transparente — pas de zone blanche au-dessus */
+  .prod-img-side{margin-top:-108px}
   .prod-main-img-wrap{position:relative;top:0;min-height:auto;width:100%;aspect-ratio:4/5;padding:0;display:block;height:auto}
   #prod-main-img{display:none}
   .prod-gallery{display:flex;width:100%;height:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
