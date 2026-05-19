@@ -1,14 +1,16 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 // Modes de paiement. Chaque mode doit être activé dans Stripe Dashboard
-// (Settings → Payment methods) AVANT d'être ajouté ici, sinon la function échoue.
-// - card : Visa, MC, AmEx, CB. Apple Pay et Google Pay s'affichent AUTO selon le navigateur du client (rien à activer en plus).
-// - klarna : paiement en 3x sans frais — actif chez Talseume.
+// (Settings → Payment methods) AVANT d'être ajouté ici.
+// - card        : Visa, MC, AmEx, CB. Apple Pay et Google Pay AUTO selon le navigateur.
+// - klarna      : paiement en 3x sans frais.
+// - link        : portefeuille Stripe 1-click, déjà actif sur le compte.
+// - amazon_pay  : paiement via compte Amazon, déjà actif (premium).
+// - revolut_pay : paiement Revolut, déjà actif (premium, populaire en EU).
 // À activer dans Stripe Dashboard puis décommenter :
-// - 'paypal'      → https://dashboard.stripe.com/settings/payment_methods (PayPal Connect)
-// - 'link'        → souvent activé par défaut, sinon dashboard Payment methods
-// - 'sepa_debit'  → activable dashboard Payment methods (prélèvement SEPA)
-const PAYMENT_METHODS = ['card', 'klarna'];
+// - 'paypal'     → https://dashboard.stripe.com/settings/payment_methods
+// - 'sepa_debit' → idem (prélèvement SEPA pour gros paniers)
+const PAYMENT_METHODS = ['card', 'klarna', 'link', 'amazon_pay', 'revolut_pay'];
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
