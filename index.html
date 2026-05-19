@@ -229,20 +229,26 @@ nav.scrolled .nav-logo img{filter:none}
 @media(max-width:480px){.editorial-img{height:72vh}}
 
 /* ══ LOOKBOOK HERO — pleine page + manifeste overlay ══ */
-.lookbook-hero{position:relative;width:100%;aspect-ratio:21/10;max-height:92vh;min-height:620px;overflow:hidden;background:#000;isolation:isolate}
+.lookbook-hero{position:relative;width:100%;height:100vh;min-height:720px;max-height:none;overflow:hidden;background:#000;isolation:isolate}
 .lookbook-hero-img-wrap{position:absolute;inset:0;width:100%;height:112%;top:-6%;overflow:hidden;will-change:transform;z-index:0}
-.lookbook-hero-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block;will-change:transform}
-.lookbook-hero-grad{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.15) 0%,transparent 25%,transparent 55%,rgba(0,0,0,.7) 100%)}
-.lookbook-manifesto{position:absolute;left:0;right:0;bottom:11%;z-index:2;color:#fff;text-align:center;padding:0 40px;font-size:clamp(24px,3.6vw,56px);font-weight:300;letter-spacing:-.012em;line-height:1.14;text-transform:uppercase;margin:0;text-shadow:0 2px 28px rgba(0,0,0,.55)}
-.lookbook-manifesto span{display:block;opacity:.98}
-.lookbook-manifesto span:nth-child(1){font-weight:400;letter-spacing:.22em;text-transform:uppercase;font-size:.58em;margin-bottom:18px;opacity:.85}
-.lookbook-manifesto span:nth-child(2){font-weight:300}
-.lookbook-manifesto span:nth-child(3){font-weight:500;letter-spacing:.02em;margin-top:6px}
+.lookbook-hero-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center 22%;display:block;will-change:transform}
+.lookbook-hero-grad{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.18) 0%,transparent 22%,transparent 50%,rgba(0,0,0,.55) 82%,rgba(0,0,0,.78) 100%)}
+.lookbook-manifesto{position:absolute;left:0;right:0;bottom:9%;z-index:2;color:#fff;text-align:center;padding:0 48px;font-weight:200;letter-spacing:-.018em;line-height:1.08;margin:0;font-feature-settings:'ss01','liga'}
+.lookbook-manifesto span{display:block}
+.lookbook-manifesto span:nth-child(1){font-size:clamp(10px,.78vw,13px);font-weight:400;letter-spacing:.38em;text-transform:uppercase;margin-bottom:28px;opacity:.72;color:#fff}
+.lookbook-manifesto span:nth-child(1)::before,
+.lookbook-manifesto span:nth-child(1)::after{content:'';display:inline-block;width:38px;height:1px;background:rgba(255,255,255,.4);vertical-align:middle;margin:0 18px}
+.lookbook-manifesto span:nth-child(2){font-size:clamp(28px,4.4vw,76px);font-weight:200;letter-spacing:-.02em;text-transform:none;font-style:normal;line-height:1.05;text-shadow:0 2px 40px rgba(0,0,0,.4)}
+.lookbook-manifesto span:nth-child(3){font-size:clamp(13px,1.05vw,18px);font-weight:300;letter-spacing:.32em;text-transform:uppercase;margin-top:28px;opacity:.88}
 @media(max-width:768px){
-  .lookbook-hero{aspect-ratio:4/5;max-height:none;min-height:0}
+  .lookbook-hero{height:auto;aspect-ratio:4/5;min-height:0;max-height:none}
   .lookbook-hero-img-wrap img{object-position:center 25%}
-  .lookbook-manifesto{bottom:7%;padding:0 22px;font-size:clamp(18px,5.5vw,30px)}
-  .lookbook-manifesto span:nth-child(1){font-size:.7em;margin-bottom:10px;letter-spacing:.22em}
+  .lookbook-manifesto{bottom:7%;padding:0 22px}
+  .lookbook-manifesto span:nth-child(1){font-size:10px;margin-bottom:16px;letter-spacing:.3em}
+  .lookbook-manifesto span:nth-child(1)::before,
+  .lookbook-manifesto span:nth-child(1)::after{width:20px;margin:0 10px}
+  .lookbook-manifesto span:nth-child(2){font-size:clamp(24px,7vw,38px)}
+  .lookbook-manifesto span:nth-child(3){font-size:11px;margin-top:16px;letter-spacing:.28em}
 }
 
 /* ══ MANIFESTO ══ */
