@@ -407,11 +407,13 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   .m-eyebrow{font-size:11px;letter-spacing:.36em;gap:14px}
   .m-eyebrow::before,.m-eyebrow::after{width:28px}
   .m-body{font-size:17px;line-height:1.8;font-weight:300}
-  /* BENEFITS — bigger icons, breathable */
-  .benefits{grid-template-columns:repeat(2,1fr);gap:48px 22px;padding:96px 26px}
-  .bn-sub{font-size:12px;line-height:1.6}
-  .bn-icon svg{width:34px;height:34px;stroke-width:1.3}
-  .bn-title{font-size:13px;letter-spacing:.22em;font-weight:500}
+  /* BENEFITS — compact 2x2 grid, tight */
+  .benefits{grid-template-columns:repeat(2,1fr);gap:28px 14px;padding:48px 22px}
+  .bn{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px}
+  .bn-icon{margin-bottom:4px}
+  .bn-icon svg{width:24px;height:24px;stroke-width:1.3}
+  .bn-title{font-size:10px;letter-spacing:.18em;font-weight:500;margin:0}
+  .bn-sub{font-size:10.5px;line-height:1.45;color:rgba(0,0,0,.55);margin:0}
   footer{padding:56px 22px 24px}
   .f-top{grid-template-columns:1fr 1fr;gap:32px;padding-bottom:32px;margin-bottom:32px}
   .f-brand{grid-column:span 2}
@@ -419,7 +421,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   .f-pay svg{height:18px}
 }
 @media(max-width:480px){
-  .benefits{grid-template-columns:1fr;gap:24px}
+  .benefits{grid-template-columns:repeat(2,1fr);gap:24px 12px;padding:40px 18px}
   .f-top{grid-template-columns:1fr 1fr;gap:28px 16px}
   .f-brand{grid-column:span 2}
   #back-top{width:42px;height:42px;bottom:18px;right:18px}
