@@ -28,10 +28,10 @@ img{display:block;max-width:100%}
 /* ══ NAV (copie de la home) ══ */
 nav{position:fixed;top:0;left:0;right:0;z-index:500;background:#fff;padding:0 56px;display:flex;align-items:center;justify-content:space-between;height:116px;border-bottom:1px solid var(--line-l);transition:transform .35s cubic-bezier(.4,0,.2,1),height .35s,background .35s,border-color .35s,box-shadow .35s,backdrop-filter .35s}
 nav.nav-hidden{transform:translateY(-100%)}
-/* Mobile-only : nav transparente en haut → blanche au scroll (pattern hero) */
+/* Mobile-only : nav cachée en haut (photo plein écran) → apparaît blanche au scroll */
 @media(max-width:768px){
-  nav{background:transparent;border-bottom:1px solid transparent}
-  nav.scrolled{background:rgba(255,255,255,.96);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom-color:var(--line-l);box-shadow:0 4px 24px rgba(0,0,0,.04)}
+  nav{background:rgba(255,255,255,.96);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line-l);transform:translateY(-100%)}
+  nav.scrolled{transform:translateY(0);box-shadow:0 4px 24px rgba(0,0,0,.04)}
 }
 .nav-left{display:flex;align-items:center;gap:32px;flex:1}
 .nav-menu{display:flex;list-style:none;gap:36px;align-items:center}
@@ -81,8 +81,6 @@ nav.nav-hidden{transform:translateY(-100%)}
 
 /* ══ MOBILE — galerie carousel full-bleed (nouveau) ══ */
 @media(max-width:768px){
-  /* Tire la photo sous la nav fixed transparente — pas de zone blanche au-dessus */
-  .prod-img-side{margin-top:-108px}
   .prod-main-img-wrap{position:relative;top:0;min-height:auto;width:100%;aspect-ratio:4/5;padding:0;display:block;height:auto}
   #prod-main-img{display:none}
   .prod-gallery{display:flex;width:100%;height:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
