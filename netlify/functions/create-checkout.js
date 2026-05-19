@@ -32,6 +32,51 @@ exports.handler = async (event) => {
       quantity: item.qty,
     }));
 
+    // Livraison gratuite à partir de 80 € (Mondial Relay + Colissimo standard).
+    // Colissimo Signature reste payant pour préserver la marge sur les options premium.
+    const itemsTotal = items.reduce((sum, i) => sum + i.price * i.qty, 0);
+    const freeShipping = itemsTotal >= 80;
+
+    const shippingOptions = [
+      {
+        shipping_rate_data: {
+          type: 'fixed_amount',
+          fixed_amount: { amount: freeShipping ? 0 : 490, currency: 'eur' },
+          display_name: freeShipping
+            ? 'Mondial Relay — Point relais (offert)'
+            : 'Mondial Relay — Point relais',
+          delivery_estimate: {
+            minimum: { unit: 'business_day', value: 2 },
+            maximum: { unit: 'business_day', value: 4 },
+          },
+        },
+      },
+      {
+        shipping_rate_data: {
+          type: 'fixed_amount',
+          fixed_amount: { amount: freeShipping ? 0 : 590, currency: 'eur' },
+          display_name: freeShipping
+            ? 'Colissimo Domicile (offert)'
+            : 'Colissimo Domicile',
+          delivery_estimate: {
+            minimum: { unit: 'business_day', value: 2 },
+            maximum: { unit: 'business_day', value: 3 },
+          },
+        },
+      },
+      {
+        shipping_rate_data: {
+          type: 'fixed_amount',
+          fixed_amount: { amount: 790, currency: 'eur' },
+          display_name: 'Colissimo Signature — Domicile sécurisé',
+          delivery_estimate: {
+            minimum: { unit: 'business_day', value: 2 },
+            maximum: { unit: 'business_day', value: 3 },
+          },
+        },
+      },
+    ];
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: PAYMENT_METHODS,
       line_items: lineItems,
@@ -43,10 +88,29 @@ exports.handler = async (event) => {
       shipping_address_collection: {
         allowed_countries: ['FR', 'BE', 'CH', 'LU', 'MC', 'DE', 'IT', 'ES', 'PT', 'NL', 'AT', 'IE'],
       },
+      shipping_options: shippingOptions,
       phone_number_collection: { enabled: true },
       allow_promotion_codes: true,
+      custom_fields: [
+        {
+          key: 'mondial_relay_point',
+          label: {
+            type: 'custom',
+            custom: 'Code point relais Mondial Relay (si applicable)',
+          },
+          type: 'text',
+          optional: true,
+        },
+      ],
       custom_text: {
-        submit: { message: 'Livraison offerte dès 80€ · Retours sous 14 jours' },
+        submit: {
+          message: freeShipping
+            ? '🎁 Livraison offerte (≥ 80 €) · Retours sous 14 jours'
+            : 'Livraison offerte dès 80 € · Retours sous 14 jours',
+        },
+        shipping_address: {
+          message: 'Pour Mondial Relay, indique aussi ton code point relais ci-dessous (optionnel).',
+        },
       },
       payment_intent_data: {
         description: 'Commande Talseume',
