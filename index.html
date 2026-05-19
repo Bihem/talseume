@@ -232,11 +232,11 @@ nav.scrolled .nav-logo img{filter:none}
 .lookbook-strip{background:#fff;padding:16px 0 0;width:100%}
 .lookbook-strip-eyebrow{padding:0 48px 18px}
 .lookbook-strip-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;background:transparent}
-.lookbook-strip-tile{position:relative;aspect-ratio:3/4;overflow:hidden;background:#0a0a0a;clip-path:inset(0 0 100% 0);will-change:clip-path}
-.lookbook-strip-tile::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.18) 100%);z-index:2;pointer-events:none;opacity:0;transition:opacity .6s ease}
+.lookbook-strip-tile{position:relative;aspect-ratio:3/4;overflow:hidden;background:#0a0a0a;--lb-clip:100%;clip-path:inset(0 0 var(--lb-clip) 0);will-change:clip-path}
+.lookbook-strip-tile::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.32) 100%);z-index:2;pointer-events:none;opacity:0;transition:opacity .7s ease}
 .lookbook-strip-tile:hover::after{opacity:1}
-.lookbook-strip-tile img{width:100%;height:100%;object-fit:cover;object-position:center 22%;display:block;will-change:transform;transform:scale(1.22)}
-.lookbook-strip-tile.is-revealed{clip-path:inset(0 0 0 0)}
+.lookbook-strip-tile .lb-img-mask{position:absolute;inset:0;width:100%;height:114%;top:-7%;overflow:hidden;will-change:transform}
+.lookbook-strip-tile .lb-img-mask img{width:100%;height:100%;object-fit:cover;object-position:center 22%;display:block;will-change:transform}
 @media(max-width:1200px){.lookbook-strip{padding:12px 0 0}.lookbook-strip-eyebrow{padding:0 40px 16px}}
 @media(max-width:1024px){.lookbook-strip-tile{aspect-ratio:4/5}}
 @media(max-width:768px){
@@ -1008,8 +1008,8 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
 <section class="lookbook-strip" id="lookbook-hero">
   <div class="lookbook-strip-eyebrow rv"><div class="s-eyebrow">Campagne · SS26</div></div>
   <div class="lookbook-strip-grid">
-    <div class="lookbook-strip-tile"><img src="images/lookbook/06-beanie-femme.png?v=2" alt="Casquette — BMX Skatepark" loading="lazy"/></div>
-    <div class="lookbook-strip-tile"><img src="images/lookbook/rooftop-paris-sweat-bleu.png" alt="Sweat — Rooftop Paris nuit" loading="lazy"/></div>
+    <div class="lookbook-strip-tile"><div class="lb-img-mask"><img src="images/lookbook/06-beanie-femme.png?v=2" alt="Casquette — BMX Skatepark" loading="lazy"/></div></div>
+    <div class="lookbook-strip-tile"><div class="lb-img-mask"><img src="images/lookbook/rooftop-paris-sweat-bleu.png" alt="Sweat — Rooftop Paris nuit" loading="lazy"/></div></div>
   </div>
 </section>
 
@@ -1675,43 +1675,45 @@ window.toggleWish=function(pid,btn){
       });
     }
 
-    /* — Lookbook strip : reveal premium (clip-path curtain + image dezoom + Ken Burns parallax) — */
+    /* — Lookbook strip : reveal premium clip-path + parallax séparé (sans conflit) — */
     if (typeof ScrollTrigger !== 'undefined') {
       const lbStrip = document.querySelector('.lookbook-strip');
       if (lbStrip) {
         const tiles = lbStrip.querySelectorAll('.lookbook-strip-tile');
-        const imgs = lbStrip.querySelectorAll('.lookbook-strip-tile img');
+        const masks = lbStrip.querySelectorAll('.lb-img-mask');
 
-        // Reveal en cascade : clip-path top→bottom + image dezoom
-        const tl = gsap.timeline({
-          scrollTrigger: { trigger: lbStrip, start: 'top 75%' }
-        });
-        tl.to(tiles, {
-          clipPath: 'inset(0 0 0 0)',
-          duration: 1.6,
-          ease: 'expo.inOut',
-          stagger: 0.22
-        }, 0)
-        .to(imgs, {
-          scale: 1,
-          duration: 2.4,
-          ease: 'power3.out',
-          stagger: 0.22
-        }, 0.05);
-
-        // Ken Burns parallax continu pendant le scroll de la section
-        imgs.forEach((img, i) => {
-          gsap.to(img, {
-            yPercent: i % 2 === 0 ? -6 : -4,
-            scale: 1.08,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: lbStrip,
-              start: 'top 40%',
-              end: 'bottom top',
-              scrub: 1.4
+        // 1. Reveal curtain : on anime la CSS var --lb-clip (100% → 0%) via scrub
+        tiles.forEach((tile, i) => {
+          gsap.fromTo(tile,
+            { '--lb-clip': '100%' },
+            {
+              '--lb-clip': '0%',
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: lbStrip,
+                start: i === 0 ? 'top 88%' : 'top 76%',
+                end: i === 0 ? 'top 38%' : 'top 26%',
+                scrub: 0.9
+              }
             }
-          });
+          );
+        });
+
+        // 2. Parallax doux Ken Burns sur les masks (translateY indépendant — aucun conflit avec clip-path)
+        masks.forEach((mask, i) => {
+          gsap.fromTo(mask,
+            { yPercent: i % 2 === 0 ? -8 : -6 },
+            {
+              yPercent: i % 2 === 0 ? 8 : 6,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: lbStrip,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1.2
+              }
+            }
+          );
         });
       }
     }
