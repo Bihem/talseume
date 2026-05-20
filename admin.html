@@ -146,7 +146,7 @@ tbody tr:hover td{background:#FAFAFA;cursor:pointer}
 .btn-sm{padding:6px 12px;font-size:11px}
 
 /* ── MODAL ── */
-.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:none;justify-content:flex-end}
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;justify-content:flex-end}
 .modal-ov.open{display:flex}
 .modal{background:#fff;width:480px;min-height:100vh;padding:28px;overflow-y:auto;box-shadow:-6px 0 40px rgba(0,0,0,.12)}
 .modal-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
@@ -303,7 +303,7 @@ tbody tr:hover td{background:#FAFAFA;cursor:pointer}
       </div>
     </nav>
     <div class="sb-footer">
-      <a class="sb-shopify-link" href="https://admin.shopify.com/store/talseumeclothing" target="_blank">
+      <a class="sb-shopify-link" href="https://admin.shopify.com/store/talseumeclothing" target="_blank" rel="noopener noreferrer">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         Shopify Admin
       </a>
@@ -319,7 +319,7 @@ tbody tr:hover td{background:#FAFAFA;cursor:pointer}
       <div class="topbar-title" id="topbar-title">Dashboard</div>
       <div class="topbar-right">
         <div class="live-dot">Live</div>
-        <a class="topbar-link" href="/" target="_blank">Voir le site →</a>
+        <a class="topbar-link" href="/" target="_blank" rel="noopener noreferrer">Voir le site →</a>
       </div>
     </div>
 
@@ -378,7 +378,7 @@ tbody tr:hover td{background:#FAFAFA;cursor:pointer}
       <div id="s-products" class="section">
         <div class="tcard-head" style="background:var(--card);border:1px solid var(--border);border-radius:14px 14px 0 0;border-bottom:1px solid var(--border);margin-bottom:-1px">
           <div class="tcard-title">Catalogue Talseume</div>
-          <a href="/" target="_blank" class="btn btn-ghost btn-sm">Voir le site ↗</a>
+          <a href="/" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm">Voir le site ↗</a>
         </div>
         <div class="pg" id="products-grid" style="background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 14px 14px;padding:20px">
           <div class="loader"><span class="ld"></span><span class="ld"></span><span class="ld"></span></div>
@@ -1005,7 +1005,7 @@ async function openOrder(id){
       <div class="msec">
         <div class="msec-title">Actions</div>
         <div class="modal-actions">
-          <a class="btn btn-ghost" href="https://admin.shopify.com/store/talseumeclothing/orders/${o.id}" target="_blank">Voir sur Shopify ↗</a>
+          <a class="btn btn-ghost" href="https://admin.shopify.com/store/talseumeclothing/orders/${o.id}" target="_blank" rel="noopener noreferrer">Voir sur Shopify ↗</a>
           ${o.customer?.email?`<button class="btn btn-ghost" onclick="copyTxt('${o.customer.email}','Email copié ✓')">Copier email</button>`:''}
           ${addrText?`<button class="btn btn-ghost" onclick="copyTxt('${addrText}','Adresse copiée ✓')">Copier adresse</button>`:''}
         </div>
@@ -1332,7 +1332,7 @@ async function renderMarketing(){
   paid.forEach(function(o){var ref=o.referring_site||'';if(!ref)return;var dom=cleanDomain(ref);if(!dom)return;if(!refs[dom])refs[dom]={n:0,rev:0,url:ref};refs[dom].n++;refs[dom].rev+=parseFloat(o.total_price||0);});
   var refsArr=Object.entries(refs).sort(function(a,b){return b[1].rev-a[1].rev;});
   document.getElementById('mkt-refs').innerHTML=refsArr.length
-    ?'<table><thead><tr><th>Domaine r\u00e9f\u00e9rent</th><th>Cmd</th><th>CA</th><th>Panier</th></tr></thead><tbody>'+refsArr.map(function(e){var dom=e[0],d=e[1];return'<tr><td><a href="'+d.url+'" target="_blank" style="font-weight:500;color:var(--text);text-decoration:none">'+dom+' \u2197</a></td><td>'+d.n+'</td><td style="font-weight:600">'+fmtEur(d.rev)+'</td><td style="color:var(--dim);font-size:11px">'+fmtEur(d.n?d.rev/d.n:0)+'</td></tr>';}).join('')+'</tbody></table>'
+    ?'<table><thead><tr><th>Domaine r\u00e9f\u00e9rent</th><th>Cmd</th><th>CA</th><th>Panier</th></tr></thead><tbody>'+refsArr.map(function(e){var dom=e[0],d=e[1];return'<tr><td><a href="'+d.url+'" target="_blank" rel="noopener noreferrer" style="font-weight:500;color:var(--text);text-decoration:none">'+dom+' \u2197</a></td><td>'+d.n+'</td><td style="font-weight:600">'+fmtEur(d.rev)+'</td><td style="color:var(--dim);font-size:11px">'+fmtEur(d.n?d.rev/d.n:0)+'</td></tr>';}).join('')+'</tbody></table>'
     :'<div class="empty" style="padding:24px"><div class="empty-ico" style="font-size:28px">\uD83C\uDF10</div><p>Aucun site r\u00e9f\u00e9rent dans les commandes</p></div>';
   var lands={};
   paid.forEach(function(o){var land=o.landing_site||'';if(!land)return;var path=land;try{path=new URL(land.startsWith('http')?land:'https://x.com'+land).pathname||'/';}catch(e){path=land.slice(0,50);}if(!lands[path])lands[path]={n:0,rev:0};lands[path].n++;lands[path].rev+=parseFloat(o.total_price||0);});

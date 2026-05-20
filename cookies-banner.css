@@ -49,7 +49,7 @@
 .tls-cp-cat-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:12px;flex-wrap:wrap}
 .tls-cp-cat-header strong{font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;color:#0a0a0a;flex:1;min-width:140px}
 .tls-cp-cat p{font-size:12.5px;line-height:1.65;color:rgba(0,0,0,.6);font-weight:300;margin:0}
-.tls-cp-locked{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(0,0,0,.45);font-weight:400;padding:6px 10px;border:1px solid rgba(0,0,0,.15);border-radius:2px;white-space:nowrap;flex-shrink:0}
+.tls-cp-locked{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(0,0,0,.6);font-weight:400;padding:6px 10px;border:1px solid rgba(0,0,0,.15);border-radius:2px;white-space:nowrap;flex-shrink:0}
 
 .tls-cp-switch{position:relative;display:inline-block;width:46px;height:26px;cursor:pointer;flex-shrink:0}
 .tls-cp-switch input{position:absolute;opacity:0;width:0;height:0}

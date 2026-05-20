@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
-<meta http-equiv="Pragma" content="no-cache"/>
-<meta http-equiv="Expires" content="0"/>
 <title>Mes Favoris — TALSEUME</title>
 <meta name="description" content="Tes pièces préférées Talseume. Sweats, t-shirts et vestes streetwear éco-responsables sauvegardés."/>
 <style>
+.skip-link{position:absolute;left:-9999px;top:0;z-index:99999;background:#0a0a0a;color:#fff;padding:14px 22px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;text-decoration:none;border:2px solid #fff;outline-offset:2px}
+.skip-link:focus,.skip-link:focus-visible{left:8px;top:8px}
+
 @font-face{font-family:'Suisse Intl';src:url('https://cdn.prod.website-files.com/6772f6efe246aaaa73ad2a98/67784f5e4c3068c2e2f22e60_SuisseIntl-Regular.otf')format('opentype');font-weight:400;font-display:swap}
 @font-face{font-family:'Suisse Intl';src:url('https://cdn.prod.website-files.com/6772f6efe246aaaa73ad2a98/67784f815ee57b4c18bdae11_SuisseIntl-Light.otf')format('opentype');font-weight:300;font-display:swap}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -46,7 +46,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;background:#fff;padding:0 56
 
 /* HEAD */
 .page-head{padding:160px 56px 60px;text-align:center;border-bottom:1px solid var(--line-l)}
-.page-eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:rgba(0,0,0,.45);margin-bottom:24px;font-weight:400}
+.page-eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:rgba(0,0,0,.6);margin-bottom:24px;font-weight:400}
 .page-title{font-size:clamp(48px,8vw,120px);font-weight:300;letter-spacing:-.04em;line-height:1;margin-bottom:18px}
 .page-sub{font-size:14px;font-weight:300;color:rgba(0,0,0,.55);max-width:480px;margin:0 auto;line-height:1.7}
 
@@ -153,6 +153,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 <link rel="stylesheet" href="/cookies-banner.css">
 </head>
 <body>
+<a href="#main-content" class="skip-link">Aller au contenu</a>
 
 <div class="cursor-ring" id="cursorRing"></div>
 <div class="cursor-dot" id="cursorDot"></div>
@@ -239,7 +240,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   </div>
 </div>
 
-<section class="page-head">
+<section class="page-head" id="main-content" tabindex="-1">
   <div class="page-eyebrow">Espace client</div>
   <h1 class="page-title">Favoris</h1>
   <p class="page-sub">Les pièces que tu veux garder à l'œil. Sauvegardées sur ce navigateur.</p>
@@ -254,13 +255,13 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       <div class="f-logo">Talseume</div>
       <p>Streetwear éco-responsable né à Paris. Coton bio GOTS, matériaux recyclés, fabriqué pour durer.</p>
       <div class="f-socials">
-        <a href="https://www.instagram.com/talseumeclothing/" target="_blank" aria-label="Instagram">
+        <a href="https://www.instagram.com/talseumeclothing/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
           <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
         </a>
         <a href="mailto:contact@talseume.com" aria-label="Email">
           <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
         </a>
-        <a href="#" aria-label="TikTok">
+        <a href="https://www.tiktok.com/@talseumeclothing" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
           <svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg>
         </a>
       </div>
