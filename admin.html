@@ -546,12 +546,16 @@ tbody tr:hover td{background:var(--bg);cursor:pointer}
         <div class="s-head">
           <div>
             <h1 class="s-title">Produits</h1>
-            <div class="s-sub">Catalogue boutique — source : product.html</div>
+            <div class="s-sub">Catalogue boutique · clic = éditer · multi-sélection pour bulk</div>
           </div>
           <div class="s-actions">
+            <button class="btn btn-ghost" onclick="toggleBulkMode()" id="bulk-toggle-btn">Sélection multiple</button>
+            <button class="btn btn-accent" id="bulk-action-btn" style="display:none" onclick="openBulkPriceModal()">Modifier le prix de la sélection</button>
             <a href="/product.html?id=sweat-talseume-oversize" target="_blank" rel="noopener" class="btn btn-ghost">↗ Voir boutique</a>
           </div>
         </div>
+        <!-- Filter pills par tag -->
+        <div class="tbl-filters" id="prod-tag-filters" style="margin-bottom:16px"></div>
         <div class="prod-grid" id="prod-grid"></div>
       </section>
 
@@ -1390,155 +1394,422 @@ async function deleteDrop(id){
 /* ──────────────────────────────────────────────
    PRODUITS
    ────────────────────────────────────────────── */
-// Source: PRODUCTS object réplique depuis product.html (lecture seule pour l'instant)
+// Source: PRODUCTS object réplique depuis product.html (id, name, price, img, sizes, badge, category)
 const PRODUCTS = {
-  'sweat-talseume-oversize': {name:'Sweat Talseume Oversize', price:90, img:'images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.webp', stock:50, status:'active'},
-  'sweat-bikelife': {name:'Sweat Tls × Bikelife', price:68.99, img:'images/products/sweat-talseume-bikelife-devant.webp', stock:30, status:'active'},
-  'tee-shirt-oversize': {name:'Tee-Shirt Oversize', price:60, img:'images/products/tee-shirt-talseume-noir-oversise.webp', stock:80, status:'active'},
-  'tshirt-manches-longues': {name:'T-Shirt Manches Longues', price:75, img:'images/products/tee-shirt-talseume-mancheslongue-star.webp', stock:40, status:'active'},
-  'veste-coach': {name:'Veste Coach Unisexe', price:90, img:'images/products/Coach-Jacket-By-talseumecopie2.webp', stock:20, status:'active'},
-  'veste-coach-ultra': {name:'Veste Coach Ultra', price:130, img:'images/products/Jacket-By-TALSEUMENWAR.webp', stock:0, status:'archived'},
-  'debardeur-femme': {name:'Débardeur Femme', price:24.99, img:'images/products/debardeur-femme-talseume-090.webp', stock:35, status:'active'},
-  'tshirt-femme': {name:'T-shirt Femme', price:29, img:'images/products/tshirt-femme-talseume-009.webp', stock:45, status:'active'},
-  'cagoule': {name:'Cagoule Talseume', price:18, img:'images/products/IMG_7578.webp', stock:25, status:'active'},
-  'sport-beanie': {name:'Sport Beanie', price:17.99, img:'images/products/Bonnet_talseume.webp', stock:60, status:'active'},
-  'casquette-trucker': {name:'Casquette Trucker', price:19.99, img:'images/products/IMG_7199.webp', stock:55, status:'active'},
-  'talseume-bag': {name:'Talseume Bag', price:25.99, img:'images/products/sactalseume.webp', stock:40, status:'active'}
+  'sweat-talseume-oversize': {name:'Sweat Talseume Oversize', price:90, img:'images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.webp', sizes:['S','M','L','XL','XXXL'], badge:'GOTS', category:'sweat'},
+  'sweat-bikelife': {name:'Sweat Tls × Bikelife', price:68.99, img:'images/products/sweat-talseume-bikelife-devant.webp', sizes:['2XS','S','M','L','XL','2XL','3XL'], badge:'Édition limitée', category:'sweat'},
+  'tee-shirt-oversize': {name:'Tee-Shirt Oversize', price:60, img:'images/products/tee-shirt-talseume-noir-oversise.webp', sizes:['XS','S','M','L','XL'], badge:'Bio', category:'tee'},
+  'tshirt-manches-longues': {name:'T-Shirt Manches Longues', price:75, img:'images/products/tee-shirt-talseume-mancheslongue-star.webp', sizes:['XS','S','M','L','XL','XXL'], badge:'Bio 240g', category:'tee'},
+  'veste-coach': {name:'Veste Coach Unisexe', price:90, img:'images/products/Coach-Jacket-By-talseumecopie2.webp', sizes:['S','M','L','XL','XXL'], badge:'Recyclé', category:'veste'},
+  'veste-coach-ultra': {name:'Veste Coach Ultra', price:130, img:'images/products/Jacket-By-TALSEUMENWAR.webp', sizes:['XS','S','M','L'], badge:'Ultra', category:'veste', unavailable:true},
+  'debardeur-femme': {name:'Débardeur Femme', price:24.99, img:'images/products/debardeur-femme-talseume-090.webp', sizes:['XS','S','M','L','XL','2XL','3XL'], badge:'Femme', category:'femme'},
+  'tshirt-femme': {name:'T-shirt Femme', price:29, img:'images/products/tshirt-femme-talseume-009.webp', sizes:['XS','S','M','L','XL','2XL','3XL'], badge:'Femme', category:'femme'},
+  'cagoule': {name:'Cagoule Talseume', price:18, img:'images/products/IMG_7578.webp', sizes:[], badge:null, category:'accessoire'},
+  'sport-beanie': {name:'Sport Beanie', price:17.99, img:'images/products/Bonnet_talseume.webp', sizes:[], badge:null, category:'accessoire'},
+  'casquette-trucker': {name:'Casquette Trucker', price:19.99, img:'images/products/IMG_7199.webp', sizes:[], badge:null, category:'accessoire'},
+  'talseume-bag': {name:'Talseume Bag', price:25.99, img:'images/products/sactalseume.webp', sizes:[], badge:null, category:'accessoire'}
 };
-// État local des overrides (chargé via admin-data)
-let productOverrides = {};
-async function loadProductOverrides(){
+// ── État local : overrides + stock + filtres + sélection ──
+let productOverrides = {};      // /data/products-overrides.json
+let productStock = {};           // /data/products-stock.json — { stock: {<id>:{<size>:n}}, thresholds:{<id>:5} }
+let productTagFilter = null;     // null = tous, ou nom de tag
+let bulkMode = false;
+let bulkSelected = new Set();
+const LOW_STOCK_DEFAULT = 5;
+
+async function loadProductData(){
   try {
     const d = await loadData('products-overrides');
     productOverrides = (d?.overrides) || {};
   } catch(e) { productOverrides = {}; }
+  try {
+    const d = await loadData('products-stock');
+    productStock = d || { stock: {}, thresholds: {} };
+    if (!productStock.stock) productStock.stock = {};
+    if (!productStock.thresholds) productStock.thresholds = {};
+  } catch(e) { productStock = { stock: {}, thresholds: {} }; }
 }
+
 function effectiveProduct(id){
-  const base = PRODUCTS[id];
+  const base = PRODUCTS[id] || {};
   const ov = productOverrides[id] || {};
   return Object.assign({}, base, ov);
 }
 
+function productStockMap(id){ return productStock.stock?.[id] || {}; }
+function productThreshold(id){ return productStock.thresholds?.[id] ?? LOW_STOCK_DEFAULT; }
+function productTotalStock(id){
+  const m = productStockMap(id);
+  const vals = Object.values(m);
+  if (vals.length === 0) return null; // jamais initialisé
+  return vals.reduce((a,b) => a + (parseInt(b)||0), 0);
+}
+function productHasStockSet(id){
+  return Object.keys(productStockMap(id)).length > 0;
+}
+function productStockStatus(id){
+  const p = effectiveProduct(id);
+  if (p.unavailable) return { kind:'unavailable', label:'Indispo', badge:'err' };
+  const total = productTotalStock(id);
+  if (total === null) return { kind:'unset', label:'Stock non défini', badge:'neutral' };
+  if (total === 0) return { kind:'out', label:'Rupture', badge:'err' };
+  if (total <= productThreshold(id)) return { kind:'low', label:`Stock bas (${total})`, badge:'warn' };
+  return { kind:'ok', label:`En stock (${total})`, badge:'ok' };
+}
+
+function skuFor(id, size, colorName){
+  const idPart = id.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6);
+  const sizePart = size ? size.toUpperCase().replace(/[^A-Z0-9]/g,'') : 'U';
+  const colorPart = colorName ? colorName.toUpperCase().replace(/[^A-Z]/g,'').slice(0,3) : '';
+  return ['TLS', idPart, sizePart, colorPart].filter(Boolean).join('-');
+}
+
+// ── Tags : extraits depuis overrides + ajouts user ──
+function allTags(){
+  const set = new Set();
+  Object.keys(PRODUCTS).forEach(id => {
+    const cat = effectiveProduct(id).category;
+    if (cat) set.add(cat);
+    const tags = (productOverrides[id]?.tags) || [];
+    tags.forEach(t => set.add(t));
+  });
+  return [...set].sort();
+}
+function productTags(id){
+  const base = PRODUCTS[id].category ? [PRODUCTS[id].category] : [];
+  const extra = productOverrides[id]?.tags || [];
+  return [...new Set([...base, ...extra])];
+}
+
+function renderTagFilters(){
+  const tags = allTags();
+  const el = document.getElementById('prod-tag-filters');
+  if (!el) return;
+  el.innerHTML = `
+    <button class="ftab ${productTagFilter === null ? 'active' : ''}" onclick="setProdTagFilter(null)">Tous (${Object.keys(PRODUCTS).length})</button>
+    ${tags.map(t => {
+      const count = Object.keys(PRODUCTS).filter(id => productTags(id).includes(t)).length;
+      return `<button class="ftab ${productTagFilter === t ? 'active' : ''}" onclick="setProdTagFilter('${t}')">${t} (${count})</button>`;
+    }).join('')}
+  `;
+}
+function setProdTagFilter(tag){ productTagFilter = tag; renderProducts(); }
+
 async function renderProducts(){
-  await loadProductOverrides();
+  await loadProductData();
+  renderTagFilters();
   const grid = document.getElementById('prod-grid');
-  grid.innerHTML = Object.keys(PRODUCTS).map(id => {
-    const p = effectiveProduct(id);
-    const overridden = productOverrides[id] ? true : false;
-    const statusKey = p.unavailable ? 'unavailable' : (p.status === 'archived' ? 'archived' : 'active');
+  const allIds = Object.keys(PRODUCTS);
+  // Inclure aussi les nouveaux produits dans overrides (= drafts/duplicates)
+  Object.keys(productOverrides).forEach(k => { if (!PRODUCTS[k] && productOverrides[k].name) allIds.push(k); });
+  // Filter par tag
+  const ids = productTagFilter
+    ? allIds.filter(id => productTags(id).includes(productTagFilter))
+    : allIds;
+
+  grid.innerHTML = ids.map(id => {
+    // Pour drafts (id pas dans PRODUCTS hardcoded), on utilise l'override comme base
+    const p = PRODUCTS[id] ? effectiveProduct(id) : (productOverrides[id] || {});
+    const ov = productOverrides[id];
+    const isDraft = !PRODUCTS[id];
+    const overridden = !!ov && !isDraft;
+    const stockSt = PRODUCTS[id] ? productStockStatus(id) : { label: p.unavailable ? 'Indispo' : 'Brouillon', badge: 'neutral' };
+    const tags = productTags(id);
+    const selected = bulkSelected.has(id);
     return `
-    <div class="prod-card" onclick="openEditProduct('${id}')">
-      <div class="prod-card-img"><img src="/${p.img}" alt="${p.name}" loading="lazy"/></div>
+    <div class="prod-card${selected ? ' selected' : ''}" data-id="${id}" onclick="${bulkMode ? `toggleBulkSelect('${id}')` : `openEditProduct('${id}')`}" style="${selected ? 'outline:3px solid var(--accent);outline-offset:-2px' : ''}">
+      ${bulkMode ? `<div style="position:absolute;top:10px;left:10px;background:${selected ? 'var(--accent)' : 'var(--surface)'};color:${selected ? 'var(--accent-text)' : 'var(--text-2)'};border:1px solid ${selected ? 'var(--accent)' : 'var(--border)'};width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;z-index:5">${selected ? '✓' : ''}</div>` : ''}
+      <div class="prod-card-img" style="position:relative">
+        ${p.img ? `<img src="/${p.img}" alt="${p.name}" loading="lazy"/>` : '<div style="color:var(--text-2);font-size:11px">Pas d\'image</div>'}
+        ${isDraft ? '<span style="position:absolute;top:8px;right:8px;background:var(--info);color:#fff;font-size:9px;padding:2px 8px;border-radius:10px;font-weight:600;letter-spacing:.08em">BROUILLON</span>' : ''}
+        ${overridden ? '<span style="position:absolute;top:8px;right:8px;background:var(--accent);color:var(--accent-text);font-size:9px;padding:2px 8px;border-radius:10px;font-weight:600;letter-spacing:.08em">MODIFIÉ</span>' : ''}
+      </div>
       <div class="prod-card-body">
-        <div class="prod-card-name">${p.name}${overridden ? ' <span style="font-size:9px;color:var(--accent-text);background:var(--accent);padding:1px 6px;border-radius:8px;margin-left:4px;font-weight:600;vertical-align:middle">MODIFIÉ</span>' : ''}</div>
-        <div class="prod-card-meta">
-          <span class="tabnum">${eur(p.price)}</span>
-          <span class="badge ${statusKey==='unavailable' || statusKey==='archived' ? 'err' : 'ok'}">
-            <span class="badge-dot"></span>${statusKey==='unavailable' ? 'Indispo' : (statusKey==='archived' ? 'Archivé' : 'En stock')}
-          </span>
+        <div class="prod-card-name">${p.name || '(sans nom)'}</div>
+        ${tags.length ? `<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px">${tags.slice(0,3).map(t=>`<span style="font-size:9px;background:var(--bg);color:var(--text-2);padding:1px 6px;border-radius:8px;letter-spacing:.04em;text-transform:uppercase">${t}</span>`).join('')}</div>` : ''}
+        <div class="prod-card-meta" style="margin-top:6px">
+          <span class="tabnum">${eur(p.price || 0)}</span>
+          <span class="badge ${stockSt.badge}"><span class="badge-dot"></span>${stockSt.label}</span>
         </div>
       </div>
     </div>
   `;}).join('');
 }
 
-function openEditProduct(id){
-  const base = PRODUCTS[id];
-  const ov = productOverrides[id] || {};
-  const cur = effectiveProduct(id);
+// ── BULK MODE ──
+function toggleBulkMode(){
+  bulkMode = !bulkMode;
+  bulkSelected.clear();
+  document.getElementById('bulk-toggle-btn').textContent = bulkMode ? 'Quitter sélection' : 'Sélection multiple';
+  document.getElementById('bulk-toggle-btn').className = 'btn ' + (bulkMode ? 'btn-primary' : 'btn-ghost');
+  document.getElementById('bulk-action-btn').style.display = bulkMode ? 'inline-flex' : 'none';
+  renderProducts();
+}
+function toggleBulkSelect(id){
+  if (bulkSelected.has(id)) bulkSelected.delete(id); else bulkSelected.add(id);
+  const btn = document.getElementById('bulk-action-btn');
+  if (btn) btn.textContent = bulkSelected.size > 0 ? `Modifier prix (${bulkSelected.size})` : 'Modifier le prix de la sélection';
+  renderProducts();
+}
+
+function openBulkPriceModal(){
+  if (bulkSelected.size === 0) { toast('Sélectionne au moins 1 produit', 'err'); return; }
   openModal(`
     <div class="modal-hd">
       <div>
-        <div class="modal-title">${base.name}</div>
-        <div style="font-size:12px;color:var(--text-2);margin-top:4px">ID : ${id}</div>
+        <div class="modal-title">Modifier ${bulkSelected.size} prix</div>
+        <div style="font-size:12px;color:var(--text-2);margin-top:4px">Produits sélectionnés : ${[...bulkSelected].map(id => (PRODUCTS[id]||productOverrides[id])?.name || id).join(', ')}</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <form onsubmit="applyBulkPrice(event)">
+      <div class="fld">
+        <label>Type de modification</label>
+        <select class="input" name="mode" id="bulk-mode-sel">
+          <option value="percent">Pourcentage (+/-) — ex: -20 = solde 20%</option>
+          <option value="fixed">Prix fixe sur tous</option>
+          <option value="add">Ajouter / retirer un montant € (ex: -5)</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label>Valeur</label>
+        <input class="input tabnum" name="value" type="number" step="0.01" required placeholder="ex: -20 ou 45.00">
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" onclick="closeModal()">Annuler</button>
+        <button type="submit" class="btn btn-accent">Appliquer + déployer</button>
+      </div>
+    </form>
+    <p style="font-size:11px;color:var(--text-2);margin-top:14px;line-height:1.5">Crée un override prix pour chaque produit sélectionné. Reset possible individuellement après.</p>
+  `);
+}
+
+async function applyBulkPrice(e){
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const mode = fd.get('mode');
+  const value = parseFloat(fd.get('value'));
+  if (isNaN(value)) { toast('Valeur invalide', 'err'); return; }
+  const ids = [...bulkSelected];
+  ids.forEach(id => {
+    const base = PRODUCTS[id] || productOverrides[id] || {};
+    const oldPrice = effectiveProduct(id).price || 0;
+    let newPrice;
+    if (mode === 'percent') newPrice = Math.round(oldPrice * (1 + value/100) * 100) / 100;
+    else if (mode === 'fixed') newPrice = value;
+    else if (mode === 'add') newPrice = Math.max(0, Math.round((oldPrice + value) * 100) / 100);
+    productOverrides[id] = Object.assign({}, productOverrides[id] || {}, { price: newPrice });
+  });
+  try {
+    await saveData('products-overrides', {overrides: productOverrides}, `bulk: ${mode} ${value} on ${ids.length} products`);
+    toast(`${ids.length} prix mis à jour · rebuild en cours`);
+    bulkSelected.clear();
+    closeModal();
+    renderProducts();
+  } catch(err) { toast('Erreur : ' + err.message, 'err'); }
+}
+
+function openEditProduct(id){
+  const base = PRODUCTS[id] || (productOverrides[id] || {});
+  const ov = productOverrides[id] || {};
+  const cur = PRODUCTS[id] ? effectiveProduct(id) : ov;
+  const isDraft = !PRODUCTS[id];
+  const sizes = base.sizes || [];
+  const stock = productStockMap(id);
+  const threshold = productThreshold(id);
+  const userTags = ov.tags || [];
+  openModal(`
+    <div class="modal-hd">
+      <div>
+        <div class="modal-title">${base.name || '(produit sans nom)'}</div>
+        <div style="font-size:12px;color:var(--text-2);margin-top:4px">ID : ${id} · SKU base : <code class="tabnum">${skuFor(id,'','')}</code></div>
       </div>
       <button class="modal-close" onclick="closeModal()">×</button>
     </div>
 
-    <div style="margin:0 -28px 22px;aspect-ratio:3/4;max-height:300px;background:#f6f6f6;overflow:hidden;display:flex;align-items:center;justify-content:center">
+    ${base.img ? `<div style="margin:0 -28px 22px;aspect-ratio:3/4;max-height:300px;background:#f6f6f6;overflow:hidden;display:flex;align-items:center;justify-content:center">
       <img src="/${base.img}" alt="" style="max-width:100%;max-height:100%;object-fit:contain"/>
-    </div>
+    </div>` : ''}
 
     <form onsubmit="saveProductEdit(event,'${id}')">
+      ${isDraft ? `
       <div class="fld">
-        <label>Prix (€)</label>
-        <input class="input tabnum" name="price" type="number" step="0.01" min="0" value="${cur.price}" required>
-        <div style="font-size:11px;color:var(--text-2);margin-top:4px">Prix d'origine : ${eur(base.price)}${ov.price !== undefined ? ` · Override actif : ${eur(ov.price)}` : ''}</div>
+        <label>Nom du produit</label>
+        <input class="input" name="name" value="${ov.name || ''}" required>
+      </div>
+      <div class="fld">
+        <label>Image (chemin relatif)</label>
+        <input class="input" name="img" value="${ov.img || ''}" placeholder="images/products/...">
+      </div>
+      ` : ''}
+
+      <div class="row2">
+        <div class="fld">
+          <label>Prix (€)</label>
+          <input class="input tabnum" name="price" type="number" step="0.01" min="0" value="${cur.price || 0}" required>
+          ${!isDraft ? `<div style="font-size:11px;color:var(--text-2);margin-top:4px">Origine : ${eur(base.price)}${ov.price !== undefined ? ` · Override : ${eur(ov.price)}` : ''}</div>` : ''}
+        </div>
+        <div class="fld">
+          <label>Disponibilité</label>
+          <select class="input" name="unavailable">
+            <option value="false" ${!cur.unavailable ? 'selected' : ''}>En vente</option>
+            <option value="true" ${cur.unavailable ? 'selected' : ''}>Indisponible (fin de série)</option>
+          </select>
+        </div>
       </div>
 
       <div class="fld">
-        <label>Description (laisser vide pour conserver celle d'origine)</label>
-        <textarea class="textarea" name="desc" rows="4" placeholder="Vide = utilise la description du code source de product.html">${ov.desc || ''}</textarea>
-        <div style="font-size:11px;color:var(--text-2);margin-top:4px">${ov.desc ? 'Override actif' : 'Aucun override — description du code source utilisée'}</div>
+        <label>Description ${!isDraft ? '(vide = conserve celle d\'origine)' : ''}</label>
+        <textarea class="textarea" name="desc" rows="3" placeholder="${isDraft ? 'Description du produit...' : 'Vide = utilise la description du code source'}">${ov.desc || ''}</textarea>
       </div>
 
       <div class="fld">
-        <label>Disponibilité</label>
-        <select class="input" name="unavailable">
-          <option value="false" ${!cur.unavailable ? 'selected' : ''}>En vente</option>
-          <option value="true" ${cur.unavailable ? 'selected' : ''}>Indisponible (fin de série)</option>
-        </select>
+        <label>Tags (séparés par virgules) — utilisés pour filtrer dans l'admin</label>
+        <input class="input" name="tags" value="${userTags.join(', ')}" placeholder="ex: bestseller, ss26, drop1">
+        ${base.category ? `<div style="font-size:11px;color:var(--text-2);margin-top:4px">Catégorie auto : <strong>${base.category}</strong> (toujours présent)</div>` : ''}
       </div>
 
+      ${sizes.length > 0 ? `
+      <div class="mb">
+        <div class="mb-title">Stock par taille · SKU généré · 0 = rupture cette taille</div>
+        <table style="font-size:12px;width:100%">
+          <thead><tr><th style="padding:8px;text-align:left">Taille</th><th style="padding:8px;text-align:left">SKU</th><th style="padding:8px;text-align:right">Stock</th></tr></thead>
+          <tbody>
+          ${sizes.map(sz => `<tr>
+            <td style="padding:6px 8px"><strong>${sz}</strong></td>
+            <td style="padding:6px 8px"><code style="font-size:10px;color:var(--text-2)" class="tabnum">${skuFor(id,sz,'')}</code></td>
+            <td style="padding:6px 8px"><input class="input tabnum" data-size="${sz}" name="stock_${sz}" type="number" min="0" value="${stock[sz] !== undefined ? stock[sz] : ''}" placeholder="—" style="width:80px;text-align:right;padding:4px 8px"></td>
+          </tr>`).join('')}
+          </tbody>
+        </table>
+        <div class="fld" style="margin-top:14px">
+          <label>Seuil alerte stock bas</label>
+          <input class="input tabnum" name="threshold" type="number" min="0" value="${threshold}" style="max-width:120px">
+          <div style="font-size:11px;color:var(--text-2);margin-top:4px">Badge "Stock bas" si total ≤ ce nombre (défaut: ${LOW_STOCK_DEFAULT})</div>
+        </div>
+      </div>` : `
+      <div class="mb">
+        <div class="mb-title">Stock global · Taille unique</div>
+        <div class="fld">
+          <label>Stock total</label>
+          <input class="input tabnum" data-size="_" name="stock__" type="number" min="0" value="${stock['_'] !== undefined ? stock['_'] : ''}" placeholder="ex: 50" style="max-width:140px">
+        </div>
+      </div>`}
+
+      ${!isDraft ? `
       <div class="mb">
         <div class="mb-title">Variants en lecture seule</div>
-        <div class="detail-row"><span class="lbl">Tailles</span><span class="val">${(base.sizes||[]).join(', ') || 'Taille unique'}</span></div>
-        <div class="detail-row"><span class="lbl">Couleurs</span><span class="val">${(base.colors||[]).map(c=>c.name).join(', ')}</span></div>
+        <div class="detail-row"><span class="lbl">Couleurs</span><span class="val">${(base.colors||[]).map(c=>c.name).join(', ') || '—'}</span></div>
         <div class="detail-row"><span class="lbl">Badge</span><span class="val">${base.badge || '—'}</span></div>
-      </div>
+      </div>` : ''}
 
       <div class="modal-foot">
         <button type="button" class="btn btn-ghost" onclick="closeModal()">Annuler</button>
-        ${ov.price !== undefined || ov.desc !== undefined || ov.unavailable !== undefined
-          ? `<button type="button" class="btn btn-danger" onclick="resetProductOverride('${id}')">Reset (utiliser d'origine)</button>`
+        <button type="button" class="btn btn-ghost" onclick="duplicateProduct('${id}')">Dupliquer →</button>
+        ${(ov.price !== undefined || ov.desc !== undefined || ov.unavailable !== undefined || (ov.tags && ov.tags.length) || isDraft)
+          ? `<button type="button" class="btn btn-danger" onclick="resetProductOverride('${id}', ${isDraft})">${isDraft ? 'Supprimer brouillon' : 'Reset origine'}</button>`
           : ''}
         <button type="submit" class="btn btn-accent">Enregistrer + déployer</button>
       </div>
     </form>
-    <p style="font-size:11px;color:var(--text-2);margin-top:14px;line-height:1.5">Les modifs sont commitées dans <code>data/products-overrides.json</code> via GitHub et propagées sur talseume.com après ~30s (rebuild Netlify auto).</p>
+    <p style="font-size:11px;color:var(--text-2);margin-top:14px;line-height:1.5">Modifs commitées dans GitHub <code>data/products-overrides.json</code> + <code>data/products-stock.json</code>. Live sur talseume.com après ~30s (rebuild Netlify auto).</p>
   `, true);
 }
 
 async function saveProductEdit(e, id){
   e.preventDefault();
   const fd = new FormData(e.target);
+  const base = PRODUCTS[id] || (productOverrides[id] || {});
+  const isDraft = !PRODUCTS[id];
+
   const newPrice = parseFloat(fd.get('price'));
   const newDesc = (fd.get('desc') || '').trim();
   const newUnavail = fd.get('unavailable') === 'true';
-  const base = PRODUCTS[id];
+  const newTags = (fd.get('tags') || '').split(',').map(s => s.trim()).filter(Boolean);
+  const threshold = parseInt(fd.get('threshold') || LOW_STOCK_DEFAULT, 10);
 
-  // Build override : ne stocker QUE les diffs vs hardcoded
-  const ov = {};
-  if (newPrice !== base.price) ov.price = newPrice;
+  // Build override
+  const ov = isDraft ? Object.assign({}, productOverrides[id] || {}) : {};
+  if (isDraft) {
+    ov.name = fd.get('name');
+    ov.img = fd.get('img');
+  }
+  if (isDraft || newPrice !== base.price) ov.price = newPrice;
   if (newDesc) ov.desc = newDesc;
-  if (newUnavail !== !!base.unavailable) ov.unavailable = newUnavail;
+  if (isDraft || (newUnavail !== !!base.unavailable)) ov.unavailable = newUnavail;
+  if (newTags.length) ov.tags = newTags;
 
-  // Update local state
   if (Object.keys(ov).length === 0) {
     delete productOverrides[id];
   } else {
     productOverrides[id] = ov;
   }
 
+  // Build stock map
+  const stockMap = {};
+  e.target.querySelectorAll('input[data-size]').forEach(inp => {
+    const sz = inp.dataset.size;
+    const v = inp.value.trim();
+    if (v !== '' && !isNaN(parseInt(v, 10))) stockMap[sz] = parseInt(v, 10);
+  });
+  productStock.stock = productStock.stock || {};
+  productStock.thresholds = productStock.thresholds || {};
+  if (Object.keys(stockMap).length > 0) productStock.stock[id] = stockMap;
+  else delete productStock.stock[id];
+  if (threshold !== LOW_STOCK_DEFAULT) productStock.thresholds[id] = threshold;
+  else delete productStock.thresholds[id];
+
   try {
     await saveData('products-overrides', {overrides: productOverrides}, `product: edit ${id}`);
-    toast('Modifications enregistrées · déploiement Netlify en cours');
-    closeModal();
-    renderProducts();
-  } catch(err) {
-    toast('Erreur: ' + err.message, 'err');
-  }
-}
-
-async function resetProductOverride(id){
-  if (!confirm('Reset ce produit aux valeurs d\'origine du code ?')) return;
-  delete productOverrides[id];
-  try {
-    await saveData('products-overrides', {overrides: productOverrides}, `product: reset ${id}`);
-    toast('Reset effectué');
+    await saveData('products-stock', productStock, `stock: edit ${id}`);
+    toast('Modifications enregistrées · rebuild en cours');
     closeModal();
     renderProducts();
   } catch(err) { toast('Erreur: ' + err.message, 'err'); }
+}
+
+async function resetProductOverride(id, deleteDraft){
+  const msg = deleteDraft ? 'Supprimer définitivement ce brouillon ?' : 'Reset ce produit aux valeurs d\'origine ?';
+  if (!confirm(msg)) return;
+  delete productOverrides[id];
+  // Also clear stock when resetting
+  if (productStock.stock) delete productStock.stock[id];
+  if (productStock.thresholds) delete productStock.thresholds[id];
+  try {
+    await saveData('products-overrides', {overrides: productOverrides}, deleteDraft ? `product: delete draft ${id}` : `product: reset ${id}`);
+    await saveData('products-stock', productStock, `stock: clear ${id}`);
+    toast(deleteDraft ? 'Brouillon supprimé' : 'Reset effectué');
+    closeModal();
+    renderProducts();
+  } catch(err) { toast('Erreur: ' + err.message, 'err'); }
+}
+
+async function duplicateProduct(srcId){
+  const src = PRODUCTS[srcId] ? Object.assign({}, PRODUCTS[srcId], productOverrides[srcId] || {}) : Object.assign({}, productOverrides[srcId] || {});
+  const newId = srcId + '-copy-' + Date.now().toString(36);
+  const draft = {
+    name: (src.name || 'Produit') + ' (copie)',
+    img: src.img || '',
+    price: src.price || 0,
+    desc: src.desc || '',
+    unavailable: true, // par défaut : drafts indispo jusqu'à publication
+    tags: ['brouillon'],
+    sizes: src.sizes || [],
+    colors: src.colors || [],
+    badge: src.badge || null,
+    category: src.category || null
+  };
+  productOverrides[newId] = draft;
+  try {
+    await saveData('products-overrides', {overrides: productOverrides}, `product: duplicate ${srcId} → ${newId}`);
+    toast('Brouillon créé — édite-le puis active');
+    closeModal();
+    renderProducts();
+    setTimeout(() => openEditProduct(newId), 300);
+  } catch(err) {
+    delete productOverrides[newId];
+    toast('Erreur : ' + err.message, 'err');
+  }
 }
 
 /* ──────────────────────────────────────────────

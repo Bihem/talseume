@@ -827,9 +827,11 @@ const params = new URLSearchParams(window.location.search);
 const id = params.get('id') || 'sweat-talseume-oversize';
 
 /* ── OVERRIDES PRODUITS ──
-   Édités via l'admin (data/products-overrides.json). Fields supportés : price, desc, unavailable.
-   Best-effort : si fetch échoue, on garde les valeurs hardcodées. Fait en sync via XHR pour éviter
-   de bloquer le rendu sur la promise. */
+   Édités via l'admin (data/products-overrides.json + data/products-stock.json).
+   Fields overrides : price, desc, unavailable, tags, name, img (drafts), colors, sizes...
+   Fields stock : stock par taille pour désactiver les tailles sold out.
+   Fait en sync via XHR pour éviter de bloquer le rendu sur la promise. */
+window.STOCK_PER_SIZE = {};
 try {
   const xhr = new XMLHttpRequest();
   xhr.open('GET', '/data/products-overrides.json?v=' + Date.now(), false);
@@ -839,9 +841,19 @@ try {
     const overrides = (data && data.overrides) || {};
     Object.keys(overrides).forEach(k => {
       if (PRODUCTS[k]) Object.assign(PRODUCTS[k], overrides[k]);
+      else if (overrides[k].name) PRODUCTS[k] = overrides[k]; // draft devenu produit
     });
   }
-} catch(e) { /* silence — fallback sur hardcoded */ }
+} catch(e) { /* silence */ }
+try {
+  const xhr2 = new XMLHttpRequest();
+  xhr2.open('GET', '/data/products-stock.json?v=' + Date.now(), false);
+  xhr2.send(null);
+  if (xhr2.status === 200) {
+    const data = JSON.parse(xhr2.responseText);
+    window.STOCK_PER_SIZE = data?.stock || {};
+  }
+} catch(e) { /* silence */ }
 
 const p = PRODUCTS[id];
 if (!p) { window.location.href = '/'; }
@@ -930,9 +942,22 @@ function render() {
   if (p.sizes.length > 0) {
     document.getElementById('prod-sizes').style.display = 'block';
     document.getElementById('selected-size').textContent = '— ' + selectedSize;
-    document.getElementById('size-pills').innerHTML = p.sizes.map(s =>
-      `<button class="pill${s===selectedSize?' sel':''}" onclick="selectSize('${s}')">${s}</button>`
-    ).join('');
+    const stockMap = (window.STOCK_PER_SIZE && window.STOCK_PER_SIZE[id]) || {};
+    const hasStockSet = Object.keys(stockMap).length > 0;
+    document.getElementById('size-pills').innerHTML = p.sizes.map(s => {
+      const stockS = stockMap[s];
+      const isOut = hasStockSet && (stockS === 0 || stockS === undefined);
+      const cls = `pill${s===selectedSize?' sel':''}${isOut?' out':''}`;
+      const disabled = isOut ? 'disabled aria-disabled="true"' : '';
+      const onclick = isOut ? '' : `onclick="selectSize('${s}')"`;
+      const style = isOut ? 'style="opacity:.35;cursor:not-allowed;text-decoration:line-through"' : '';
+      return `<button class="${cls}" ${onclick} ${disabled} ${style} title="${isOut?'Indisponible':''}">${s}</button>`;
+    }).join('');
+    // If selected size is out, pick the first available
+    if (hasStockSet && (stockMap[selectedSize] === 0 || stockMap[selectedSize] === undefined)) {
+      const firstAvail = p.sizes.find(s => stockMap[s] > 0);
+      if (firstAvail) { selectedSize = firstAvail; selectSize(firstAvail); }
+    }
   }
 
   renderRelated();
