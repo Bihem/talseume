@@ -1,0 +1,15 @@
+{
+  "drops": [
+    {
+      "id": "drop-ss26-no-limit-027",
+      "name": "SS26 — No Limit 0.27",
+      "status": "live",
+      "launchDate": "2026-04-15",
+      "cover": "images/lookbook/rooftop-paris-sweat-bleu.webp",
+      "brief": "Drop SS26 fondateur — collection bike life rooftop Paris. Coton bio GOTS, matériaux recyclés.",
+      "products": ["sweat-talseume-oversize","sweat-bikelife","tee-shirt-oversize","tshirt-manches-longues","veste-coach","debardeur-femme","tshirt-femme","cagoule","sport-beanie","casquette-trucker","talseume-bag"],
+      "checklist": { "design": true, "prototype": true, "photos": true, "copy": true, "klaviyo": false },
+      "performance": null
+    }
+  ]
+}
