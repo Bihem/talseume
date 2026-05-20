@@ -2,6 +2,7 @@
   "name": "talseume-functions",
   "version": "1.0.0",
   "dependencies": {
+    "pdf-lib": "^1.17.1",
     "stripe": "^14.0.0"
   }
 }

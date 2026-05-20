@@ -759,8 +759,22 @@ tbody tr:hover td{background:var(--bg);cursor:pointer}
           </div>
           <div class="set-row">
             <div>
+              <div class="key">Brevo (emails transactionnels)</div>
+              <div class="meta">Confirmation commande, expédition, demande avis · 300 mails/jour gratuit</div>
+            </div>
+            <div class="set-status" id="set-brevo-status"><span class="dot"></span><span id="set-brevo-text">Vérification…</span></div>
+          </div>
+          <div class="set-row">
+            <div>
+              <div class="key">Webhook Stripe</div>
+              <div class="meta">Notif temps réel quand une commande est payée · déclenche les emails auto</div>
+            </div>
+            <div class="set-status" id="set-webhook-status"><span class="dot"></span><span id="set-webhook-text">À configurer</span></div>
+          </div>
+          <div class="set-row">
+            <div>
               <div class="key">Klaviyo</div>
-              <div class="meta">Email marketing — non configuré</div>
+              <div class="meta">Email marketing avancé — non configuré (Brevo suffit pour démarrer)</div>
             </div>
             <div class="set-status warn"><span class="dot"></span>Non utilisé</div>
           </div>
@@ -1918,12 +1932,69 @@ async function openOrder(id){
         <div class="detail-row"><span class="lbl">Total</span><span class="val tabnum" style="font-weight:700">${eur(o.total_price)}</span></div>
         <div class="detail-row"><span class="lbl">Statut</span><span class="val">${o.financial_status === 'paid' ? '<span class="badge ok"><span class="badge-dot"></span>Payée</span>' : '<span class="badge warn"><span class="badge-dot"></span>En attente</span>'}</span></div>
       </div>
+      <div class="mb">
+        <div class="mb-title">Actions logistique</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <button class="btn btn-ghost btn-sm" onclick="openInvoice('${id}')">Facture PDF</button>
+          <button class="btn btn-ghost btn-sm" onclick="openShippingLabel('${id}')">Étiquette adresse PDF</button>
+          ${o.financial_status === 'paid' ? `
+            <button class="btn btn-primary btn-sm" onclick="markShipped('${id}')">Marquer expédié + email</button>
+            <button class="btn btn-ghost btn-sm" onclick="sendReviewRequest('${id}')">Demande avis</button>
+          ` : ''}
+        </div>
+        <p style="font-size:11px;color:var(--text-2);margin-top:8px">Email de relance avis : à envoyer ~7 jours après livraison effective.</p>
+      </div>
       <div class="modal-foot">
         <a href="https://dashboard.stripe.com/payments/${id}" target="_blank" rel="noopener" class="btn btn-ghost">↗ Voir dans Stripe</a>
         ${o.financial_status === 'paid' ? `<button class="btn btn-danger" onclick="refundOrder('${id}')">Rembourser</button>` : ''}
       </div>
     `);
   } catch(e) { toast('Erreur: ' + e.message, 'err'); }
+}
+
+/* ── Logistique: facture, étiquette, emails ── */
+function openInvoice(id){
+  const token = getToken();
+  if (!token) return;
+  const url = `/.netlify/functions/generate-invoice?orderId=${encodeURIComponent(id)}`;
+  // Stream PDF via fetch + blob (sinon le Bearer header serait perdu)
+  adminFetch(url).then(r => r.blob()).then(blob => {
+    const link = URL.createObjectURL(blob);
+    window.open(link, '_blank');
+    setTimeout(() => URL.revokeObjectURL(link), 60_000);
+  }).catch(e => toast('Erreur facture : ' + e.message, 'err'));
+}
+function openShippingLabel(id){
+  adminFetch(`/.netlify/functions/generate-shipping-label?orderId=${encodeURIComponent(id)}`).then(r => r.blob()).then(blob => {
+    const link = URL.createObjectURL(blob);
+    window.open(link, '_blank');
+    setTimeout(() => URL.revokeObjectURL(link), 60_000);
+  }).catch(e => toast('Erreur étiquette : ' + e.message, 'err'));
+}
+async function markShipped(id){
+  const tracking = prompt('N° de suivi (optionnel, laissez vide si pas encore disponible)');
+  if (tracking === null) return; // user cancelled
+  try {
+    const r = await adminFetch('/.netlify/functions/send-email', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ template: 'order_shipped', orderId: id, tracking: tracking || null })
+    });
+    const j = await r.json();
+    if (j.sent) toast('Email expédition envoyé');
+    else toast(j.message || 'Brevo non configuré — pas envoyé', 'err');
+  } catch(e) { toast('Erreur : ' + e.message, 'err'); }
+}
+async function sendReviewRequest(id){
+  if (!confirm('Envoyer un email demande d\'avis au client ?')) return;
+  try {
+    const r = await adminFetch('/.netlify/functions/send-email', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ template: 'review_request', orderId: id })
+    });
+    const j = await r.json();
+    if (j.sent) toast('Demande d\'avis envoyée');
+    else toast(j.message || 'Brevo non configuré', 'err');
+  } catch(e) { toast('Erreur : ' + e.message, 'err'); }
 }
 async function refundOrder(id){
   if (!confirm('Confirmer le remboursement intégral ?')) return;
@@ -2504,7 +2575,6 @@ async function loadAnalytics(){
    PARAMÈTRES — check intégrations
    ────────────────────────────────────────────── */
 async function checkIntegrations(){
-  // Stripe : on déduit du fait que les orders ont chargé
   // Newsletter
   try {
     const r = await adminFetch(NL_API);
@@ -2525,6 +2595,33 @@ async function checkIntegrations(){
     document.getElementById('set-gh-status').className = 'set-status err';
     document.getElementById('set-gh-text').textContent = 'Erreur d\'accès';
   }
+  // Brevo : on teste avec un faux orderId — la function renvoie "configured" sans réellement envoyer
+  try {
+    // Pour ne pas envoyer un vrai email, on regarde juste si BREVO_API_KEY est posé.
+    // Heuristique : appel send-email avec un orderId invalide → fail proprement avec "configured" info
+    const r = await adminFetch('/.netlify/functions/send-email', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ template: 'order_confirmation', orderId: 'cs_check_only' })
+    });
+    const j = await r.json();
+    const wrap = document.getElementById('set-brevo-status');
+    // Si réponse contient "no_email_on_session" ou "Brevo X" → BREVO posé (auth a passé)
+    // Si réponse contient "configured: false" → pas posé
+    if (j.configured === false || (j.message && j.message.includes('BREVO_API_KEY non défini'))) {
+      wrap.className = 'set-status warn';
+      document.getElementById('set-brevo-text').textContent = 'À configurer (env var BREVO_API_KEY)';
+    } else {
+      wrap.className = 'set-status ok';
+      document.getElementById('set-brevo-text').textContent = 'Connecté';
+    }
+  } catch(e) {
+    document.getElementById('set-brevo-status').className = 'set-status warn';
+    document.getElementById('set-brevo-text').textContent = 'À configurer';
+  }
+  // Webhook : juste informatif — on ne peut pas tester côté front, juste signaler le statut
+  // (Il faudrait poll une nouvelle commande pour savoir si le webhook fire)
+  document.getElementById('set-webhook-status').className = 'set-status warn';
+  document.getElementById('set-webhook-text').textContent = 'À configurer (dashboard.stripe.com/webhooks)';
 }
 
 /* ──────────────────────────────────────────────

@@ -7,7 +7,7 @@
 const https = require('https');
 const { validateAdminToken } = require('./admin-auth');
 
-const ALLOWED_FILES = ['drops','calendar','client-notes','products-stock','products-overrides'];
+const ALLOWED_FILES = ['drops','calendar','client-notes','products-stock','products-overrides','recent-events'];
 
 const CORS = {
   'Access-Control-Allow-Origin': 'https://talseume.com',
