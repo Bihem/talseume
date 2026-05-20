@@ -3,14 +3,15 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="theme-color" content="#0a0a0a"/>
 <title>Mes Favoris — TALSEUME</title>
 <meta name="description" content="Tes pièces préférées Talseume. Sweats, t-shirts et vestes streetwear éco-responsables sauvegardés."/>
 <style>
 .skip-link{position:absolute;left:-9999px;top:0;z-index:99999;background:#0a0a0a;color:#fff;padding:14px 22px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;text-decoration:none;border:2px solid #fff;outline-offset:2px}
 .skip-link:focus,.skip-link:focus-visible{left:8px;top:8px}
 
-@font-face{font-family:'Suisse Intl';src:url('https://cdn.prod.website-files.com/6772f6efe246aaaa73ad2a98/67784f5e4c3068c2e2f22e60_SuisseIntl-Regular.otf')format('opentype');font-weight:400;font-display:swap}
-@font-face{font-family:'Suisse Intl';src:url('https://cdn.prod.website-files.com/6772f6efe246aaaa73ad2a98/67784f815ee57b4c18bdae11_SuisseIntl-Light.otf')format('opentype');font-weight:300;font-display:swap}
+@font-face{font-family:'Suisse Intl';src:url('/fonts/SuisseIntl-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Suisse Intl';src:url('/fonts/SuisseIntl-Light.woff2') format('woff2');font-weight:300;font-display:swap}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--black:#0a0a0a;--off:#faf9f6;--cream:#f4f2ec;--line-l:rgba(0,0,0,.08);--gold:#a8916a;--F:'Suisse Intl','Helvetica Neue',Helvetica,Arial,sans-serif}
 html{background:#fff;overflow-x:hidden;scroll-behavior:smooth}
@@ -148,7 +149,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 <meta property="og:url" content="https://talseume.com/favoris.html"/>
 <meta property="og:title" content="Mes Favoris — TALSEUME"/>
 <meta property="og:description" content="Tes pièces préférées Talseume."/>
-<meta property="og:image" content="https://talseume.com/images/talseume-logo.png"/>
+<meta property="og:image" content="https://talseume.com/images/og-default.jpg"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <link rel="stylesheet" href="/cookies-banner.css">
 </head>
@@ -196,11 +197,11 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
           </div>
           <div class="mm-feat">
             <a href="/#new" class="mm-feat-card">
-              <img src="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg" alt="Nouveautés"/>
+              <img src="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.webp" alt="Nouveautés" width="1350" height="1800"/>
               <span>Nouveautés</span>
             </a>
             <a href="/#shop" class="mm-feat-card">
-              <img src="images/products/Jacket-By-TALSEUMENWAR.jpg" alt="Vestes"/>
+              <img src="images/products/Jacket-By-TALSEUMENWAR.webp" alt="Vestes" width="1350" height="1800"/>
               <span>Vestes</span>
             </a>
           </div>
@@ -210,7 +211,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       <li><a href="/blog.html">Blog</a></li>
     </ul>
   </div>
-  <a href="/" class="nav-logo"><img src="images/talseume-logo.png" alt="TALSEUME"/></a>
+  <a href="/" class="nav-logo"><img src="images/talseume-logo.png" alt="TALSEUME" width="600" height="600"/></a>
   <div class="nav-right">
     <span class="nav-cc">FR / EUR</span>
     <button class="nav-icon" aria-label="Recherche">
@@ -293,18 +294,18 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 <script>
 /* Catalogue minimal pour rendu (id → name, price, img) */
 const CATALOG = {
-  'sweat-talseume-oversize':{name:'Sweat Talseume Oversize',price:90,img:'images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg'},
-  'tee-shirt-oversize':{name:'Tee-Shirt Talseume Oversize',price:60,img:'images/products/tee-shirt-talseume-noir-oversise.jpg?v=rhude'},
-  'sweat-bikelife':{name:'Sweat Tls × Bikelife',price:68.99,img:'images/products/sweat-talseume-bikelife-devant.jpg'},
-  'tshirt-manches-longues':{name:'T-Shirt Manches Longues',price:75,img:'images/products/tee-shirt-talseume-mancheslongue-star.jpg'},
-  'veste-coach':{name:'Veste Coach Unisexe',price:90,img:'images/products/Coach-Jacket-By-talseumecopie2.jpg'},
-  'veste-coach-ultra':{name:'Veste Coach Ultra',price:104,img:'images/products/Jacket-By-TALSEUMENWAR.jpg'},
-  'debardeur-femme':{name:'Débardeur Femme',price:24.99,img:'images/products/debardeur-femme-talseume-090.jpg'},
-  'tshirt-femme':{name:'T-shirt Femme',price:29,img:'images/products/tshirt-femme-talseume-009.jpg?v=rhude'},
-  'cagoule':{name:'Cagoule Talseume',price:18,img:'images/products/IMG_7578.jpg'},
-  'sport-beanie':{name:'Talseume Sport Beanie',price:17.99,img:'images/products/Bonnet_talseume.jpg'},
-  'casquette-trucker':{name:'Casquette Trucker',price:19.99,img:'images/products/IMG_7199.png'},
-  'talseume-bag':{name:'Talseume Bag',price:25.99,img:'images/products/sactalseume.jpg'}
+  'sweat-talseume-oversize':{name:'Sweat Talseume Oversize',price:90,img:'images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.webp'},
+  'tee-shirt-oversize':{name:'Tee-Shirt Talseume Oversize',price:60,img:'images/products/tee-shirt-talseume-noir-oversise.webp?v=rhude'},
+  'sweat-bikelife':{name:'Sweat Tls × Bikelife',price:68.99,img:'images/products/sweat-talseume-bikelife-devant.webp'},
+  'tshirt-manches-longues':{name:'T-Shirt Manches Longues',price:75,img:'images/products/tee-shirt-talseume-mancheslongue-star.webp'},
+  'veste-coach':{name:'Veste Coach Unisexe',price:90,img:'images/products/Coach-Jacket-By-talseumecopie2.webp'},
+  'veste-coach-ultra':{name:'Veste Coach Ultra',price:104,img:'images/products/Jacket-By-TALSEUMENWAR.webp'},
+  'debardeur-femme':{name:'Débardeur Femme',price:24.99,img:'images/products/debardeur-femme-talseume-090.webp'},
+  'tshirt-femme':{name:'T-shirt Femme',price:29,img:'images/products/tshirt-femme-talseume-009.webp?v=rhude'},
+  'cagoule':{name:'Cagoule Talseume',price:18,img:'images/products/IMG_7578.webp'},
+  'sport-beanie':{name:'Talseume Sport Beanie',price:17.99,img:'images/products/Bonnet_talseume.webp'},
+  'casquette-trucker':{name:'Casquette Trucker',price:19.99,img:'images/products/IMG_7199.webp'},
+  'talseume-bag':{name:'Talseume Bag',price:25.99,img:'images/products/sactalseume.webp'}
 };
 
 let wishlist = JSON.parse(localStorage.getItem('tls-wishlist') || '[]');

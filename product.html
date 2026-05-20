@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0a0a0a"/>
 <title>Talseume — Fiche produit</title>
 <meta name="description" content="Streetwear éco-responsable Talseume. Coton bio GOTS, matériaux recyclés, fabriqué pour durer."/>
 <link rel="icon" href="images/talseume-logo.png">
@@ -10,8 +11,8 @@
 .skip-link{position:absolute;left:-9999px;top:0;z-index:99999;background:#0a0a0a;color:#fff;padding:14px 22px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;text-decoration:none;border:2px solid #fff;outline-offset:2px}
 .skip-link:focus,.skip-link:focus-visible{left:8px;top:8px}
 
-@font-face{font-family:'Suisse Intl';src:url('https://cdn.prod.website-files.com/6772f6efe246aaaa73ad2a98/67784f5e4c3068c2e2f22e60_SuisseIntl-Regular.otf')format('opentype');font-weight:400;font-display:swap}
-@font-face{font-family:'Suisse Intl';src:url('https://cdn.prod.website-files.com/6772f6efe246aaaa73ad2a98/67784f815ee57b4c18bdae11_SuisseIntl-Light.otf')format('opentype');font-weight:300;font-display:swap}
+@font-face{font-family:'Suisse Intl';src:url('/fonts/SuisseIntl-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Suisse Intl';src:url('/fonts/SuisseIntl-Light.woff2') format('woff2');font-weight:300;font-display:swap}
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -389,7 +390,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 <meta property="og:url" content="https://talseume.com/product.html"/>
 <meta property="og:title" content="Talseume — Fiche produit"/>
 <meta property="og:description" content="Streetwear éco-responsable Talseume. Coton bio GOTS, matériaux recyclés, fabriqué pour durer."/>
-<meta property="og:image" content="https://talseume.com/images/talseume-logo.png"/>
+<meta property="og:image" content="https://talseume.com/images/og-default.jpg"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <link rel="stylesheet" href="/cookies-banner.css">
 </head>
@@ -438,11 +439,11 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
           </div>
           <div class="mm-feat">
             <a href="/#new" class="mm-feat-card">
-              <img src="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg" alt="Nouveautés"/>
+              <img src="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.webp" alt="Nouveautés" width="1350" height="1800"/>
               <span>Nouveautés</span>
             </a>
             <a href="/#shop" class="mm-feat-card">
-              <img src="images/products/Jacket-By-TALSEUMENWAR.jpg" alt="Vestes"/>
+              <img src="images/products/Jacket-By-TALSEUMENWAR.webp" alt="Vestes" width="1350" height="1800"/>
               <span>Vestes</span>
             </a>
           </div>
@@ -452,7 +453,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       <li><a href="/blog.html">Blog</a></li>
     </ul>
   </div>
-  <a href="/" class="nav-logo"><img src="images/talseume-logo.png" alt="TALSEUME"/></a>
+  <a href="/" class="nav-logo"><img src="images/talseume-logo.png" alt="TALSEUME" width="600" height="600"/></a>
   <div class="nav-right">
     <span class="nav-cc">FR / EUR</span>
     <button class="nav-icon" aria-label="Recherche">
@@ -712,7 +713,7 @@ const PRODUCTS = {
     materials:'100% coton biologique certifié GOTS. Molleton non brossé 350g/m². Coupe oversize unisexe.',
     sizeGuide:'S (88-92cm) · M (92-96cm) · L (96-100cm) · XL (100-104cm) · XXXL (112-116cm). Coupe oversize — prendre sa taille habituelle.',
     sizes:['S','M','L','XL','XXXL'],
-    colors:[{name:'ROUGE',img:'images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.jpg'},{name:'BLANC',img:'images/products/sweat-a-acapuche-talseume-dos.jpg'},{name:'NOIR',img:'images/products/SWEAT-TALSEUME-NOIR-OVERSIZE01.jpg'},{name:'BLEUE',img:'images/products/SWEAT-TALSEUME-ACAPUCHE-BLEU.jpg?v=rhude'},{name:'BEIGE',img:'images/products/B18BC283-4899-40C1-9F96-34ED3F8DD9FF_38ab9d91-6208-4e33-a9b8-3a0a4e4cd56b.jpg'}]
+    colors:[{name:'ROUGE',img:'images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.webp'},{name:'BLANC',img:'images/products/sweat-a-acapuche-talseume-dos.webp'},{name:'NOIR',img:'images/products/SWEAT-TALSEUME-NOIR-OVERSIZE01.webp'},{name:'BLEUE',img:'images/products/SWEAT-TALSEUME-ACAPUCHE-BLEU.webp?v=rhude'},{name:'BEIGE',img:'images/products/B18BC283-4899-40C1-9F96-34ED3F8DD9FF_38ab9d91-6208-4e33-a9b8-3a0a4e4cd56b.webp'}]
   },
   'tee-shirt-oversize':{
     name:'Tee-Shirt Talseume Oversize',price:60,badge:'Bio',
@@ -721,7 +722,7 @@ const PRODUCTS = {
     materials:'100% coton biologique certifié GOTS. Jersey simple tissu lavé 180g/m². Coupe oversize unisexe.',
     sizeGuide:'XS · S · M · L · XL. Coupe XXL assumée.',
     sizes:['XS','S','M','L','XL'],
-    colors:[{name:'NOIR',img:'images/products/tee-shirt-talseume-noir-oversise.jpg?v=rhude'},{name:'BLANC',img:'images/products/IMG_7520_e3dbdd17-a9be-4adb-b256-4159034c7b0d.jpg'}]
+    colors:[{name:'NOIR',img:'images/products/tee-shirt-talseume-noir-oversise.webp?v=rhude'},{name:'BLANC',img:'images/products/IMG_7520_e3dbdd17-a9be-4adb-b256-4159034c7b0d.webp'}]
   },
   'sweat-bikelife':{
     name:'Sweat Tls × Bikelife',price:68.99,badge:'Édition limitée',
@@ -730,7 +731,7 @@ const PRODUCTS = {
     materials:'100% coton biologique certifié GOTS, filé et peigné. Molleton 380g/m². Édition limitée.',
     sizeGuide:'2XS · S · M · L · XL · 2XL · 3XL. Coupe oversize.',
     sizes:['2XS','S','M','L','XL','2XL','3XL'],
-    colors:[{name:'NOIR',img:'images/products/sweat-talseume-bikelife-devant.jpg'}]
+    colors:[{name:'NOIR',img:'images/products/sweat-talseume-bikelife-devant.webp'}]
   },
   'tshirt-manches-longues':{
     name:'T-Shirt Manches Longues',price:75,badge:'Bio 240g',
@@ -739,7 +740,7 @@ const PRODUCTS = {
     materials:'70% coton biologique, 30% polyester recyclé. 240g/m². Certifié GOTS.',
     sizeGuide:'XS · S · M · L · XL · XXL. Coupe ajustée.',
     sizes:['XS','S','M','L','XL','XXL'],
-    colors:[{name:'Natural Raw',img:'images/products/tshirt-talseume-mancheslongue-creme.jpg?v=rhude'},{name:'Stargazer',img:'images/products/tee-shirt-talseume-mancheslongue-star.jpg'},{name:'Noir',img:'images/products/tee-shirt-talseume-mancheslongue.jpg'}]
+    colors:[{name:'Natural Raw',img:'images/products/tshirt-talseume-mancheslongue-creme.webp?v=rhude'},{name:'Stargazer',img:'images/products/tee-shirt-talseume-mancheslongue-star.webp'},{name:'Noir',img:'images/products/tee-shirt-talseume-mancheslongue.webp'}]
   },
   'veste-coach':{
     name:'Veste Coach Unisexe Talseume',price:90,badge:'Recyclé',
@@ -748,7 +749,7 @@ const PRODUCTS = {
     materials:'Polyester recyclé. Coupe unisexe. Coloris Noir.',
     sizeGuide:'S · M · L · XL · XXL. Coupe ajustée — prendre sa taille habituelle.',
     sizes:['S','M','L','XL','XXL'],
-    colors:[{name:'NOIR',img:'images/products/Coach-Jacket-By-talseumecopie2.jpg'}]
+    colors:[{name:'NOIR',img:'images/products/Coach-Jacket-By-talseumecopie2.webp'}]
   },
   'veste-coach-ultra':{
     name:'Veste Coach Talseume Ultra',price:130,badge:'Ultra',unavailable:true,
@@ -757,7 +758,7 @@ const PRODUCTS = {
     materials:'100% polyester recyclé plain weave 75g/m². Ultra légère et compressible.',
     sizeGuide:'XS · S · M · L. Coupe ajustée.',
     sizes:['XS','S','M','L'],
-    colors:[{name:'NOIR',img:'images/products/Jacket-By-TALSEUMENWAR.jpg'}]
+    colors:[{name:'NOIR',img:'images/products/Jacket-By-TALSEUMENWAR.webp'}]
   },
   'debardeur-femme':{
     name:'Débardeur Talseume Femme',price:24.99,badge:'Femme',
@@ -766,7 +767,7 @@ const PRODUCTS = {
     materials:'100% coton biologique filé et peigné. 155g/m². Coupe normale, col rond.',
     sizeGuide:'XS · S · M · L · XL · 2XL · 3XL. Coupe normale.',
     sizes:['XS','S','M','L','XL','2XL','3XL'],
-    colors:[{name:'Jaune',img:'images/products/debardeur-femme-talseume-090.jpg'},{name:'Noir',img:'images/products/debardeur-femme-talseume.jpg'},{name:'Orange',img:'images/products/debardeur-talseume-femme-0987.jpg'}]
+    colors:[{name:'Jaune',img:'images/products/debardeur-femme-talseume-090.webp'},{name:'Noir',img:'images/products/debardeur-femme-talseume.webp'},{name:'Orange',img:'images/products/debardeur-talseume-femme-0987.webp'}]
   },
   'tshirt-femme':{
     name:'T-shirt Talseume Femme',price:29,badge:'Femme',
@@ -775,7 +776,7 @@ const PRODUCTS = {
     materials:'50% coton biologique, 50% polyester recyclé. Côte 1×1 au col. Surpiqûre double large.',
     sizeGuide:'XS · S · M · L · XL · 2XL · 3XL. Coupe légèrement ajustée.',
     sizes:['XS','S','M','L','XL','2XL','3XL'],
-    colors:[{name:'Bleu',img:'images/products/tshirt-femme-talseume-009.jpg?v=rhude'},{name:'Noir',img:'images/products/tshirt-talseume-femme.jpg?v=rhude'},{name:'Blanc',img:'images/products/tshirt-femme-talseume-009.jpg?v=rhude'}]
+    colors:[{name:'Bleu',img:'images/products/tshirt-femme-talseume-009.webp?v=rhude'},{name:'Noir',img:'images/products/tshirt-talseume-femme.webp?v=rhude'},{name:'Blanc',img:'images/products/tshirt-femme-talseume-009.webp?v=rhude'}]
   },
   'cagoule':{
     name:'Cagoule Talseume',price:18,badge:null,
@@ -783,7 +784,7 @@ const PRODUCTS = {
     material:'Polyester · Streetwear · Taille unique',
     materials:'Polyester. Taille unique, s\'adapte à toutes morphologies.',
     sizeGuide:'Taille unique.',
-    sizes:[],colors:[{name:'NOIR',img:'images/products/IMG_7578.jpg'}]
+    sizes:[],colors:[{name:'NOIR',img:'images/products/IMG_7578.webp'}]
   },
   'sport-beanie':{
     name:'Talseume Sport Beanie',price:17.99,badge:null,
@@ -791,7 +792,7 @@ const PRODUCTS = {
     material:'85% Polyester · 15% Élasthanne · Taille unique',
     materials:'85% polyester, 15% élasthanne. Taille unique.',
     sizeGuide:'Taille unique, s\'adapte à toutes les morphologies.',
-    sizes:[],colors:[{name:'NOIR',img:'images/products/Bonnet_talseume.jpg'}]
+    sizes:[],colors:[{name:'NOIR',img:'images/products/Bonnet_talseume.webp'}]
   },
   'casquette-trucker':{
     name:'Casquette Trucker',price:19.99,badge:null,
@@ -799,7 +800,7 @@ const PRODUCTS = {
     material:'Coton / Polyester · Snapback ajustable',
     materials:'Devant 100% coton. Résille 100% polyester. Fermeture snapback.',
     sizeGuide:'Taille unique, ajustable de 54 à 60cm.',
-    sizes:[],colors:[{name:'Rouge',img:'images/products/IMG_7199.png'}]
+    sizes:[],colors:[{name:'Rouge',img:'images/products/IMG_7199.webp'}]
   },
   'talseume-bag':{
     name:'Talseume Bag',price:25.99,badge:null,
@@ -807,7 +808,7 @@ const PRODUCTS = {
     material:'80% coton recyclé · 20% polyester recyclé',
     materials:'Extérieur 80% coton recyclé + 20% polyester recyclé. Intérieur coton bio ring-spun.',
     sizeGuide:'40 × 35 × 12cm. Capacité 20L environ.',
-    sizes:[],colors:[{name:'NOIR',img:'images/products/sactalseume.jpg'}]
+    sizes:[],colors:[{name:'NOIR',img:'images/products/sactalseume.webp'}]
   }
 };
 
@@ -851,6 +852,20 @@ const ldScript = document.createElement('script');
 ldScript.type = 'application/ld+json';
 ldScript.textContent = JSON.stringify(ldProduct);
 document.head.appendChild(ldScript);
+
+const ldBreadcrumb = {
+  '@context':'https://schema.org',
+  '@type':'BreadcrumbList',
+  itemListElement: [
+    { '@type':'ListItem', position:1, name:'Accueil', item:'https://talseume.com/' },
+    { '@type':'ListItem', position:2, name:'Boutique', item:'https://talseume.com/#shop' },
+    { '@type':'ListItem', position:3, name: p.name, item: productUrl }
+  ]
+};
+const ldBcScript = document.createElement('script');
+ldBcScript.type = 'application/ld+json';
+ldBcScript.textContent = JSON.stringify(ldBreadcrumb);
+document.head.appendChild(ldBcScript);
 
 let selectedSize = p.sizes[0] || '';
 let selectedColor = p.colors[0]?.name || '';
