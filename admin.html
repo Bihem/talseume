@@ -1404,22 +1404,140 @@ const PRODUCTS = {
   'casquette-trucker': {name:'Casquette Trucker', price:19.99, img:'images/products/IMG_7199.webp', stock:55, status:'active'},
   'talseume-bag': {name:'Talseume Bag', price:25.99, img:'images/products/sactalseume.webp', stock:40, status:'active'}
 };
-function renderProducts(){
+// État local des overrides (chargé via admin-data)
+let productOverrides = {};
+async function loadProductOverrides(){
+  try {
+    const d = await loadData('products-overrides');
+    productOverrides = (d?.overrides) || {};
+  } catch(e) { productOverrides = {}; }
+}
+function effectiveProduct(id){
+  const base = PRODUCTS[id];
+  const ov = productOverrides[id] || {};
+  return Object.assign({}, base, ov);
+}
+
+async function renderProducts(){
+  await loadProductOverrides();
   const grid = document.getElementById('prod-grid');
-  grid.innerHTML = Object.entries(PRODUCTS).map(([id, p]) => `
-    <a class="prod-card" href="/product.html?id=${id}" target="_blank" rel="noopener">
+  grid.innerHTML = Object.keys(PRODUCTS).map(id => {
+    const p = effectiveProduct(id);
+    const overridden = productOverrides[id] ? true : false;
+    const statusKey = p.unavailable ? 'unavailable' : (p.status === 'archived' ? 'archived' : 'active');
+    return `
+    <div class="prod-card" onclick="openEditProduct('${id}')">
       <div class="prod-card-img"><img src="/${p.img}" alt="${p.name}" loading="lazy"/></div>
       <div class="prod-card-body">
-        <div class="prod-card-name">${p.name}</div>
+        <div class="prod-card-name">${p.name}${overridden ? ' <span style="font-size:9px;color:var(--accent-text);background:var(--accent);padding:1px 6px;border-radius:8px;margin-left:4px;font-weight:600;vertical-align:middle">MODIFIÉ</span>' : ''}</div>
         <div class="prod-card-meta">
           <span class="tabnum">${eur(p.price)}</span>
-          <span class="badge ${p.status==='archived' ? 'err' : (p.stock < 10 ? 'warn' : 'ok')}">
-            <span class="badge-dot"></span>${p.status==='archived' ? 'Archivé' : (p.stock < 10 ? 'Stock bas' : 'En stock')}
+          <span class="badge ${statusKey==='unavailable' || statusKey==='archived' ? 'err' : 'ok'}">
+            <span class="badge-dot"></span>${statusKey==='unavailable' ? 'Indispo' : (statusKey==='archived' ? 'Archivé' : 'En stock')}
           </span>
         </div>
       </div>
-    </a>
-  `).join('');
+    </div>
+  `;}).join('');
+}
+
+function openEditProduct(id){
+  const base = PRODUCTS[id];
+  const ov = productOverrides[id] || {};
+  const cur = effectiveProduct(id);
+  openModal(`
+    <div class="modal-hd">
+      <div>
+        <div class="modal-title">${base.name}</div>
+        <div style="font-size:12px;color:var(--text-2);margin-top:4px">ID : ${id}</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+
+    <div style="margin:0 -28px 22px;aspect-ratio:3/4;max-height:300px;background:#f6f6f6;overflow:hidden;display:flex;align-items:center;justify-content:center">
+      <img src="/${base.img}" alt="" style="max-width:100%;max-height:100%;object-fit:contain"/>
+    </div>
+
+    <form onsubmit="saveProductEdit(event,'${id}')">
+      <div class="fld">
+        <label>Prix (€)</label>
+        <input class="input tabnum" name="price" type="number" step="0.01" min="0" value="${cur.price}" required>
+        <div style="font-size:11px;color:var(--text-2);margin-top:4px">Prix d'origine : ${eur(base.price)}${ov.price !== undefined ? ` · Override actif : ${eur(ov.price)}` : ''}</div>
+      </div>
+
+      <div class="fld">
+        <label>Description (laisser vide pour conserver celle d'origine)</label>
+        <textarea class="textarea" name="desc" rows="4" placeholder="Vide = utilise la description du code source de product.html">${ov.desc || ''}</textarea>
+        <div style="font-size:11px;color:var(--text-2);margin-top:4px">${ov.desc ? 'Override actif' : 'Aucun override — description du code source utilisée'}</div>
+      </div>
+
+      <div class="fld">
+        <label>Disponibilité</label>
+        <select class="input" name="unavailable">
+          <option value="false" ${!cur.unavailable ? 'selected' : ''}>En vente</option>
+          <option value="true" ${cur.unavailable ? 'selected' : ''}>Indisponible (fin de série)</option>
+        </select>
+      </div>
+
+      <div class="mb">
+        <div class="mb-title">Variants en lecture seule</div>
+        <div class="detail-row"><span class="lbl">Tailles</span><span class="val">${(base.sizes||[]).join(', ') || 'Taille unique'}</span></div>
+        <div class="detail-row"><span class="lbl">Couleurs</span><span class="val">${(base.colors||[]).map(c=>c.name).join(', ')}</span></div>
+        <div class="detail-row"><span class="lbl">Badge</span><span class="val">${base.badge || '—'}</span></div>
+      </div>
+
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" onclick="closeModal()">Annuler</button>
+        ${ov.price !== undefined || ov.desc !== undefined || ov.unavailable !== undefined
+          ? `<button type="button" class="btn btn-danger" onclick="resetProductOverride('${id}')">Reset (utiliser d'origine)</button>`
+          : ''}
+        <button type="submit" class="btn btn-accent">Enregistrer + déployer</button>
+      </div>
+    </form>
+    <p style="font-size:11px;color:var(--text-2);margin-top:14px;line-height:1.5">Les modifs sont commitées dans <code>data/products-overrides.json</code> via GitHub et propagées sur talseume.com après ~30s (rebuild Netlify auto).</p>
+  `, true);
+}
+
+async function saveProductEdit(e, id){
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const newPrice = parseFloat(fd.get('price'));
+  const newDesc = (fd.get('desc') || '').trim();
+  const newUnavail = fd.get('unavailable') === 'true';
+  const base = PRODUCTS[id];
+
+  // Build override : ne stocker QUE les diffs vs hardcoded
+  const ov = {};
+  if (newPrice !== base.price) ov.price = newPrice;
+  if (newDesc) ov.desc = newDesc;
+  if (newUnavail !== !!base.unavailable) ov.unavailable = newUnavail;
+
+  // Update local state
+  if (Object.keys(ov).length === 0) {
+    delete productOverrides[id];
+  } else {
+    productOverrides[id] = ov;
+  }
+
+  try {
+    await saveData('products-overrides', {overrides: productOverrides}, `product: edit ${id}`);
+    toast('Modifications enregistrées · déploiement Netlify en cours');
+    closeModal();
+    renderProducts();
+  } catch(err) {
+    toast('Erreur: ' + err.message, 'err');
+  }
+}
+
+async function resetProductOverride(id){
+  if (!confirm('Reset ce produit aux valeurs d\'origine du code ?')) return;
+  delete productOverrides[id];
+  try {
+    await saveData('products-overrides', {overrides: productOverrides}, `product: reset ${id}`);
+    toast('Reset effectué');
+    closeModal();
+    renderProducts();
+  } catch(err) { toast('Erreur: ' + err.message, 'err'); }
 }
 
 /* ──────────────────────────────────────────────

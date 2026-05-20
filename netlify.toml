@@ -53,3 +53,9 @@
   for = "/*.webp"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# ── /data/*.json : éditables via admin, revalidation systématique ─
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

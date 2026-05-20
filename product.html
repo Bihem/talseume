@@ -451,7 +451,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
           </div>
         </div>
       </li>
-      <li><a href="/contact.html">Contacte</a></li>
+      <li><a href="/contact.html">Contact</a></li>
       <li><a href="/blog.html">Blog</a></li>
     </ul>
   </div>
@@ -480,7 +480,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   <button class="mobile-menu-close" onclick="document.getElementById('mobileMenu').classList.remove('open')">×</button>
   <div class="mm-mobile-section">
     <a href="/#shop">Boutique</a>
-    <a href="/contact.html">Contacte</a>
+    <a href="/contact.html">Contact</a>
     <a href="/blog.html">Blog</a>
   </div>
 </div>
@@ -825,6 +825,24 @@ const PRODUCTS = {
 
 const params = new URLSearchParams(window.location.search);
 const id = params.get('id') || 'sweat-talseume-oversize';
+
+/* ── OVERRIDES PRODUITS ──
+   Édités via l'admin (data/products-overrides.json). Fields supportés : price, desc, unavailable.
+   Best-effort : si fetch échoue, on garde les valeurs hardcodées. Fait en sync via XHR pour éviter
+   de bloquer le rendu sur la promise. */
+try {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', '/data/products-overrides.json?v=' + Date.now(), false);
+  xhr.send(null);
+  if (xhr.status === 200) {
+    const data = JSON.parse(xhr.responseText);
+    const overrides = (data && data.overrides) || {};
+    Object.keys(overrides).forEach(k => {
+      if (PRODUCTS[k]) Object.assign(PRODUCTS[k], overrides[k]);
+    });
+  }
+} catch(e) { /* silence — fallback sur hardcoded */ }
+
 const p = PRODUCTS[id];
 if (!p) { window.location.href = '/'; }
 
