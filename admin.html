@@ -411,6 +411,10 @@ tbody tr:hover td{background:var(--bg);cursor:pointer}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg>
         Newsletter
       </div>
+      <div class="nav-item" data-nav="coupons" onclick="nav('coupons',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 12V8a2 2 0 00-2-2H6a2 2 0 00-2 2v4a2 2 0 010 4v4a2 2 0 002 2h12a2 2 0 002-2v-4a2 2 0 010-4z"/><line x1="12" y1="8" x2="12" y2="11"/><line x1="12" y1="14" x2="12" y2="16"/></svg>
+        Codes promo
+      </div>
       <div class="nav-item" data-nav="calendar" onclick="nav('calendar',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         Calendrier
@@ -637,6 +641,34 @@ tbody tr:hover td{background:var(--bg);cursor:pointer}
           <table>
             <thead><tr><th>Client</th><th>Email</th><th>Commandes</th><th>CA total</th><th>Statut</th></tr></thead>
             <tbody id="cli-body"><tr><td colspan="5"><div style="padding:40px;text-align:center;color:var(--text-2);font-size:12px">Chargement...</div></td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ───── CODES PROMO ───── -->
+      <section id="s-coupons" class="section">
+        <div class="s-head">
+          <div>
+            <h1 class="s-title">Codes promo</h1>
+            <div class="s-sub">Stripe Promotion Codes · utilisables au checkout (allow_promotion_codes:true déjà set)</div>
+          </div>
+          <div class="s-actions">
+            <button class="btn btn-accent" onclick="openNewCoupon()">+ Nouveau code</button>
+            <a href="https://dashboard.stripe.com/coupons" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">↗ Stripe Coupons</a>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <div class="tbl-hd">
+            <div class="tbl-filters" id="cp-filters">
+              <button class="ftab active" onclick="filterCoupons('all',this)">Tous</button>
+              <button class="ftab" onclick="filterCoupons('active',this)">Actifs</button>
+              <button class="ftab" onclick="filterCoupons('inactive',this)">Désactivés</button>
+            </div>
+            <div class="card-meta tabnum" id="cp-count">— codes</div>
+          </div>
+          <table>
+            <thead><tr><th>Code</th><th>Réduction</th><th>Utilisations</th><th>Expire</th><th>Statut</th><th></th></tr></thead>
+            <tbody id="cp-body"><tr><td colspan="6"><div style="padding:40px;text-align:center;color:var(--text-2);font-size:12px">Chargement...</div></td></tr></tbody>
           </table>
         </div>
       </section>
@@ -875,8 +907,9 @@ function toast(msg, kind){
 }
 
 /* ── NAV ── */
-const SECTIONS = ['dashboard','drops','products','orders','abandoned','clients','newsletter','calendar','analytics','settings'];
-const SECTION_LBL = {dashboard:'Dashboard',drops:'Drops',products:'Produits',orders:'Commandes',abandoned:'Paniers abandonnés',clients:'Clients',newsletter:'Newsletter',calendar:'Calendrier',analytics:'Analytiques',settings:'Paramètres'};
+const SECTIONS = ['dashboard','drops','products','orders','abandoned','clients','newsletter','coupons','calendar','analytics','settings'];
+const SECTION_LBL = {dashboard:'Dashboard',drops:'Drops',products:'Produits',orders:'Commandes',abandoned:'Paniers abandonnés',clients:'Clients',newsletter:'Newsletter',coupons:'Codes promo',calendar:'Calendrier',analytics:'Analytiques',settings:'Paramètres'};
+const COUPONS_API = '/.netlify/functions/admin-coupons';
 function nav(id, el){
   if (!SECTIONS.includes(id)) return;
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -892,6 +925,7 @@ function nav(id, el){
   if (id === 'abandoned') loadAbandoned();
   if (id === 'clients') loadClients();
   if (id === 'newsletter') loadNewsletter();
+  if (id === 'coupons') loadCoupons();
   if (id === 'calendar') renderCalendar();
   if (id === 'analytics') loadAnalytics();
   if (id === 'settings') checkIntegrations();
@@ -2108,6 +2142,156 @@ async function saveClientNote(emailEnc){
 /* ──────────────────────────────────────────────
    NEWSLETTER
    ────────────────────────────────────────────── */
+/* ──────────────────────────────────────────────
+   CODES PROMO (Stripe Promotion Codes)
+   ────────────────────────────────────────────── */
+let couponsAll = [];
+let couponsFilter = 'all';
+async function loadCoupons(){
+  try {
+    const r = await adminFetch(`${COUPONS_API}?action=list`);
+    if (!r.ok) throw new Error('coupons ' + r.status);
+    const j = await r.json();
+    couponsAll = j.promos || [];
+    renderCouponsTable();
+  } catch(e) {
+    document.getElementById('cp-body').innerHTML = `<tr><td colspan="6" style="padding:40px;text-align:center;color:var(--err)">Erreur: ${e.message}</td></tr>`;
+  }
+}
+function filterCoupons(f, btn){
+  couponsFilter = f;
+  document.querySelectorAll('#cp-filters .ftab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCouponsTable();
+}
+function renderCouponsTable(){
+  let list = couponsAll;
+  if (couponsFilter === 'active') list = list.filter(c => c.active);
+  if (couponsFilter === 'inactive') list = list.filter(c => !c.active);
+  document.getElementById('cp-count').textContent = `${list.length} code${list.length>1?'s':''}`;
+  if (list.length === 0) {
+    document.getElementById('cp-body').innerHTML = `<tr><td colspan="6"><div class="empty"><div class="empty-line"></div><div class="empty-title">Aucun code promo</div><div class="empty-sub">Crée ton premier code de réduction.</div><button class="btn btn-accent" onclick="openNewCoupon()">+ Nouveau code</button></div></td></tr>`;
+    return;
+  }
+  document.getElementById('cp-body').innerHTML = list.map(c => {
+    const disc = c.coupon.percent_off ? `${c.coupon.percent_off}%` : c.coupon.amount_off ? eur(c.coupon.amount_off / 100) : '—';
+    const expired = c.expires_at && new Date(c.expires_at) < new Date();
+    const statusBadge = !c.active
+      ? '<span class="badge neutral"><span class="badge-dot"></span>Désactivé</span>'
+      : expired
+        ? '<span class="badge err"><span class="badge-dot"></span>Expiré</span>'
+        : '<span class="badge ok"><span class="badge-dot"></span>Actif</span>';
+    const usage = c.max_redemptions ? `${c.times_redeemed} / ${c.max_redemptions}` : `${c.times_redeemed} utilisés`;
+    const action = c.active
+      ? `<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();deactivateCoupon('${c.id}')">Désactiver</button>`
+      : `<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();reactivateCoupon('${c.id}')">Réactiver</button>`;
+    return `<tr>
+      <td><code style="font-size:13px;font-weight:600;letter-spacing:.05em">${c.code}</code></td>
+      <td><strong>-${disc}</strong>${c.coupon.duration === 'once' ? '' : ` · ${c.coupon.duration}`}</td>
+      <td class="tabnum">${usage}</td>
+      <td class="tabnum">${c.expires_at ? fmtDate(c.expires_at) : 'Sans limite'}</td>
+      <td>${statusBadge}</td>
+      <td style="text-align:right">${action}</td>
+    </tr>`;
+  }).join('');
+}
+function openNewCoupon(){
+  openModal(`
+    <div class="modal-hd">
+      <div class="modal-title">Nouveau code promo</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <form onsubmit="createCoupon(event)">
+      <div class="fld">
+        <label>Code (ce que le client tape au checkout)</label>
+        <input class="input" name="code" required placeholder="ex: WELCOME10" style="text-transform:uppercase;letter-spacing:.04em;font-weight:600">
+        <div style="font-size:11px;color:var(--text-2);margin-top:4px">Sera converti en majuscules</div>
+      </div>
+      <div class="fld">
+        <label>Nom interne (optionnel)</label>
+        <input class="input" name="name" placeholder="ex: Bienvenue newsletter">
+      </div>
+      <div class="fld">
+        <label>Type de réduction</label>
+        <div class="row2">
+          <button type="button" class="btn btn-ghost" onclick="cpSetMode('percent',this)" id="cp-mode-percent">Pourcentage (%)</button>
+          <button type="button" class="btn btn-ghost" onclick="cpSetMode('fixed',this)" id="cp-mode-fixed">Montant fixe (€)</button>
+        </div>
+      </div>
+      <div class="fld" id="cp-percent-fld">
+        <label>Réduction en %</label>
+        <input class="input tabnum" name="percentOff" type="number" min="1" max="100" step="0.1" placeholder="ex: 15">
+      </div>
+      <div class="fld" id="cp-fixed-fld" style="display:none">
+        <label>Réduction en € (déduit du total)</label>
+        <input class="input tabnum" name="amountOff" type="number" min="0" step="0.01" placeholder="ex: 10.00">
+      </div>
+      <div class="row2">
+        <div class="fld">
+          <label>Limite utilisations (optionnel)</label>
+          <input class="input tabnum" name="maxRedemptions" type="number" min="1" placeholder="ex: 100">
+        </div>
+        <div class="fld">
+          <label>Expire le (optionnel)</label>
+          <input class="input" name="expiresAt" type="date">
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" onclick="closeModal()">Annuler</button>
+        <button type="submit" class="btn btn-accent">Créer le code</button>
+      </div>
+    </form>
+    <p style="font-size:11px;color:var(--text-2);margin-top:14px;line-height:1.5">Créé côté Stripe. Utilisable immédiatement au checkout sur talseume.com.</p>
+  `);
+  cpSetMode('percent', document.getElementById('cp-mode-percent'));
+}
+function cpSetMode(mode, btn){
+  document.querySelectorAll('#cp-mode-percent, #cp-mode-fixed').forEach(b => { b.className = 'btn btn-ghost'; });
+  if (btn) btn.className = 'btn btn-primary';
+  document.getElementById('cp-percent-fld').style.display = mode === 'percent' ? '' : 'none';
+  document.getElementById('cp-fixed-fld').style.display = mode === 'fixed' ? '' : 'none';
+}
+async function createCoupon(e){
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const payload = {
+    code: (fd.get('code') || '').trim(),
+    name: (fd.get('name') || '').trim() || undefined,
+    percentOff: fd.get('percentOff') || undefined,
+    amountOff: fd.get('amountOff') || undefined,
+    maxRedemptions: fd.get('maxRedemptions') || undefined,
+    expiresAt: fd.get('expiresAt') || undefined
+  };
+  if (!payload.percentOff && !payload.amountOff) { toast('Saisir % ou € de réduction', 'err'); return; }
+  try {
+    const r = await adminFetch(COUPONS_API, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
+    const j = await r.json();
+    if (!r.ok || j.error) throw new Error(j.error || 'create failed');
+    toast(`Code ${j.code} créé`);
+    closeModal();
+    loadCoupons();
+  } catch(err) { toast('Erreur : ' + err.message, 'err'); }
+}
+async function deactivateCoupon(id){
+  if (!confirm('Désactiver ce code ? Il restera dans la liste mais sera refusé au checkout.')) return;
+  try {
+    const r = await adminFetch(`${COUPONS_API}?action=deactivate&id=${id}`, {method:'DELETE'});
+    const j = await r.json();
+    if (j.error) throw new Error(j.error);
+    toast('Code désactivé');
+    loadCoupons();
+  } catch(err) { toast('Erreur : ' + err.message, 'err'); }
+}
+async function reactivateCoupon(id){
+  try {
+    const r = await adminFetch(`${COUPONS_API}?action=reactivate&id=${id}`);
+    const j = await r.json();
+    if (j.error) throw new Error(j.error);
+    toast('Code réactivé');
+    loadCoupons();
+  } catch(err) { toast('Erreur : ' + err.message, 'err'); }
+}
+
 async function loadNewsletter(){
   try {
     const r = await adminFetch(NL_API);

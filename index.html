@@ -134,6 +134,29 @@ nav.scrolled .nav-logo img{filter:none}
 .hero-tag,.hero-title{display:none}
 .nav-icon[aria-label="Compte"]{display:none}
 .hero-foot{margin-top:38px;display:flex;align-items:flex-end;justify-content:space-between;gap:28px;flex-wrap:wrap}
+
+/* ── DROP COUNTDOWN BANNER ── */
+.drop-banner{background:#0a0a0a;color:#fff;padding:18px 56px;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08)}
+.drop-banner-inner{display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;max-width:1280px;margin:0 auto}
+.drop-banner-eyebrow{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.55);font-weight:500}
+.drop-banner-name{font-family:'Suisse Intl',sans-serif;font-size:14px;font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+.drop-banner-countdown{font-size:14px;font-weight:500;letter-spacing:.06em;color:#fff;display:flex;gap:14px;align-items:center}
+.drop-banner-countdown .unit{display:inline-flex;align-items:baseline;gap:4px}
+.drop-banner-countdown .num{font-size:18px;font-weight:600;min-width:24px;text-align:center}
+.drop-banner-countdown .lbl{font-size:9px;letter-spacing:.18em;text-transform:uppercase;opacity:.55}
+.drop-banner-countdown .sep{opacity:.3;font-weight:300}
+.drop-banner-cta{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;border-bottom:1px solid rgba(255,255,255,.4);padding-bottom:2px;transition:border-color .2s}
+.drop-banner-cta:hover{border-color:#fff}
+.drop-banner.live{background:linear-gradient(90deg,#0a0a0a 0%,#1a1a1a 50%,#0a0a0a 100%)}
+.drop-banner.live .drop-banner-eyebrow{color:var(--accent,#C4FF3D);font-weight:600}
+.drop-banner.live .drop-banner-countdown{display:none}
+@media(max-width:768px){
+  .drop-banner{padding:14px 22px}
+  .drop-banner-inner{gap:14px}
+  .drop-banner-countdown{gap:8px}
+  .drop-banner-countdown .num{font-size:15px;min-width:20px}
+  .drop-banner-name{font-size:12px}
+}
 .hero-desc{font-size:13px;line-height:1.7;color:rgba(255,255,255,.65);max-width:380px;font-weight:300;letter-spacing:.02em}
 .hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
 .btn-primary{display:inline-flex;align-items:center;gap:14px;font-size:11px;font-weight:400;letter-spacing:.24em;text-transform:uppercase;background:#fff;color:var(--black);padding:17px 36px;transition:.3s ease}
@@ -750,6 +773,16 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
     </div>
   </div>
 </section>
+
+<!-- DROP COUNTDOWN BANNER (lu depuis /data/drops.json — masqué si pas de drop à venir) -->
+<aside class="drop-banner" id="drop-banner" hidden>
+  <div class="drop-banner-inner">
+    <div class="drop-banner-eyebrow" id="dropb-eyebrow">Prochain drop</div>
+    <div class="drop-banner-name" id="dropb-name"></div>
+    <div class="drop-banner-countdown tabnum" id="dropb-countdown"></div>
+    <a href="#shop" class="drop-banner-cta" id="dropb-cta">Voir la collection →</a>
+  </div>
+</aside>
 
 <!-- NEW ARRIVALS CAROUSEL -->
 <div class="s-head rv" id="new">
@@ -1939,6 +1972,54 @@ window.toggleWish=function(pid,btn){
     "query-input": "required name=search_term_string"
   }
 }
+</script>
+
+<!-- DROP COUNTDOWN — lit /data/drops.json, affiche le prochain drop -->
+<script>
+(function(){
+  function fmtUnit(n, lbl){ return `<span class="unit"><span class="num">${String(n).padStart(2,'0')}</span><span class="lbl">${lbl}</span></span>`; }
+  function diff(target){
+    const ms = target - Date.now();
+    if (ms <= 0) return null;
+    const days = Math.floor(ms / 86400000);
+    const hours = Math.floor((ms % 86400000) / 3600000);
+    const minutes = Math.floor((ms % 3600000) / 60000);
+    return { days, hours, minutes, totalMs: ms };
+  }
+  fetch('/data/drops.json?v=' + Date.now()).then(r => r.ok ? r.json() : null).then(d => {
+    if (!d || !d.drops) return;
+    const now = Date.now();
+    // 1) Drop dans le futur (le plus proche)
+    let upcoming = d.drops
+      .filter(x => x.launchDate && new Date(x.launchDate).getTime() > now && x.status !== 'archived')
+      .sort((a, b) => new Date(a.launchDate) - new Date(b.launchDate))[0];
+    // 2) Sinon : drop avec statut `live` (peu importe la date)
+    let live = !upcoming ? d.drops
+      .filter(x => x.status === 'live')
+      .sort((a, b) => new Date(b.launchDate||0) - new Date(a.launchDate||0))[0] : null;
+    const drop = upcoming || live;
+    if (!drop) return;
+    const el = document.getElementById('drop-banner');
+    if (!el) return;
+    document.getElementById('dropb-name').textContent = drop.name;
+    if (live) {
+      el.classList.add('live');
+      document.getElementById('dropb-eyebrow').textContent = 'En vente maintenant';
+      document.getElementById('dropb-cta').textContent = 'Acheter →';
+    } else {
+      const tick = () => {
+        const t = new Date(drop.launchDate).getTime();
+        const r = diff(t);
+        const cd = document.getElementById('dropb-countdown');
+        if (!r) { el.hidden = true; return; }
+        cd.innerHTML = fmtUnit(r.days, 'jours') + '<span class="sep">·</span>' + fmtUnit(r.hours, 'h') + '<span class="sep">·</span>' + fmtUnit(r.minutes, 'min');
+      };
+      tick();
+      setInterval(tick, 60 * 1000);
+    }
+    el.hidden = false;
+  }).catch(() => {});
+})();
 </script>
 </body>
 </html>
