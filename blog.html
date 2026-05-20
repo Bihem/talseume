@@ -51,11 +51,54 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;background:#fff;padding:0 56
 .page-title{font-size:clamp(48px,8vw,120px);font-weight:300;letter-spacing:-.04em;line-height:1;margin-bottom:24px}
 .page-sub{font-size:15px;font-weight:300;color:rgba(0,0,0,.6);max-width:520px;margin:0 auto;line-height:1.7}
 
-/* ══ FILTERS ══ */
+/* ══ FILTERS (legacy) ══ */
 .blog-filters{display:flex;justify-content:center;gap:24px;padding:30px 56px 60px;flex-wrap:wrap}
 .blog-filter{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.5);padding:10px 18px;border:1px solid transparent;transition:.2s;font-weight:400;background:transparent;cursor:pointer}
 .blog-filter:hover{color:var(--black)}
 .blog-filter.active{color:var(--black);border-color:var(--black)}
+
+/* ══ ARTICLE LONG-FORM ══ */
+.art-head{padding:150px 24px 50px;text-align:center;max-width:880px;margin:0 auto}
+.art-eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:rgba(0,0,0,.55);margin-bottom:26px;font-weight:500}
+.art-title{font-size:clamp(42px,6.5vw,86px);font-weight:300;letter-spacing:-.025em;line-height:1.04;margin-bottom:28px}
+.art-sub{font-size:17px;font-weight:300;color:rgba(0,0,0,.65);max-width:640px;margin:0 auto 32px;line-height:1.65}
+.art-meta{display:flex;justify-content:center;gap:14px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(0,0,0,.5);flex-wrap:wrap}
+.art-cover{margin:0 auto 80px;max-width:1280px;padding:0 24px}
+.art-cover img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;background:var(--cream)}
+.art-body{max-width:680px;margin:0 auto;padding:0 24px 100px;font-size:17px;line-height:1.85;color:rgba(0,0,0,.86);font-weight:300}
+.art-body p{margin-bottom:26px}
+.art-body strong{font-weight:500;color:var(--black)}
+.art-body em{font-style:italic}
+.art-lead{font-size:21px !important;line-height:1.65 !important;color:var(--black) !important;font-weight:400 !important;margin-bottom:36px !important;letter-spacing:-.005em}
+.art-lead::first-letter{font-size:3.4em;line-height:.95;float:left;padding:6px 14px 0 0;font-weight:300}
+.art-h2{font-size:clamp(26px,3.2vw,38px);font-weight:300;letter-spacing:-.02em;line-height:1.15;margin:64px 0 22px;color:var(--black)}
+.art-h3{font-size:clamp(19px,2.2vw,23px);font-weight:500;letter-spacing:-.005em;line-height:1.3;margin:38px 0 14px;color:var(--black)}
+.art-quote{font-size:22px;font-style:italic;font-weight:300;line-height:1.5;color:var(--black);border-left:2px solid var(--black);padding:14px 0 14px 28px;margin:36px 0;max-width:600px}
+.art-quote cite{display:block;font-size:12px;font-style:normal;letter-spacing:.16em;text-transform:uppercase;color:rgba(0,0,0,.55);margin-top:14px;font-weight:400}
+.art-sign{font-size:14px;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.55);text-align:center;margin-top:60px !important;border-top:1px solid var(--line-l);padding-top:36px}
+
+.art-foot{background:var(--off);padding:80px 24px;border-top:1px solid var(--line-l)}
+.art-foot-eyebrow{text-align:center;font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:rgba(0,0,0,.5);margin-bottom:36px;font-weight:500}
+.art-foot-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:980px;margin:0 auto}
+.art-foot-card{display:block;padding:36px 28px;background:#fff;border:1px solid var(--line-l);transition:.25s;color:inherit}
+.art-foot-card:hover{transform:translateY(-2px);border-color:var(--black)}
+.art-foot-card-eyebrow{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:rgba(0,0,0,.5);margin-bottom:14px;font-weight:500}
+.art-foot-card-title{font-size:22px;font-weight:300;letter-spacing:-.015em;line-height:1.3;color:var(--black)}
+.art-foot-card-sub{display:block;font-size:13px;color:rgba(0,0,0,.55);font-weight:300;letter-spacing:.01em;margin-top:8px;text-transform:none}
+@media(max-width:760px){
+  .art-head{padding:110px 22px 40px}
+  .art-title{font-size:clamp(36px,9vw,52px)}
+  .art-sub{font-size:15px}
+  .art-cover{margin-bottom:50px;padding:0}
+  .art-cover img{aspect-ratio:4/5}
+  .art-body{font-size:16px;padding:0 22px 70px}
+  .art-lead{font-size:18px !important}
+  .art-lead::first-letter{font-size:2.6em}
+  .art-quote{font-size:18px;padding-left:18px}
+  .art-h2{margin-top:48px}
+  .art-foot-grid{grid-template-columns:1fr;gap:12px}
+  .art-foot{padding:54px 22px}
+}
 
 /* ══ HERO ARTICLE ══ */
 .hero-article{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:80px;border-top:1px solid var(--line-l);border-bottom:1px solid var(--line-l)}
@@ -267,86 +310,109 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   </div>
 </div>
 
-<!-- PAGE HEAD -->
-<section class="page-head" id="main-content" tabindex="-1">
-  <div class="page-eyebrow">Talseume — Journal</div>
-  <h1 class="page-title">Journal</h1>
-  <p class="page-sub">L'envers du décor, les drops, les collaborations, la fabrication et le manifeste.</p>
+<!-- ARTICLE HEAD -->
+<section class="art-head" id="main-content" tabindex="-1">
+  <div class="art-eyebrow">Manifeste · Origines</div>
+  <h1 class="art-title">Le seum, le serpent<br>et la spiritualité</h1>
+  <p class="art-sub">Ce que personne ne te dit sur l'origine du mot, et pourquoi le serpent traverse toutes les sagesses de l'humanité depuis 5 000 ans.</p>
+  <div class="art-meta">
+    <span>Talseume Journal</span>
+    <span>·</span>
+    <span>20 mai 2026</span>
+    <span>·</span>
+    <span>9 min de lecture</span>
+  </div>
 </section>
 
-<!-- FILTERS -->
-<div class="blog-filters">
-  <button class="blog-filter active" data-cat="all">Tout</button>
-  <button class="blog-filter" data-cat="manifeste">Manifeste</button>
-  <button class="blog-filter" data-cat="drops">Drops</button>
-  <button class="blog-filter" data-cat="fabrication">Fabrication</button>
-  <button class="blog-filter" data-cat="collabs">Collaborations</button>
-</div>
+<!-- ARTICLE COVER -->
+<figure class="art-cover">
+  <img src="images/lookbook/rooftop-paris-sweat-bleu.webp" alt="Talseume — Paris rooftop nuit" width="1744" height="2336" loading="eager"/>
+</figure>
 
-<!-- HERO ARTICLE -->
-<a class="hero-article" href="#" data-cat="manifeste">
-  <div class="hero-article-img"><img src="images/products/SWEAT-TALSEUME-NOIR-OVERSIZE01.webp" alt="" width="1350" height="1800"/></div>
-  <div class="hero-article-info">
-    <div class="ha-eyebrow">Article à la une — Manifeste</div>
-    <h2 class="ha-title">Le Seum, mode d'emploi.</h2>
-    <p class="ha-excerpt">D'où vient le mot, ce qu'il porte, pourquoi on l'a transformé en uniforme. Une lecture longue sur l'origine de Talseume et la philosophie derrière chaque pièce.</p>
-    <div class="ha-meta"><span>12 mai 2026</span><span>·</span><span>8 min de lecture</span></div>
-    <span class="ha-cta magnetic">Lire l'article →</span>
+<!-- ARTICLE BODY -->
+<article class="art-body">
+
+  <p class="art-lead">Le mot <em>seum</em>, on le prononce sans y penser. On l'utilise pour dire la frustration, la rage froide, la jalousie tenace. Mais derrière ce mot d'argot du quotidien dort un héritage immense — celui du serpent, animal sacré dans presque toutes les civilisations.</p>
+
+  <p>Talseume, c'est cette idée. Prendre une émotion considérée comme basse, retourner son origine, et la transformer en quelque chose qui se porte avec fierté.</p>
+
+  <h2 class="art-h2">L'origine du mot</h2>
+
+  <p>"Seum" vient de <strong>sèmm</strong> (سمّ), un mot d'origine arabe qui signifie littéralement <strong>venin</strong>. Pas du poison vague, non — le venin <em>du serpent</em>. Cette substance toxique sécrétée par un animal vivant, capable de tuer comme de soigner selon la dose et l'usage.</p>
+
+  <p>Dans la rue francophone, le mot s'est déformé. Le venin est devenu cette sensation qu'on a quand on voit l'autre gagner ce qu'on voulait, quand l'injustice te brûle l'intérieur, quand l'envie te ronge. On dit "j'ai le seum" comme on dirait <em>j'ai du venin dans les veines</em>. Et techniquement, c'est exactement ça.</p>
+
+  <p>Mais on a oublié quelque chose en chemin : <strong>le venin du serpent, dans toutes les cultures qui le respectent, n'a jamais été qu'un poison</strong>. C'est aussi un remède, une médecine, une énergie créatrice. La même substance qui te tue à haute dose, te guérit à dose mesurée. C'est le principe même de l'homéopathie moderne, mais c'est surtout une intuition qu'avaient déjà les guérisseurs il y a trois mille ans.</p>
+
+  <h2 class="art-h2">Le serpent traverse toutes les spiritualités</h2>
+
+  <p>Quand tu commences à lire les textes anciens, tu réalises que le serpent est partout. Pas comme un détail mineur — comme un symbole central, sacré, intouchable.</p>
+
+  <h3 class="art-h3">L'Ouroboros — le serpent qui se mord la queue</h3>
+
+  <p>Égypte ancienne, Grèce alchimique, Gnose médiévale. L'Ouroboros est l'image du cycle infini : la fin qui devient le début, la mort qui nourrit la vie, le tout dans le tout. Les alchimistes en faisaient le symbole de la transmutation — transformer le plomb en or, c'est-à-dire <em>transformer la matière brute en esprit</em>. Sortir le venin, garder la sagesse.</p>
+
+  <blockquote class="art-quote">
+    « En haut comme en bas, et tout est Un. »
+    <cite>— Hermès Trismégiste, La Table d'Émeraude</cite>
+  </blockquote>
+
+  <h3 class="art-h3">La Kundalini — le serpent endormi</h3>
+
+  <p>Dans le yoga tantrique, l'énergie vitale repose lovée à la base de la colonne vertébrale, sous la forme d'un <strong>serpent endormi</strong>. Quand cette énergie s'éveille, elle remonte le long de la colonne, traverse les sept chakras, et atteint le sommet du crâne — l'illumination.</p>
+
+  <p>Le mot sanskrit <em>kundalinī</em> signifie littéralement "celle qui est lovée". Ce n'est pas une métaphore décorative. Pour les yogis, c'est une expérience physique. L'énergie monte, le corps tremble, la conscience s'élargit. Le serpent qui dort en toi, c'est ta puissance brute. Ta rage, ton seum, ton venin. Ce n'est pas une faiblesse — c'est la matière première de ta transformation.</p>
+
+  <h3 class="art-h3">Le caducée — la médecine vient du serpent</h3>
+
+  <p>Regarde le logo de toutes les pharmacies du monde. Le bâton d'Asclépios, dieu grec de la médecine, est entouré d'un serpent. Le caducée d'Hermès en porte deux. C'est l'emblème médical universel depuis l'Antiquité.</p>
+
+  <p>Pourquoi ? Parce que <strong>celui qui connaît le venin connaît le remède</strong>. Le serpent porte les deux. Il enseigne aux médecins que la guérison passe par la connaissance intime du poison. Tu ne soignes pas en ignorant la douleur, tu soignes en la traversant.</p>
+
+  <h3 class="art-h3">Quetzalcoatl — le serpent à plumes</h3>
+
+  <p>Méso-Amérique précolombienne. Quetzalcoatl, le serpent à plumes, est l'un des dieux les plus importants du panthéon aztèque et maya. Il est à la fois <strong>serpent</strong> (la terre, la matière, l'instinct) et <strong>oiseau</strong> (le ciel, l'esprit, l'élévation). Sa figure incarne la réconciliation de ce que la pensée moderne sépare : le bas et le haut, le venin et la lumière.</p>
+
+  <p>Les Aztèques ne voyaient pas le serpent comme une créature maléfique. Ils y voyaient un guide spirituel, un enseignant. Quelqu'un qui avait dépassé la dualité.</p>
+
+  <h3 class="art-h3">Nāga — les serpents-gardiens</h3>
+
+  <p>En Inde, en Thaïlande, au Cambodge — Angkor Wat est encerclée de nāgas. Ces serpents sont les protecteurs des seuils, des temples, des trésors sacrés. Dans le bouddhisme, c'est un nāga qui protège le Bouddha pendant sa méditation sous l'arbre de la Bodhi.</p>
+
+  <p>Encore une fois, le serpent n'est pas l'ennemi. C'est <strong>le gardien</strong> — celui qui veille sur ce qui compte vraiment.</p>
+
+  <h2 class="art-h2">La mue</h2>
+
+  <p>Et puis il y a ce que fait le serpent que peu d'animaux savent faire : il <strong>mue</strong>. Plusieurs fois par an, il abandonne sa peau morte pour en révéler une neuve. Il ne lutte pas contre ce qu'il était — il le laisse derrière lui. Il sort de son ancienne carapace comme on sort d'une vieille identité.</p>
+
+  <p>C'est ça que Talseume essaie de mettre dans chaque pièce. Pas une mode. Pas une provocation. Une <strong>peau de mue</strong>. Un vêtement qui dit : <em>j'ai accepté ce que je portais comme rage, j'en ai fait quelque chose, et je continue</em>.</p>
+
+  <h2 class="art-h2">Du seum à la sagesse</h2>
+
+  <p>La spiritualité qui entoure le serpent depuis des millénaires nous enseigne une chose simple : <strong>les énergies que l'on considère comme basses sont les plus précieuses</strong>. La colère, l'envie, la jalousie, la frustration — ces émotions ne sont pas des défauts. Ce sont des matières premières. Du venin pur, à raffiner.</p>
+
+  <p>Quand tu refuses ton seum, tu le retournes contre toi. Tu deviens amer, dur, fermé. Quand tu l'accueilles, tu le canalises, tu le transformes — il devient ta force motrice, ton fuel, ta signature.</p>
+
+  <p>C'est la promesse de la marque, écrite dans son nom même : <strong>prendre le venin, en faire un uniforme</strong>. Apprendre du serpent. Muer quand il faut muer. Garder le poison utile, lâcher le reste.</p>
+
+  <p class="art-sign">— Talseume</p>
+
+</article>
+
+<!-- ARTICLE FOOT -->
+<section class="art-foot">
+  <div class="art-foot-eyebrow">Continuer</div>
+  <div class="art-foot-grid">
+    <a class="art-foot-card" href="/#shop">
+      <div class="art-foot-card-eyebrow">Boutique</div>
+      <div class="art-foot-card-title">Découvrir la collection SS26<br><span class="art-foot-card-sub">No Limit 0.27 — disponible maintenant</span></div>
+    </a>
+    <a class="art-foot-card" href="/#manifesto">
+      <div class="art-foot-card-eyebrow">Manifeste</div>
+      <div class="art-foot-card-title">Origine de Talseume<br><span class="art-foot-card-sub">L'histoire complète de la marque</span></div>
+    </a>
   </div>
-</a>
-
-<!-- ARTICLES GRID -->
-<div class="blog-grid" id="blogGrid">
-
-  <a class="bcard" href="#" data-cat="drops">
-    <div class="bcard-img"><img src="images/products/Coach-Jacket-By-talseumecopie3.webp" alt="" loading="lazy" width="1350" height="1800"/></div>
-    <div class="bcard-cat">Drops</div>
-    <h3 class="bcard-title">No Limit 0.27 — La capsule SS26</h3>
-    <p class="bcard-excerpt">Sept pièces, trois matières, une intention. On t'emmène derrière le brief de la collection.</p>
-    <div class="bcard-meta">02 mai 2026 · 5 min</div>
-  </a>
-
-  <a class="bcard" href="#" data-cat="fabrication">
-    <div class="bcard-img"><img src="images/products/tshirt-talseume-mancheslongue-creme.webp?v=rhude" alt="" loading="lazy" width="1350" height="1800"/></div>
-    <div class="bcard-cat">Fabrication</div>
-    <h3 class="bcard-title">Pourquoi le coton bio GOTS, pas n'importe lequel.</h3>
-    <p class="bcard-excerpt">On décortique la certification, l'impact réel sur la planète et pourquoi ça coûte plus cher.</p>
-    <div class="bcard-meta">28 avr 2026 · 6 min</div>
-  </a>
-
-  <a class="bcard" href="#" data-cat="manifeste">
-    <div class="bcard-img"><img src="images/products/cagoule_talseume.webp" alt="" loading="lazy" width="1056" height="992"/></div>
-    <div class="bcard-cat">Manifeste</div>
-    <h3 class="bcard-title">La cagoule n'est pas un déguisement.</h3>
-    <p class="bcard-excerpt">Anonymat, hiver, ride. Pourquoi cet accessoire a sa place dans le vestiaire 2026.</p>
-    <div class="bcard-meta">19 avr 2026 · 4 min</div>
-  </a>
-
-  <a class="bcard" href="#" data-cat="collabs">
-    <div class="bcard-img"><img src="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.webp" alt="" loading="lazy" width="1350" height="1800"/></div>
-    <div class="bcard-cat">Collaboration</div>
-    <h3 class="bcard-title">Talseume × atelier parisien — coulisses du shooting.</h3>
-    <p class="bcard-excerpt">Trois jours, deux modèles, une équipe. Le making-of de la session photo No Limit 0.27.</p>
-    <div class="bcard-meta">10 avr 2026 · 7 min</div>
-  </a>
-
-  <a class="bcard" href="#" data-cat="drops">
-    <div class="bcard-img"><img src="images/products/Jacket-By-TALSEUMENWAR.webp" alt="" loading="lazy" width="1350" height="1800"/></div>
-    <div class="bcard-cat">Drops</div>
-    <h3 class="bcard-title">La veste : pièce hivernale, principes éternels.</h3>
-    <p class="bcard-excerpt">Coupe, tissu, finitions. Comment on conçoit une veste qu'on garde 10 ans.</p>
-    <div class="bcard-meta">03 avr 2026 · 5 min</div>
-  </a>
-
-  <a class="bcard" href="#" data-cat="fabrication">
-    <div class="bcard-img"><img src="images/products/debardeur-femme-talseume-090.webp" alt="" loading="lazy" width="1350" height="1800"/></div>
-    <div class="bcard-cat">Fabrication</div>
-    <h3 class="bcard-title">Polyester recyclé : la vérité sur l'éco-responsable.</h3>
-    <p class="bcard-excerpt">Tout n'est pas vert dans le recyclé. On t'explique nos choix sans greenwashing.</p>
-    <div class="bcard-meta">25 mar 2026 · 6 min</div>
-  </a>
-
-</div>
+</section>
 
 <!-- BAND CTA -->
 <section class="blog-band">
