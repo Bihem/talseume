@@ -406,6 +406,27 @@ tbody tr:hover td{background:var(--bg);cursor:pointer}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
         Clients
       </div>
+      <div class="nav-group">Service client</div>
+      <div class="nav-item" data-nav="returns" onclick="nav('returns',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 7v6a8 8 0 008 8h2"/><path d="M3 7l4-4M3 7l4 4"/></svg>
+        Retours
+        <span class="nav-badge" id="ret-badge" style="display:none"></span>
+      </div>
+      <div class="nav-item" data-nav="tickets" onclick="nav('tickets',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        Tickets
+        <span class="nav-badge" id="tic-badge" style="display:none"></span>
+      </div>
+      <div class="nav-item" data-nav="reviews" onclick="nav('reviews',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 15 9 22 9 17 14 19 22 12 18 5 22 7 14 2 9 9 9 12 2"/></svg>
+        Avis clients
+        <span class="nav-badge" id="rev-badge" style="display:none"></span>
+      </div>
+      <div class="nav-item" data-nav="restock" onclick="nav('restock',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Restock alerts
+        <span class="nav-badge" id="res-badge" style="display:none"></span>
+      </div>
       <div class="nav-group">Marketing</div>
       <div class="nav-item" data-nav="newsletter" onclick="nav('newsletter',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg>
@@ -414,6 +435,10 @@ tbody tr:hover td{background:var(--bg);cursor:pointer}
       <div class="nav-item" data-nav="coupons" onclick="nav('coupons',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 12V8a2 2 0 00-2-2H6a2 2 0 00-2 2v4a2 2 0 010 4v4a2 2 0 002 2h12a2 2 0 002-2v-4a2 2 0 010-4z"/><line x1="12" y1="8" x2="12" y2="11"/><line x1="12" y1="14" x2="12" y2="16"/></svg>
         Codes promo
+      </div>
+      <div class="nav-item" data-nav="collections" onclick="nav('collections',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Collections
       </div>
       <div class="nav-item" data-nav="calendar" onclick="nav('calendar',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -726,6 +751,104 @@ tbody tr:hover td{background:var(--bg);cursor:pointer}
       </section>
 
       <!-- ───── PARAMÈTRES ───── -->
+      <!-- ───── RETURNS ───── -->
+      <section id="s-returns" class="section">
+        <div class="s-head">
+          <div>
+            <h1 class="s-title">Retours</h1>
+            <div class="s-sub">Demandes clients · refund + restock automatisés</div>
+          </div>
+          <div class="s-actions">
+            <button class="btn btn-ghost btn-sm" onclick="loadReturns()">↻ Actualiser</button>
+          </div>
+        </div>
+        <div class="set-card" style="padding:0;overflow:hidden">
+          <div style="display:flex;gap:8px;padding:14px;border-bottom:1px solid var(--line);overflow-x:auto">
+            <button class="btn btn-ghost btn-sm" data-rf="all" onclick="filterReturns('all',this)">Tous</button>
+            <button class="btn btn-ghost btn-sm" data-rf="demande" onclick="filterReturns('demande',this)">À traiter</button>
+            <button class="btn btn-ghost btn-sm" data-rf="accepte" onclick="filterReturns('accepte',this)">Acceptés</button>
+            <button class="btn btn-ghost btn-sm" data-rf="recu" onclick="filterReturns('recu',this)">Reçus</button>
+            <button class="btn btn-ghost btn-sm" data-rf="rembourse" onclick="filterReturns('rembourse',this)">Remboursés</button>
+            <button class="btn btn-ghost btn-sm" data-rf="refuse" onclick="filterReturns('refuse',this)">Refusés</button>
+          </div>
+          <div id="ret-list" style="padding:14px">Chargement…</div>
+        </div>
+      </section>
+
+      <!-- ───── TICKETS ───── -->
+      <section id="s-tickets" class="section">
+        <div class="s-head">
+          <div>
+            <h1 class="s-title">Tickets support</h1>
+            <div class="s-sub">Inbox contact client · réponses Brevo</div>
+          </div>
+          <div class="s-actions">
+            <button class="btn btn-ghost btn-sm" onclick="loadTickets()">↻ Actualiser</button>
+          </div>
+        </div>
+        <div class="set-card" style="padding:0;overflow:hidden">
+          <div style="display:flex;gap:8px;padding:14px;border-bottom:1px solid var(--line);overflow-x:auto">
+            <button class="btn btn-ghost btn-sm" data-tf="all" onclick="filterTickets('all',this)">Tous</button>
+            <button class="btn btn-ghost btn-sm" data-tf="open" onclick="filterTickets('open',this)">Ouverts</button>
+            <button class="btn btn-ghost btn-sm" data-tf="pending_customer" onclick="filterTickets('pending_customer',this)">En attente client</button>
+            <button class="btn btn-ghost btn-sm" data-tf="resolved" onclick="filterTickets('resolved',this)">Résolus</button>
+          </div>
+          <div id="tic-list" style="padding:14px">Chargement…</div>
+        </div>
+      </section>
+
+      <!-- ───── REVIEWS ───── -->
+      <section id="s-reviews" class="section">
+        <div class="s-head">
+          <div>
+            <h1 class="s-title">Avis clients</h1>
+            <div class="s-sub">Modération · vérifiés Stripe</div>
+          </div>
+          <div class="s-actions">
+            <button class="btn btn-ghost btn-sm" onclick="loadReviews()">↻ Actualiser</button>
+          </div>
+        </div>
+        <div class="set-card" style="padding:0;overflow:hidden">
+          <div style="display:flex;gap:8px;padding:14px;border-bottom:1px solid var(--line);overflow-x:auto">
+            <button class="btn btn-ghost btn-sm" data-vf="all" onclick="filterReviews('all',this)">Tous</button>
+            <button class="btn btn-ghost btn-sm" data-vf="pending" onclick="filterReviews('pending',this)">À modérer</button>
+            <button class="btn btn-ghost btn-sm" data-vf="published" onclick="filterReviews('published',this)">Publiés</button>
+            <button class="btn btn-ghost btn-sm" data-vf="rejected" onclick="filterReviews('rejected',this)">Rejetés</button>
+          </div>
+          <div id="rev-list" style="padding:14px">Chargement…</div>
+        </div>
+      </section>
+
+      <!-- ───── RESTOCK ALERTS ───── -->
+      <section id="s-restock" class="section">
+        <div class="s-head">
+          <div>
+            <h1 class="s-title">Restock alerts</h1>
+            <div class="s-sub">Clients en attente de retour stock par produit/taille</div>
+          </div>
+          <div class="s-actions">
+            <button class="btn btn-ghost btn-sm" onclick="loadRestock()">↻ Actualiser</button>
+          </div>
+        </div>
+        <div class="set-card" style="padding:0;overflow:hidden">
+          <div id="res-list" style="padding:14px">Chargement…</div>
+        </div>
+      </section>
+
+      <!-- ───── COLLECTIONS ───── -->
+      <section id="s-collections" class="section">
+        <div class="s-head">
+          <div>
+            <h1 class="s-title">Collections</h1>
+            <div class="s-sub">Regroupements éditoriaux · pages publiques /collection/&lt;slug&gt;</div>
+          </div>
+          <div class="s-actions">
+            <button class="btn btn-primary btn-sm" onclick="newCollection()">+ Nouvelle collection</button>
+          </div>
+        </div>
+        <div id="col-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">Chargement…</div>
+      </section>
+
       <section id="s-settings" class="section">
         <div class="s-head">
           <div>
@@ -784,6 +907,55 @@ tbody tr:hover td{background:var(--bg);cursor:pointer}
               <div class="meta">Boutique alternative — non utilisée (tout passe par Stripe)</div>
             </div>
             <div class="set-status warn"><span class="dot"></span>Non utilisé</div>
+          </div>
+        </div>
+
+        <div class="set-card">
+          <div class="card-title" style="margin-bottom:6px">Tracking marketing</div>
+          <div class="meta" style="margin-bottom:14px">Pixels chargés UNIQUEMENT après consentement RGPD (bandeau cookies). Lecture via <code>/data/tracking-config.json</code>, gating géré par <code>tracking.js</code>.</div>
+          <div class="set-row" style="flex-direction:column;align-items:stretch;gap:10px">
+            <div>
+              <div class="key">Meta Pixel ID</div>
+              <div class="meta">Facebook / Instagram Ads — ex: 1234567890</div>
+              <input id="trk-meta" class="input" placeholder="(vide pour désactiver)"/>
+            </div>
+          </div>
+          <div class="set-row" style="flex-direction:column;align-items:stretch;gap:10px">
+            <div>
+              <div class="key">TikTok Pixel ID</div>
+              <div class="meta">TikTok Ads — ex: C8XXXXX</div>
+              <input id="trk-tiktok" class="input" placeholder="(vide pour désactiver)"/>
+            </div>
+          </div>
+          <div class="set-row" style="flex-direction:column;align-items:stretch;gap:10px">
+            <div>
+              <div class="key">Google Analytics 4 ID</div>
+              <div class="meta">Mesure statistique — ex: G-XXXXXXXXXX (catégorie analytics)</div>
+              <input id="trk-ga4" class="input" placeholder="(vide pour désactiver)"/>
+            </div>
+          </div>
+          <div class="set-row" style="flex-direction:column;align-items:stretch;gap:10px">
+            <div>
+              <div class="key">Google Ads ID + Label conversion</div>
+              <div class="meta">ex: AW-12345 / abcDEF</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                <input id="trk-ads" class="input" placeholder="AW-…"/>
+                <input id="trk-ads-lbl" class="input" placeholder="Label conversion"/>
+              </div>
+            </div>
+          </div>
+          <div class="set-row">
+            <div>
+              <div class="key">Activer le tracking</div>
+              <div class="meta">Si désactivé, aucun pixel ne se charge même avec consentement</div>
+            </div>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+              <input type="checkbox" id="trk-enabled"/>
+              <span>Activé</span>
+            </label>
+          </div>
+          <div class="set-row" style="justify-content:flex-end">
+            <button class="btn btn-primary btn-sm" onclick="saveTrackingConfig()">Enregistrer</button>
           </div>
         </div>
 
@@ -921,9 +1093,13 @@ function toast(msg, kind){
 }
 
 /* ── NAV ── */
-const SECTIONS = ['dashboard','drops','products','orders','abandoned','clients','newsletter','coupons','calendar','analytics','settings'];
-const SECTION_LBL = {dashboard:'Dashboard',drops:'Drops',products:'Produits',orders:'Commandes',abandoned:'Paniers abandonnés',clients:'Clients',newsletter:'Newsletter',coupons:'Codes promo',calendar:'Calendrier',analytics:'Analytiques',settings:'Paramètres'};
-const COUPONS_API = '/.netlify/functions/admin-coupons';
+const SECTIONS = ['dashboard','drops','products','orders','abandoned','clients','returns','tickets','reviews','restock','newsletter','coupons','collections','calendar','analytics','settings'];
+const SECTION_LBL = {dashboard:'Dashboard',drops:'Drops',products:'Produits',orders:'Commandes',abandoned:'Paniers abandonnés',clients:'Clients',returns:'Retours',tickets:'Tickets',reviews:'Avis clients',restock:'Restock alerts',newsletter:'Newsletter',coupons:'Codes promo',collections:'Collections',calendar:'Calendrier',analytics:'Analytiques',settings:'Paramètres'};
+const COUPONS_API   = '/.netlify/functions/admin-coupons';
+const RETURNS_API   = '/.netlify/functions/returns';
+const REVIEWS_API   = '/.netlify/functions/reviews';
+const TICKETS_API   = '/.netlify/functions/support-tickets';
+const RESTOCK_API   = '/.netlify/functions/restock-alerts';
 function nav(id, el){
   if (!SECTIONS.includes(id)) return;
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -942,7 +1118,12 @@ function nav(id, el){
   if (id === 'coupons') loadCoupons();
   if (id === 'calendar') renderCalendar();
   if (id === 'analytics') loadAnalytics();
-  if (id === 'settings') checkIntegrations();
+  if (id === 'settings') { checkIntegrations(); loadTrackingConfig(); }
+  if (id === 'returns') loadReturns();
+  if (id === 'tickets') loadTickets();
+  if (id === 'reviews') loadReviews();
+  if (id === 'restock') loadRestock();
+  if (id === 'collections') loadCollections();
 }
 
 /* ── COMMAND PALETTE ── */
@@ -952,6 +1133,11 @@ const CMDS = [
   {label:'Produits', kbd:'G P', fn:() => nav('products')},
   {label:'Commandes', kbd:'G O', fn:() => nav('orders')},
   {label:'Clients', kbd:'G C', fn:() => nav('clients')},
+  {label:'Retours', kbd:'G R', fn:() => nav('returns')},
+  {label:'Tickets', kbd:'G T', fn:() => nav('tickets')},
+  {label:'Avis clients', kbd:'G V', fn:() => nav('reviews')},
+  {label:'Restock alerts', kbd:'', fn:() => nav('restock')},
+  {label:'Collections', kbd:'', fn:() => nav('collections')},
   {label:'Newsletter', kbd:'G N', fn:() => nav('newsletter')},
   {label:'Calendrier', kbd:'G L', fn:() => nav('calendar')},
   {label:'Analytiques', kbd:'G A', fn:() => nav('analytics')},
@@ -2622,6 +2808,428 @@ async function checkIntegrations(){
   // (Il faudrait poll une nouvelle commande pour savoir si le webhook fire)
   document.getElementById('set-webhook-status').className = 'set-status warn';
   document.getElementById('set-webhook-text').textContent = 'À configurer (dashboard.stripe.com/webhooks)';
+  // Best effort : si on trouve un event "order_paid" récent dans recent-events, on considère le webhook actif
+  try {
+    const r = await adminFetch(`${DATA_API}?file=recent-events`);
+    const data = await r.json();
+    const evts = data?.data?.events || [];
+    if (evts.some(e => e.type === 'order_paid')) {
+      document.getElementById('set-webhook-status').className = 'set-status ok';
+      document.getElementById('set-webhook-text').textContent = 'Actif';
+    }
+  } catch {}
+}
+
+/* ──────────────────────────────────────────────
+   RETOURS
+   ────────────────────────────────────────────── */
+let RETURNS_CACHE = [];
+let RET_FILTER = 'all';
+async function loadReturns(){
+  document.getElementById('ret-list').textContent = 'Chargement…';
+  try {
+    const r = await adminFetch(RETURNS_API);
+    const data = await r.json();
+    RETURNS_CACHE = data.returns || [];
+    updateReturnBadge();
+    renderReturns();
+  } catch(e) {
+    document.getElementById('ret-list').innerHTML = `<div style="color:var(--danger,#c00)">Erreur : ${e.message}</div>`;
+  }
+}
+function updateReturnBadge(){
+  const pending = RETURNS_CACHE.filter(r => ['demande','accepte','recu'].includes(r.status)).length;
+  const b = document.getElementById('ret-badge');
+  if (b) { b.textContent = pending; b.style.display = pending ? '' : 'none'; }
+}
+function filterReturns(f, el){
+  RET_FILTER = f;
+  document.querySelectorAll('[data-rf]').forEach(b => b.classList.toggle('btn-primary', b.dataset.rf === f));
+  document.querySelectorAll('[data-rf]').forEach(b => b.classList.toggle('btn-ghost', b.dataset.rf !== f));
+  renderReturns();
+}
+const RET_LABEL = {demande:'À traiter',accepte:'Accepté',recu:'Reçu',rembourse:'Remboursé',echange:'Échangé',refuse:'Refusé'};
+const RET_COLOR = {demande:'#f3a',accepte:'#08a',recu:'#a80',rembourse:'#0a6',echange:'#0a6',refuse:'#999'};
+function renderReturns(){
+  const list = RETURNS_CACHE.filter(r => RET_FILTER === 'all' || r.status === RET_FILTER);
+  if (!list.length) { document.getElementById('ret-list').innerHTML = '<div style="color:var(--text-2);padding:20px;text-align:center">Aucun retour</div>'; return; }
+  document.getElementById('ret-list').innerHTML = list.map(r => `
+    <div class="row-item" style="padding:14px;border:1px solid var(--line);border-radius:10px;margin-bottom:10px;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center">
+      <div style="width:8px;height:8px;border-radius:50%;background:${RET_COLOR[r.status]}"></div>
+      <div>
+        <div style="font-weight:500">#${r.orderNum} · ${r.email}</div>
+        <div style="font-size:12px;color:var(--text-2);margin-top:2px">${r.items.length} article(s) · ${r.reason.slice(0,60)}${r.reason.length>60?'…':''}</div>
+        <div style="font-size:11px;color:var(--text-2);margin-top:4px">${new Date(r.createdAt).toLocaleString('fr-FR')}</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span style="font-size:11px;padding:4px 10px;border-radius:99px;background:${RET_COLOR[r.status]}22;color:${RET_COLOR[r.status]}">${RET_LABEL[r.status]}</span>
+        <button class="btn btn-ghost btn-sm" onclick="openReturn('${r.id}')">Ouvrir</button>
+      </div>
+    </div>`).join('');
+}
+function openReturn(id){
+  const r = RETURNS_CACHE.find(x => x.id === id);
+  if (!r) return;
+  const itemsHtml = r.items.map(i => `<li><code>${i.pid}</code> · taille <strong>${i.size}</strong> · ${i.action === 'exchange' ? `échange → ${i.newSize||'?'}` : 'remboursement'}</li>`).join('');
+  const histHtml = (r.history||[]).map(h => `<li style="font-size:12px;color:var(--text-2)">${new Date(h.ts).toLocaleString('fr-FR')} — <strong>${h.status}</strong> ${h.note ? '· '+h.note : ''}</li>`).join('');
+  openModal(`
+    <div class="modal-head"><h2>Retour #${r.orderNum}</h2><button class="modal-close" onclick="closeModal()">×</button></div>
+    <div class="modal-body">
+      <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+        <div><div class="meta">Email</div><div>${r.email}</div></div>
+        <div><div class="meta">Montant</div><div>${(r.amount||0).toFixed(2)} €</div></div>
+        <div><div class="meta">Statut</div><div><strong>${RET_LABEL[r.status]}</strong></div></div>
+        <div><div class="meta">Date demande</div><div>${new Date(r.createdAt).toLocaleString('fr-FR')}</div></div>
+      </div>
+      <div class="meta">Articles</div>
+      <ul style="margin:6px 0 14px;padding-left:22px;line-height:1.7">${itemsHtml}</ul>
+      <div class="meta">Motif</div>
+      <p style="margin:6px 0 14px;padding:12px;background:var(--bg-2);border-radius:8px;font-size:13px">${r.reason}</p>
+      <div class="meta">Historique</div>
+      <ul style="margin:6px 0 14px;padding-left:22px;line-height:1.7">${histHtml||'<li>—</li>'}</ul>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)">
+        ${r.status === 'demande' ? `<button class="btn btn-primary btn-sm" onclick="updateReturn('${r.id}','accepte')">Accepter</button>` : ''}
+        ${['demande','accepte'].includes(r.status) ? `<button class="btn btn-ghost btn-sm" onclick="updateReturn('${r.id}','refuse')">Refuser</button>` : ''}
+        ${r.status === 'accepte' ? `<button class="btn btn-primary btn-sm" onclick="updateReturn('${r.id}','recu')">Marquer reçu</button>` : ''}
+        ${r.status === 'recu' ? `<button class="btn btn-primary btn-sm" onclick="updateReturn('${r.id}','rembourse')">Rembourser (Stripe)</button>` : ''}
+      </div>
+    </div>
+  `);
+}
+async function updateReturn(id, status){
+  if (!confirm(`Confirmer : passer ce retour à "${RET_LABEL[status]}" ?`)) return;
+  try {
+    const r = await adminFetch(RETURNS_API, {method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({id, status})});
+    if (!r.ok) throw new Error('update failed');
+    toast(`Retour ${RET_LABEL[status].toLowerCase()}`);
+    closeModal();
+    loadReturns();
+  } catch(e){ toast('Erreur · ' + e.message, 'err'); }
+}
+
+/* ──────────────────────────────────────────────
+   TICKETS SUPPORT
+   ────────────────────────────────────────────── */
+let TICKETS_CACHE = [];
+let TIC_FILTER = 'all';
+async function loadTickets(){
+  document.getElementById('tic-list').textContent = 'Chargement…';
+  try {
+    const r = await adminFetch(TICKETS_API);
+    const data = await r.json();
+    TICKETS_CACHE = data.tickets || [];
+    const open = TICKETS_CACHE.filter(t => t.status === 'open').length;
+    const b = document.getElementById('tic-badge');
+    if (b) { b.textContent = open; b.style.display = open ? '' : 'none'; }
+    renderTickets();
+  } catch(e){
+    document.getElementById('tic-list').innerHTML = `<div style="color:#c00">Erreur : ${e.message}</div>`;
+  }
+}
+function filterTickets(f, el){
+  TIC_FILTER = f;
+  document.querySelectorAll('[data-tf]').forEach(b => b.classList.toggle('btn-primary', b.dataset.tf === f));
+  document.querySelectorAll('[data-tf]').forEach(b => b.classList.toggle('btn-ghost', b.dataset.tf !== f));
+  renderTickets();
+}
+const TIC_LABEL = {open:'Ouvert',pending_customer:'En attente client',resolved:'Résolu'};
+const TIC_COLOR = {open:'#f3a',pending_customer:'#08a',resolved:'#0a6'};
+function renderTickets(){
+  const list = TICKETS_CACHE.filter(t => TIC_FILTER === 'all' || t.status === TIC_FILTER);
+  if (!list.length) { document.getElementById('tic-list').innerHTML = '<div style="color:var(--text-2);padding:20px;text-align:center">Aucun ticket</div>'; return; }
+  document.getElementById('tic-list').innerHTML = list.map(t => `
+    <div style="padding:14px;border:1px solid var(--line);border-radius:10px;margin-bottom:10px;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center">
+      <div style="width:8px;height:8px;border-radius:50%;background:${TIC_COLOR[t.status]}"></div>
+      <div>
+        <div style="font-weight:500">${t.subject}</div>
+        <div style="font-size:12px;color:var(--text-2);margin-top:2px">${t.name || '—'} · ${t.email} · ${t.category}</div>
+        <div style="font-size:11px;color:var(--text-2);margin-top:4px">${new Date(t.createdAt).toLocaleString('fr-FR')} · ${(t.messages||[]).length} message(s)</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span style="font-size:11px;padding:4px 10px;border-radius:99px;background:${TIC_COLOR[t.status]}22;color:${TIC_COLOR[t.status]}">${TIC_LABEL[t.status]}</span>
+        <button class="btn btn-ghost btn-sm" onclick="openTicket('${t.id}')">Ouvrir</button>
+      </div>
+    </div>`).join('');
+}
+function openTicket(id){
+  const t = TICKETS_CACHE.find(x => x.id === id);
+  if (!t) return;
+  const thread = (t.messages || []).map(m => `
+    <div style="margin-bottom:14px;padding:14px;border-radius:10px;background:${m.from === 'admin' ? 'var(--accent,#C4FF3D)22' : 'var(--bg-2)'};border:1px solid var(--line)">
+      <div style="font-size:11px;color:var(--text-2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.1em">${m.from === 'admin' ? 'Toi' : t.name || 'Client'} · ${new Date(m.ts).toLocaleString('fr-FR')}</div>
+      <div style="white-space:pre-wrap;line-height:1.5;font-size:13px">${m.body}</div>
+    </div>`).join('');
+  openModal(`
+    <div class="modal-head"><h2>${t.subject}</h2><button class="modal-close" onclick="closeModal()">×</button></div>
+    <div class="modal-body">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--line)">
+        <div><strong>${t.name||'—'}</strong> · ${t.email}${t.orderId?`<br><span style="font-size:11px;color:var(--text-2)">Commande ${t.orderId.slice(-8).toUpperCase()}</span>`:''}</div>
+        <span style="font-size:11px;padding:4px 10px;border-radius:99px;background:${TIC_COLOR[t.status]}22;color:${TIC_COLOR[t.status]}">${TIC_LABEL[t.status]}</span>
+      </div>
+      ${thread}
+      <div style="margin-top:18px">
+        <div class="meta" style="margin-bottom:6px">Répondre</div>
+        <textarea id="tic-reply" style="width:100%;min-height:120px;padding:12px;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:13px" placeholder="Ta réponse…"></textarea>
+        <div style="display:flex;justify-content:space-between;gap:8px;margin-top:10px">
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-ghost btn-sm" onclick="updateTicket('${t.id}','resolved')">Marquer résolu</button>
+            <button class="btn btn-ghost btn-sm" onclick="updateTicket('${t.id}','open')">Réouvrir</button>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="sendTicketReply('${t.id}')">Envoyer réponse</button>
+        </div>
+      </div>
+    </div>
+  `);
+}
+async function sendTicketReply(id){
+  const txt = document.getElementById('tic-reply').value.trim();
+  if (!txt) return toast('Réponse vide', 'err');
+  try {
+    const r = await adminFetch(TICKETS_API, {method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({id, adminReply: txt})});
+    if (!r.ok) throw new Error('reply failed');
+    toast('Réponse envoyée');
+    closeModal();
+    loadTickets();
+  } catch(e){ toast('Erreur · ' + e.message, 'err'); }
+}
+async function updateTicket(id, status){
+  try {
+    const r = await adminFetch(TICKETS_API, {method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({id, status})});
+    if (!r.ok) throw new Error('update failed');
+    toast('Statut mis à jour');
+    closeModal();
+    loadTickets();
+  } catch(e){ toast('Erreur · ' + e.message, 'err'); }
+}
+
+/* ──────────────────────────────────────────────
+   REVIEWS
+   ────────────────────────────────────────────── */
+let REVIEWS_CACHE = [];
+let REV_FILTER = 'all';
+async function loadReviews(){
+  document.getElementById('rev-list').textContent = 'Chargement…';
+  try {
+    const r = await adminFetch(`${REVIEWS_API}?all=1`);
+    const data = await r.json();
+    REVIEWS_CACHE = data.reviews || [];
+    const pending = REVIEWS_CACHE.filter(x => x.status === 'pending').length;
+    const b = document.getElementById('rev-badge');
+    if (b) { b.textContent = pending; b.style.display = pending ? '' : 'none'; }
+    renderReviewsList();
+  } catch(e){
+    document.getElementById('rev-list').innerHTML = `<div style="color:#c00">Erreur : ${e.message}</div>`;
+  }
+}
+function filterReviews(f, el){
+  REV_FILTER = f;
+  document.querySelectorAll('[data-vf]').forEach(b => b.classList.toggle('btn-primary', b.dataset.vf === f));
+  document.querySelectorAll('[data-vf]').forEach(b => b.classList.toggle('btn-ghost', b.dataset.vf !== f));
+  renderReviewsList();
+}
+const REV_LABEL = {pending:'À modérer',published:'Publié',rejected:'Rejeté'};
+const REV_COLOR = {pending:'#f3a',published:'#0a6',rejected:'#999'};
+function stars(n){ return '★'.repeat(n) + '☆'.repeat(5-n); }
+function renderReviewsList(){
+  const list = REVIEWS_CACHE.filter(r => REV_FILTER === 'all' || r.status === REV_FILTER);
+  if (!list.length) { document.getElementById('rev-list').innerHTML = '<div style="color:var(--text-2);padding:20px;text-align:center">Aucun avis</div>'; return; }
+  document.getElementById('rev-list').innerHTML = list.map(r => `
+    <div style="padding:14px;border:1px solid var(--line);border-radius:10px;margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:14px">
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+            <span style="color:#a8916a;letter-spacing:.1em">${stars(r.rating)}</span>
+            <strong style="font-size:13px">${r.title || '(sans titre)'}</strong>
+          </div>
+          <div style="font-size:12px;color:var(--text-2);margin-bottom:6px">${r.firstName || r.email} · <code>${r.pid}</code> ${r.fit ? '· '+r.fit : ''} · ${new Date(r.createdAt).toLocaleDateString('fr-FR')}</div>
+          <div style="font-size:13px;line-height:1.5;white-space:pre-wrap">${r.body || '<em>(sans commentaire)</em>'}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <span style="font-size:11px;padding:4px 10px;border-radius:99px;background:${REV_COLOR[r.status]}22;color:${REV_COLOR[r.status]}">${REV_LABEL[r.status]}</span>
+          <div style="display:flex;gap:4px">
+            ${r.status !== 'published' ? `<button class="btn btn-primary btn-sm" onclick="moderateReview('${r.id}','published')">Publier</button>` : ''}
+            ${r.status !== 'rejected' ? `<button class="btn btn-ghost btn-sm" onclick="moderateReview('${r.id}','rejected')">Rejeter</button>` : ''}
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+async function moderateReview(id, status){
+  try {
+    const r = await adminFetch(REVIEWS_API, {method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({id, status})});
+    if (!r.ok) throw new Error('moderation failed');
+    toast(`Avis ${status === 'published' ? 'publié' : 'rejeté'}`);
+    loadReviews();
+  } catch(e){ toast('Erreur · ' + e.message, 'err'); }
+}
+
+/* ──────────────────────────────────────────────
+   RESTOCK ALERTS
+   ────────────────────────────────────────────── */
+async function loadRestock(){
+  document.getElementById('res-list').textContent = 'Chargement…';
+  try {
+    const r = await adminFetch(RESTOCK_API);
+    const data = await r.json();
+    const alerts = (data.alerts || []).filter(a => a.status === 'pending');
+    const b = document.getElementById('res-badge');
+    if (b) { b.textContent = alerts.length; b.style.display = alerts.length ? '' : 'none'; }
+    if (!alerts.length) { document.getElementById('res-list').innerHTML = '<div style="color:var(--text-2);padding:20px;text-align:center">Aucune alerte en attente</div>'; return; }
+    // Regroupe par pid+size
+    const groups = {};
+    alerts.forEach(a => {
+      const key = a.dropId ? `drop:${a.dropId}` : `${a.pid}:${a.size||'all'}`;
+      if (!groups[key]) groups[key] = { ...a, count:0, emails:[], ids:[] };
+      groups[key].count++;
+      groups[key].emails.push(a.email);
+      groups[key].ids.push(a.id);
+    });
+    document.getElementById('res-list').innerHTML = Object.values(groups).map(g => `
+      <div style="padding:14px;border:1px solid var(--line);border-radius:10px;margin-bottom:10px;display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center">
+        <div>
+          <div style="font-weight:500">${g.productTitle || g.dropId || g.pid} ${g.size ? '· '+g.size : ''}</div>
+          <div style="font-size:12px;color:var(--text-2);margin-top:4px">${g.count} client(s) en attente · ${g.emails.slice(0,3).join(', ')}${g.emails.length>3?` +${g.emails.length-3}…`:''}</div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="notifyRestock('${g.dropId || ''}','${g.pid || ''}','${g.size || ''}')">Notifier (${g.count})</button>
+      </div>`).join('');
+  } catch(e){
+    document.getElementById('res-list').innerHTML = `<div style="color:#c00">Erreur : ${e.message}</div>`;
+  }
+}
+async function notifyRestock(dropId, pid, size){
+  if (!confirm(`Envoyer le mail "Restock dispo" à ces clients ?`)) return;
+  const payload = dropId ? { dropId } : { pid, size: size || undefined };
+  try {
+    const r = await adminFetch(`${RESTOCK_API}?action=notify`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error || 'notify failed');
+    toast(`${data.sent}/${data.targeted} email(s) envoyé(s)`);
+    loadRestock();
+  } catch(e){ toast('Erreur · ' + e.message, 'err'); }
+}
+
+/* ──────────────────────────────────────────────
+   COLLECTIONS
+   ────────────────────────────────────────────── */
+let COLLECTIONS_CACHE = [];
+async function loadCollections(){
+  document.getElementById('col-list').textContent = 'Chargement…';
+  try {
+    const r = await adminFetch(`${DATA_API}?file=collections`);
+    const data = await r.json();
+    COLLECTIONS_CACHE = (data.data && data.data.collections) || [];
+    if (!COLLECTIONS_CACHE.length) {
+      document.getElementById('col-list').innerHTML = '<div style="color:var(--text-2);padding:20px;text-align:center;grid-column:1/-1">Aucune collection. Crée la première.</div>';
+      return;
+    }
+    document.getElementById('col-list').innerHTML = COLLECTIONS_CACHE.map((c, idx) => `
+      <div class="set-card" style="padding:18px">
+        <div style="font-size:11px;color:var(--text-2);letter-spacing:.2em;text-transform:uppercase;margin-bottom:6px">${c.products?.length || 0} produit(s)</div>
+        <div style="font-weight:500;font-size:16px;margin-bottom:6px">${c.title}</div>
+        <div style="font-size:12px;color:var(--text-2);margin-bottom:14px">/collection/${c.slug}</div>
+        <p style="font-size:13px;color:var(--text-2);line-height:1.5;margin-bottom:14px;min-height:38px">${c.description || ''}</p>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-ghost btn-sm" onclick="editCollection(${idx})">Éditer</button>
+          <button class="btn btn-ghost btn-sm" onclick="deleteCollection(${idx})">Supprimer</button>
+          <a class="btn btn-ghost btn-sm" href="/collection/${c.slug}" target="_blank">Voir ↗</a>
+        </div>
+      </div>`).join('');
+  } catch(e){
+    document.getElementById('col-list').innerHTML = `<div style="color:#c00;grid-column:1/-1">Erreur : ${e.message}</div>`;
+  }
+}
+function newCollection(){ editCollectionForm(); }
+function editCollection(idx){ editCollectionForm(COLLECTIONS_CACHE[idx], idx); }
+function editCollectionForm(col, idx){
+  const isEdit = col !== undefined;
+  col = col || { slug:'', title:'', description:'', products:[] };
+  openModal(`
+    <div class="modal-head"><h2>${isEdit ? 'Éditer' : 'Nouvelle'} collection</h2><button class="modal-close" onclick="closeModal()">×</button></div>
+    <div class="modal-body">
+      <div class="field" style="margin-bottom:14px"><label class="meta">Titre</label><input id="col-title" class="input" value="${col.title.replace(/"/g,'&quot;')}" placeholder="Capsule été 26"/></div>
+      <div class="field" style="margin-bottom:14px"><label class="meta">Slug URL</label><input id="col-slug" class="input" value="${col.slug}" placeholder="capsule-ete-26"/></div>
+      <div class="field" style="margin-bottom:14px"><label class="meta">Description (optionnel)</label><textarea id="col-desc" class="input" style="min-height:80px">${col.description||''}</textarea></div>
+      <div class="field" style="margin-bottom:14px"><label class="meta">IDs produits (un par ligne)</label><textarea id="col-prods" class="input" style="min-height:120px;font-family:monospace;font-size:12px" placeholder="tee-shirt-oversize\nsweat-bikelife">${(col.products||[]).join('\n')}</textarea></div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)">
+        <button class="btn btn-ghost btn-sm" onclick="closeModal()">Annuler</button>
+        <button class="btn btn-primary btn-sm" onclick="saveCollection(${idx ?? 'null'})">Enregistrer</button>
+      </div>
+    </div>
+  `);
+}
+async function saveCollection(idx){
+  const c = {
+    title: document.getElementById('col-title').value.trim(),
+    slug: document.getElementById('col-slug').value.trim().toLowerCase().replace(/[^a-z0-9-]+/g,'-'),
+    description: document.getElementById('col-desc').value.trim(),
+    products: document.getElementById('col-prods').value.split('\n').map(s => s.trim()).filter(Boolean)
+  };
+  if (!c.title || !c.slug) return toast('Titre et slug requis', 'err');
+  const next = COLLECTIONS_CACHE.slice();
+  if (idx === null || idx === 'null') next.push(c); else next[idx] = c;
+  try {
+    const r = await adminFetch(`${DATA_API}?file=collections`, {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({data:{collections:next}, message:'admin: update collections'})});
+    if (!r.ok) throw new Error('save failed');
+    toast('Collection enregistrée');
+    closeModal();
+    loadCollections();
+  } catch(e){ toast('Erreur · ' + e.message, 'err'); }
+}
+async function deleteCollection(idx){
+  if (!confirm(`Supprimer la collection "${COLLECTIONS_CACHE[idx].title}" ?`)) return;
+  const next = COLLECTIONS_CACHE.slice(); next.splice(idx, 1);
+  try {
+    const r = await adminFetch(`${DATA_API}?file=collections`, {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({data:{collections:next}})});
+    if (!r.ok) throw new Error('delete failed');
+    toast('Supprimée'); loadCollections();
+  } catch(e){ toast('Erreur · ' + e.message, 'err'); }
+}
+
+/* ──────────────────────────────────────────────
+   TRACKING CONFIG
+   ────────────────────────────────────────────── */
+async function loadTrackingConfig(){
+  try {
+    const r = await adminFetch(`${DATA_API}?file=tracking-config`);
+    const data = await r.json();
+    const c = (data && data.data) || {};
+    const $ = id => document.getElementById(id);
+    if ($('trk-meta')) $('trk-meta').value = c.metaPixelId || '';
+    if ($('trk-tiktok')) $('trk-tiktok').value = c.tiktokPixelId || '';
+    if ($('trk-ga4')) $('trk-ga4').value = c.ga4Id || '';
+    if ($('trk-ads')) $('trk-ads').value = c.googleAdsId || '';
+    if ($('trk-ads-lbl')) $('trk-ads-lbl').value = c.googleAdsConversionLabel || '';
+    if ($('trk-enabled')) $('trk-enabled').checked = !!c.enabled;
+  } catch {}
+}
+async function saveTrackingConfig(){
+  const $ = id => document.getElementById(id);
+  const payload = {
+    metaPixelId: $('trk-meta').value.trim(),
+    tiktokPixelId: $('trk-tiktok').value.trim(),
+    ga4Id: $('trk-ga4').value.trim(),
+    googleAdsId: $('trk-ads').value.trim(),
+    googleAdsConversionLabel: $('trk-ads-lbl').value.trim(),
+    enabled: $('trk-enabled').checked
+  };
+  try {
+    const r = await adminFetch(`${DATA_API}?file=tracking-config`, {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({data: payload, message:'admin: tracking config'})});
+    if (!r.ok) throw new Error('save failed');
+    toast('Tracking config enregistrée');
+  } catch(e){ toast('Erreur · ' + e.message, 'err'); }
+}
+
+/* ──────────────────────────────────────────────
+   Helpers modal (fallback si non défini ailleurs)
+   ────────────────────────────────────────────── */
+if (typeof openModal === 'undefined') {
+  window.openModal = function(html){
+    document.getElementById('modal').innerHTML = html;
+    document.getElementById('modal-ov').classList.add('open');
+  };
+  window.closeModal = function(){
+    document.getElementById('modal-ov').classList.remove('open');
+  };
 }
 
 /* ──────────────────────────────────────────────
