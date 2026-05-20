@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#0a0a0a"/>
 <meta name="robots" content="noindex,nofollow"/>
 <title>Talseume — Back Office</title>
+<link rel="icon" href="/images/talseume-logo.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap">
@@ -34,7 +35,9 @@ input,textarea,select{outline:none}
 /* ── LOGIN ── */
 #login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999}
 .login-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:48px 40px;width:100%;max-width:380px;text-align:center}
-.login-mark{font-family:var(--Fc);font-size:42px;letter-spacing:.04em;color:var(--text);text-transform:uppercase;margin-bottom:4px}
+.login-logo{width:84px;height:84px;object-fit:contain;margin:0 auto 18px;display:block;transition:filter .3s}
+:root.dark .login-logo{filter:invert(1)}
+.login-mark{font-family:var(--Fc);font-size:34px;letter-spacing:.04em;color:var(--text);text-transform:uppercase;margin-bottom:4px}
 .login-sub{font-size:11px;color:var(--text-2);letter-spacing:.2em;text-transform:uppercase;margin-bottom:36px}
 .login-box input{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:14px 16px;border-radius:10px;font-size:14px;margin-bottom:12px;transition:border .15s}
 .login-box input:focus{border-color:var(--text)}
@@ -48,9 +51,11 @@ input,textarea,select{outline:none}
 
 /* ── SIDEBAR ── */
 .sidebar{width:240px;background:var(--surface);position:fixed;top:0;left:0;bottom:0;display:flex;flex-direction:column;z-index:100;border-right:1px solid var(--border)}
-.sb-logo{padding:24px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
-.sb-logo .mark{font-family:var(--Fc);font-size:24px;letter-spacing:.04em;text-transform:uppercase}
-.sb-logo .sub{font-size:9px;color:var(--text-2);letter-spacing:.18em;text-transform:uppercase;display:block;margin-top:2px}
+.sb-logo{padding:20px 20px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px}
+.sb-logo .logo-img{width:42px;height:42px;object-fit:contain;flex-shrink:0;transition:filter .3s}
+:root.dark .sb-logo .logo-img{filter:invert(1)}
+.sb-logo .mark{font-family:var(--Fc);font-size:20px;letter-spacing:.04em;text-transform:uppercase;line-height:1}
+.sb-logo .sub{font-size:9px;color:var(--text-2);letter-spacing:.18em;text-transform:uppercase;display:block;margin-top:4px}
 .sb-nav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:1px;overflow-y:auto}
 .nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:8px;color:var(--text-2);font-size:13px;font-weight:500;cursor:pointer;transition:.15s;user-select:none}
 .nav-item:hover{background:var(--bg);color:var(--text)}
@@ -361,7 +366,8 @@ tbody tr:hover td{background:var(--bg);cursor:pointer}
 <!-- LOGIN -->
 <div id="login-screen">
   <div class="login-box">
-    <div class="login-mark">TALSEUME</div>
+    <img class="login-logo" src="/images/talseume-logo.png" alt="Talseume"/>
+    <div class="login-mark">Talseume</div>
     <div class="login-sub">Back Office</div>
     <input type="password" id="pwd" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')login()" autocomplete="off">
     <button class="login-btn" onclick="login()">Accéder</button>
@@ -375,8 +381,9 @@ tbody tr:hover td{background:var(--bg);cursor:pointer}
 
   <aside class="sidebar">
     <div class="sb-logo">
+      <img class="logo-img" src="/images/talseume-logo.png" alt="Talseume"/>
       <div>
-        <div class="mark">TALSEUME</div>
+        <div class="mark">Talseume</div>
         <span class="sub">Back Office</span>
       </div>
     </div>
