@@ -1,8 +1,10 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const { validateAdminToken } = require('./admin-auth');
 
 const H = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Origin': 'https://talseume.com',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Content-Type': 'application/json'
 };
 
@@ -51,7 +53,8 @@ function mapSession(s) {
 }
 
 exports.handler = async (ev) => {
-  if (ev.httpMethod === 'OPTIONS') return { statusCode: 200, headers: H };
+  if (ev.httpMethod === 'OPTIONS') return { statusCode: 204, headers: H };
+  if (!validateAdminToken(ev)) return { statusCode: 401, headers: H, body: JSON.stringify({ error: 'unauthorized' }) };
   const { action, id } = ev.queryStringParameters || {};
 
   try {

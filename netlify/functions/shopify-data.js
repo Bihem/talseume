@@ -42,8 +42,17 @@ function shopWrite(method, path, data) {
   });
 }
 
+const { validateAdminToken } = require('./admin-auth');
+
 exports.handler = async (ev) => {
-  const H = { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' };
+  const H = {
+    'Access-Control-Allow-Origin': 'https://talseume.com',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Content-Type': 'application/json'
+  };
+  if (ev.httpMethod === 'OPTIONS') return { statusCode: 204, headers: H };
+  if (!validateAdminToken(ev)) return { statusCode: 401, headers: H, body: JSON.stringify({ error: 'unauthorized' }) };
   if (!TOKEN) return { statusCode: 500, headers: H, body: JSON.stringify({ error: 'SHOPIFY_ACCESS_TOKEN non configuré dans Netlify' }) };
 
   const { action, id, status } = ev.queryStringParameters || {};

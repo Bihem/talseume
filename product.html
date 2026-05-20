@@ -553,7 +553,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       </div>
       <div class="acc-item">
         <div class="acc-head" onclick="toggleAcc(this)"><span>Livraison & retours</span><span class="acc-icon">+</span></div>
-        <div class="acc-body"><div class="acc-content">Livraison offerte dès 80€ — standard 5 à 7 jours ouvrés. Retours gratuits sous 30 jours. Remboursement intégral garanti.</div></div>
+        <div class="acc-body"><div class="acc-content">Livraison offerte dès 80€ — standard 5 à 7 jours ouvrés. Retours gratuits sous 14 jours. Remboursement intégral garanti.</div></div>
       </div>
       <div class="acc-item">
         <div class="acc-head" onclick="toggleAcc(this)"><span>Guide des tailles</span><span class="acc-icon">+</span></div>
@@ -813,7 +813,42 @@ const params = new URLSearchParams(window.location.search);
 const id = params.get('id') || 'sweat-talseume-oversize';
 const p = PRODUCTS[id];
 if (!p) { window.location.href = '/'; }
-document.title = 'Talseume — ' + p.name;
+
+/* ── SEO dynamique : title, meta, og, JSON-LD Product ── */
+const productUrl = `https://talseume.com/product.html?id=${id}`;
+const mainImg = `https://talseume.com/${p.colors[0]?.img || 'images/talseume-logo.png'}`;
+const seoDesc = (p.desc || '').replace(/\*\*/g,'').slice(0,160);
+document.title = `${p.name} — Talseume`;
+const setMeta = (sel, val) => { const el = document.querySelector(sel); if (el) el.setAttribute(el.hasAttribute('content')?'content':'href', val); };
+setMeta('meta[name="description"]', seoDesc);
+setMeta('link[rel="canonical"]', productUrl);
+setMeta('meta[property="og:url"]', productUrl);
+setMeta('meta[property="og:title"]', `${p.name} — Talseume`);
+setMeta('meta[property="og:description"]', seoDesc);
+setMeta('meta[property="og:image"]', mainImg);
+
+const ldProduct = {
+  '@context':'https://schema.org',
+  '@type':'Product',
+  name: p.name,
+  image: p.colors.map(c => `https://talseume.com/${c.img}`),
+  description: p.desc.replace(/\*\*/g,''),
+  brand: { '@type':'Brand', name:'Talseume' },
+  sku: id,
+  offers: {
+    '@type':'Offer',
+    url: productUrl,
+    priceCurrency:'EUR',
+    price: p.price.toFixed(2),
+    availability: p.unavailable ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
+    itemCondition:'https://schema.org/NewCondition',
+    seller:{ '@type':'Organization', name:'Talseume' }
+  }
+};
+const ldScript = document.createElement('script');
+ldScript.type = 'application/ld+json';
+ldScript.textContent = JSON.stringify(ldProduct);
+document.head.appendChild(ldScript);
 
 let selectedSize = p.sizes[0] || '';
 let selectedColor = p.colors[0]?.name || '';

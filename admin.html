@@ -649,22 +649,47 @@ tbody tr:hover td{background:#FAFAFA;cursor:pointer}
 <div class="toast" id="toast"></div>
 
 <script>
-const PWD = 'talseume2026';
 const API = '/.netlify/functions/shopify-data';
+const ORDERS_API = '/.netlify/functions/admin-orders';
+const AUTH_API = '/.netlify/functions/admin-auth';
 
-/* ── AUTH ── */
-function login(){
-  if(document.getElementById('pwd').value===PWD){
-    sessionStorage.setItem('tls-bo','1');
+/* ── AUTH (token signé HMAC côté serveur, 12h) ── */
+function getToken(){
+  const t = sessionStorage.getItem('tls-bo-token');
+  const exp = parseInt(sessionStorage.getItem('tls-bo-exp')||'0',10);
+  if(!t || exp < Date.now()) return null;
+  return t;
+}
+async function login(){
+  const pwd = document.getElementById('pwd').value;
+  try {
+    const r = await fetch(AUTH_API, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({password:pwd})});
+    if(!r.ok){ document.getElementById('login-err').style.display='block'; return; }
+    const data = await r.json();
+    sessionStorage.setItem('tls-bo-token', data.token);
+    sessionStorage.setItem('tls-bo-exp', String(data.expiresAt));
     document.getElementById('login-screen').style.display='none';
     document.getElementById('admin').style.display='block';
     init();
-  } else {
+  } catch(e) {
     document.getElementById('login-err').style.display='block';
   }
 }
-function logout(){sessionStorage.removeItem('tls-bo');location.reload();}
-if(sessionStorage.getItem('tls-bo')==='1'){
+function logout(){
+  sessionStorage.removeItem('tls-bo-token');
+  sessionStorage.removeItem('tls-bo-exp');
+  location.reload();
+}
+function adminFetch(url, opts={}){
+  const t = getToken();
+  if(!t){ logout(); return Promise.reject(new Error('not_authenticated')); }
+  opts.headers = Object.assign({}, opts.headers||{}, {'Authorization': 'Bearer ' + t});
+  return fetch(url, opts).then(r => {
+    if(r.status === 401){ logout(); throw new Error('unauthorized'); }
+    return r;
+  });
+}
+if(getToken()){
   document.getElementById('login-screen').style.display='none';
   document.getElementById('admin').style.display='block';
   init();
@@ -781,7 +806,7 @@ async function init(){
 /* ── STATS ── */
 async function loadStats(){
   try{
-    const d=await fetch(API+'?action=stats').then(r=>r.json());
+    const d=await adminFetch(API+'?action=stats').then(r=>r.json());
     if(d.error)throw new Error(d.error);
     statsCache=d;
     const totalMonth=d.chart.reduce((s,v)=>s+v.v,0);
@@ -859,7 +884,7 @@ async function loadStats(){
 /* ── ORDERS ── */
 async function loadOrders(){
   try{
-    orders=await fetch(API+'?action=orders').then(r=>r.json());
+    orders=await adminFetch(API+'?action=orders').then(r=>r.json());
     if(!Array.isArray(orders))throw new Error(orders.error||'Réponse invalide');
     const unpaid=orders.filter(o=>o.financial_status==='pending');
     if(unpaid.length){const b=document.getElementById('nb-orders');b.textContent=unpaid.length;b.style.display='inline-block';}
@@ -932,7 +957,7 @@ async function openOrder(id){
   document.getElementById('modal-title').textContent='Commande';
   document.getElementById('modal-body').innerHTML='<div class="loader"><span class="ld"></span><span class="ld"></span><span class="ld"></span></div>';
   try{
-    const o=await fetch(`${API}?action=order&id=${id}`).then(r=>r.json());
+    const o=await adminFetch(`${API}?action=order&id=${id}`).then(r=>r.json());
     if(o.error)throw new Error(o.error);
     document.getElementById('modal-title').textContent='Commande #'+o.order_number;
     const name=(o.customer?.first_name||'')+' '+(o.customer?.last_name||'');
@@ -999,7 +1024,7 @@ async function renderProducts(){
   if(!grid)return;
   grid.innerHTML='<div class="loader"><span class="ld"></span><span class="ld"></span><span class="ld"></span></div>';
   try{
-    const products=await fetch(API+'?action=products').then(r=>r.json());
+    const products=await adminFetch(API+'?action=products').then(r=>r.json());
     if(!Array.isArray(products))throw new Error(products.error||'Erreur');
     if(!products.length){grid.innerHTML='<div class="empty"><div class="empty-ico">👕</div><p>Aucun produit.</p></div>';return;}
     grid.innerHTML=products.map(p=>{
@@ -1034,7 +1059,7 @@ let clientsCache=[];
 async function renderClients(){
   try{
     if(!clientsCache.length){
-      const data=await fetch(API+'?action=customers').then(r=>r.json());
+      const data=await adminFetch(API+'?action=customers').then(r=>r.json());
       if(!Array.isArray(data))throw new Error(data.error||'Erreur');
       clientsCache=data;
     }
@@ -1330,8 +1355,8 @@ async function openProduct(id){
   document.getElementById('prod-panel-body').innerHTML='<div class="loader"><span class="ld"></span><span class="ld"></span><span class="ld"></span></div>';
   try{
     const [prod,locs]=await Promise.all([
-      fetch(API+'?action=product&id='+id).then(r=>r.json()),
-      prodLocations.length?Promise.resolve(prodLocations):fetch(API+'?action=locations').then(r=>r.json())
+      adminFetch(API+'?action=product&id='+id).then(r=>r.json()),
+      prodLocations.length?Promise.resolve(prodLocations):adminFetch(API+'?action=locations').then(r=>r.json())
     ]);
     if(prod.error)throw new Error(prod.error);
     currentProd=prod;
@@ -1423,7 +1448,7 @@ async function saveProd(){
       status:currentProdStatus||currentProd.status,
       variants:variants
     };
-    var r=await fetch(API+'?action=update_product&id='+id,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(update)}).then(function(res){return res.json();});
+    var r=await adminFetch(API+'?action=update_product&id='+id,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(update)}).then(function(res){return res.json();});
     if(r.error)throw new Error(r.error);
     var invChanges=(currentProd.variants||[]).map(function(v,i){
       var newQty=parseInt(document.querySelector('.vf-qty[data-idx="'+i+'"]')?.value??v.inventory_quantity);
@@ -1433,7 +1458,7 @@ async function saveProd(){
     if(invChanges.length&&prodLocations.length){
       var locId=prodLocations[0].id;
       await Promise.all(invChanges.map(function(u){
-        return fetch(API+'?action=set_inventory',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.assign({},u,{location_id:locId}))}).then(function(res){return res.json();});
+        return adminFetch(API+'?action=set_inventory',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.assign({},u,{location_id:locId}))}).then(function(res){return res.json();});
       }));
     }
     currentProd=r;
@@ -1457,7 +1482,7 @@ let allDiscounts=[], discFilter='all', currentDiscType='percentage', currentDisc
 
 async function loadDiscounts(){
   try{
-    const data=await fetch(API+'?action=discounts').then(r=>r.json());
+    const data=await adminFetch(API+'?action=discounts').then(r=>r.json());
     allDiscounts=Array.isArray(data)?data:[];
     renderDiscounts();
   }catch(e){
@@ -1629,9 +1654,9 @@ async function saveDiscount(){
     if(Object.keys(minReqs).length) pr.minimum_requirements=minReqs;
     let result;
     if(editingDiscId){
-      result=await fetch(API+'?action=update_discount&id='+editingDiscId,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(pr)}).then(r=>r.json());
+      result=await adminFetch(API+'?action=update_discount&id='+editingDiscId,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(pr)}).then(r=>r.json());
     } else {
-      result=await fetch(API+'?action=create_discount',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({price_rule:pr,code})}).then(r=>r.json());
+      result=await adminFetch(API+'?action=create_discount',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({price_rule:pr,code})}).then(r=>r.json());
     }
     if(result.error)throw new Error(result.error);
     toast(editingDiscId?'Remise mise à jour ✓':'Remise créée ✓','ok');
@@ -1648,7 +1673,7 @@ async function saveDiscount(){
 async function deleteDiscount(id,code){
   if(!confirm('Supprimer la remise "'+code+'" ?')) return;
   try{
-    const r=await fetch(API+'?action=delete_discount&id='+id,{method:'POST'}).then(res=>res.json());
+    const r=await adminFetch(API+'?action=delete_discount&id='+id,{method:'POST'}).then(res=>res.json());
     if(r.error)throw new Error(r.error);
     toast('Remise supprimée','ok');
     allDiscounts=allDiscounts.filter(d=>d.id!==id);
