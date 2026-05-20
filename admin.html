@@ -590,6 +590,7 @@ tbody tr:hover td{background:var(--bg);cursor:pointer}
             <div class="s-sub">Sessions Stripe Checkout démarrées mais non payées</div>
           </div>
           <div class="s-actions">
+            <button class="btn btn-danger" onclick="purgeAbandoned()">Purger tous les paniers de test</button>
             <a href="https://dashboard.stripe.com/settings/checkout" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">↗ Config recovery emails Stripe</a>
           </div>
         </div>
@@ -1697,6 +1698,24 @@ function renderAbandonedTable(){
     </tr>`;
   }).join('');
 }
+async function purgeAbandoned(){
+  if (!confirm('Confirmer : expirer TOUS les paniers abandonnés ouverts ?\n\nÇa n\'affecte pas Stripe Dashboard (historique conservé) mais ça les retire de cette vue. Action irréversible côté Stripe.')) return;
+  try {
+    const r = await adminFetch(`${ORDERS_API}?action=purge-abandoned`);
+    const j = await r.json();
+    if (j.error) throw new Error(j.error);
+    toast(`${j.purged} panier${j.purged>1?'s':''} expiré${j.purged>1?'s':''}${j.failed?` · ${j.failed} échec${j.failed>1?'s':''}`:''}`);
+    // Reset KPI dashboard si on y retourne
+    state.abandoned = null;
+    loadAbandoned();
+    // Reset badge
+    const badge = document.getElementById('ab-badge');
+    if (badge) { badge.style.display = 'none'; }
+  } catch(e) {
+    toast('Erreur : ' + e.message, 'err');
+  }
+}
+
 function openAbandoned(id){
   const a = abandonedAll.find(x => x.id === id);
   if (!a) return;

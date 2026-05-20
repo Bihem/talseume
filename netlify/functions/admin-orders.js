@@ -67,7 +67,7 @@ exports.handler = async (ev) => {
       const paid = sessions.data.filter(s => s.payment_status === 'paid');
       const today = paid.filter(s => s.created >= dayStart);
       const month = paid.filter(s => s.created >= monthStart);
-      const pending = sessions.data.filter(s => s.payment_status === 'unpaid').length;
+      const pending = sessions.data.filter(s => s.payment_status === 'unpaid' && s.status === 'open').length;
 
       const totalEur = paid.reduce((s, o) => s + centsToEur(o.amount_total), 0);
       const avg = paid.length ? totalEur / paid.length : 0;
@@ -150,12 +150,31 @@ exports.handler = async (ev) => {
       return { statusCode: 200, headers: H, body: JSON.stringify(customers) };
     }
 
+    if (action === 'purge-abandoned') {
+      // Expire toutes les sessions Stripe Checkout non payées encore "open".
+      // Les sessions expirées ne s'affichent plus dans la vue abandonnés.
+      const sessions = await stripe.checkout.sessions.list({ limit: 100 });
+      const toExpire = sessions.data.filter(s => s.payment_status === 'unpaid' && s.status === 'open');
+      const results = [];
+      for (const s of toExpire) {
+        try {
+          await stripe.checkout.sessions.expire(s.id);
+          results.push({ id: s.id, ok: true });
+        } catch (e) {
+          results.push({ id: s.id, ok: false, error: e.message });
+        }
+      }
+      return {
+        statusCode: 200, headers: H,
+        body: JSON.stringify({ purged: results.filter(r => r.ok).length, failed: results.filter(r => !r.ok).length, total: toExpire.length })
+      };
+    }
+
     if (action === 'abandoned') {
-      // Stripe Checkout sessions non payées avec données capturées (email ou contenu).
-      // On expand line_items pour avoir le détail panier.
+      // Stripe Checkout sessions non payées ENCORE OUVERTES (status:open) — on exclut expired.
       const sessions = await stripe.checkout.sessions.list({ limit: 100, expand: ['data.line_items'] });
       const abandoned = sessions.data
-        .filter(s => s.payment_status === 'unpaid')
+        .filter(s => s.payment_status === 'unpaid' && s.status === 'open')
         .map(s => {
           const email = s.customer_details?.email || s.customer_email || '';
           const name = s.customer_details?.name || '';
