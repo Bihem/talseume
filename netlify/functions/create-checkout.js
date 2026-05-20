@@ -20,12 +20,18 @@ exports.handler = async (event) => {
   try {
     const { items, successUrl, cancelUrl } = JSON.parse(event.body);
 
+    // Metadata `pid` + `size` posée sur Stripe Product → lue par stripe-webhook.js
+    // pour décrémenter automatiquement /data/products-stock.json après paiement.
     const lineItems = items.map(item => ({
       price_data: {
         currency: 'eur',
         product_data: {
           name: `${item.name} — ${item.variant}`,
           images: item.img ? [item.img] : [],
+          metadata: {
+            pid: String(item.pid || item.id || ''),
+            size: String(item.variant || item.size || ''),
+          },
         },
         unit_amount: Math.round(item.price * 100),
       },

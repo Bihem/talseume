@@ -395,6 +395,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 <meta property="og:image" content="https://talseume.com/images/og-default.jpg"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <link rel="stylesheet" href="/cookies-banner.css">
+<script src="/tracking.js" defer></script>
 </head>
 <body>
 <a href="#main-content" class="skip-link">Aller au contenu</a>
@@ -533,6 +534,17 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       </div>
       <button class="add-btn" id="add-btn" onclick="addProductToCart()">Ajouter au panier</button>
 
+      <!-- Bouton restock alert : affiché à la place de l'add-btn quand la taille sélectionnée est out -->
+      <div id="restock-notify" hidden style="margin-top:6px;padding:18px;border:1px solid rgba(0,0,0,.12);border-radius:10px;background:#faf9f6">
+        <div style="font-size:12px;font-weight:500;letter-spacing:.04em;margin-bottom:8px">Taille épuisée</div>
+        <div style="font-size:13px;color:rgba(0,0,0,.65);line-height:1.55;margin-bottom:14px">Reçois un mail dès qu'elle revient en stock.</div>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:8px">
+          <input id="restock-email" type="email" placeholder="ton@email.fr" style="border:1px solid rgba(0,0,0,.15);border-radius:6px;padding:12px 14px;font-size:13px;font-family:inherit;outline:none"/>
+          <button onclick="notifyMeRestock()" style="background:#0a0a0a;color:#fff;border:none;padding:0 22px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;border-radius:6px;cursor:pointer">Prévenez-moi</button>
+        </div>
+        <div id="restock-fb" style="font-size:12px;margin-top:8px"></div>
+      </div>
+
       <!-- Express Checkout Stripe : Apple Pay natif iOS / Google Pay Android (s'affiche auto si dispo) -->
       <div id="express-checkout-element" class="express-checkout-wrap"></div>
 
@@ -576,6 +588,19 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     </div>
   </div>
 </div>
+
+<!-- REVIEWS -->
+<section class="reviews" id="reviews-section" hidden style="padding:80px 56px;border-top:1px solid rgba(0,0,0,.08);max-width:1280px;margin:0 auto">
+  <div style="text-align:center;margin-bottom:48px">
+    <div style="font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:rgba(0,0,0,.5);margin-bottom:14px">Avis clients</div>
+    <h2 style="font-size:clamp(32px,5vw,52px);font-weight:300;letter-spacing:-.03em;margin-bottom:16px" id="rv-h">Avis vérifiés</h2>
+    <div id="rv-summary" style="font-size:15px;color:rgba(0,0,0,.7)"></div>
+  </div>
+  <div id="rv-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;margin-bottom:40px"></div>
+  <div style="text-align:center">
+    <a href="/avis" id="rv-cta" style="display:inline-block;padding:14px 32px;border:1px solid #0a0a0a;font-size:11px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;border-radius:99px;transition:.2s">Laisser un avis</a>
+  </div>
+</section>
 
 <!-- RELATED -->
 <section class="related">
@@ -958,9 +983,13 @@ function render() {
       const firstAvail = p.sizes.find(s => stockMap[s] > 0);
       if (firstAvail) { selectedSize = firstAvail; selectSize(firstAvail); }
     }
+    syncRestockUI();
+  } else {
+    syncRestockUI();
   }
 
   renderRelated();
+  loadProductReviews();
 
   /* Produit indisponible (fin de série / rupture) : désactive l'achat */
   if (p.unavailable){
@@ -1098,6 +1127,87 @@ function selectSize(s) {
   selectedSize = s;
   document.getElementById('selected-size').textContent = '— ' + s;
   document.querySelectorAll('#size-pills .pill').forEach(b => b.classList.toggle('sel', b.textContent.trim()===s));
+  syncRestockUI();
+}
+
+/* Affiche / masque le bouton "Prévenez-moi" selon dispo de la taille sélectionnée */
+function syncRestockUI() {
+  const restockEl = document.getElementById('restock-notify');
+  const addBtn = document.getElementById('add-btn');
+  const more = document.getElementById('morePayLink');
+  const exp = document.getElementById('express-checkout-element');
+  if (!restockEl || !addBtn) return;
+  const stockMap = (window.STOCK_PER_SIZE && window.STOCK_PER_SIZE[id]) || {};
+  const hasStockSet = Object.keys(stockMap).length > 0;
+  const isOut = hasStockSet && (stockMap[selectedSize] === 0 || stockMap[selectedSize] === undefined);
+  restockEl.hidden = !isOut;
+  addBtn.style.display = isOut ? 'none' : '';
+  if (more) more.style.display = isOut ? 'none' : '';
+  if (exp) exp.style.display = isOut ? 'none' : '';
+}
+
+async function notifyMeRestock() {
+  const email = (document.getElementById('restock-email').value || '').trim();
+  const fb = document.getElementById('restock-fb');
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    fb.style.color = '#c40000'; fb.textContent = 'Email invalide';
+    return;
+  }
+  fb.style.color = 'rgba(0,0,0,.6)'; fb.textContent = 'Envoi…';
+  try {
+    const r = await fetch('/.netlify/functions/restock-alerts', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email, pid: id, size: selectedSize,
+        productTitle: p.name, productUrl: location.href
+      })
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error || 'fail');
+    fb.style.color = '#1d8055';
+    fb.textContent = data.duplicate ? 'Tu es déjà inscrit pour cette taille.' : 'C\'est noté · on te prévient dès que ça revient.';
+    document.getElementById('restock-email').value = '';
+  } catch (e) {
+    fb.style.color = '#c40000'; fb.textContent = 'Erreur · réessaye dans un instant.';
+  }
+}
+
+/* REVIEWS — fetch reviews publiés pour ce pid et rend la section + aggregateRating */
+async function loadProductReviews() {
+  try {
+    const r = await fetch(`/.netlify/functions/reviews?pid=${encodeURIComponent(id)}`);
+    if (!r.ok) return;
+    const data = await r.json();
+    const section = document.getElementById('reviews-section');
+    if (!section) return;
+    if (!data.count) {
+      section.hidden = false;
+      document.getElementById('rv-summary').innerHTML = 'Sois le premier à donner ton avis.';
+      document.getElementById('rv-list').innerHTML = '';
+      return;
+    }
+    const avg = data.average || 0;
+    const stars = '★'.repeat(Math.round(avg)) + '☆'.repeat(5 - Math.round(avg));
+    document.getElementById('rv-summary').innerHTML =
+      `<span style="font-size:22px;color:#a8916a;letter-spacing:.1em">${stars}</span> &nbsp; <strong>${avg.toFixed(1)}/5</strong> · ${data.count} avis vérifié${data.count > 1 ? 's' : ''}`;
+    document.getElementById('rv-list').innerHTML = (data.reviews || []).slice(0, 9).map(r => `
+      <article style="padding:24px;border:1px solid rgba(0,0,0,.08);border-radius:12px;background:#fff">
+        <header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <span style="color:#a8916a;letter-spacing:.1em">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+          <span style="font-size:11px;color:rgba(0,0,0,.5)">${new Date(r.createdAt).toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' })}</span>
+        </header>
+        ${r.title ? `<h3 style="font-size:15px;font-weight:500;margin-bottom:10px">${r.title}</h3>` : ''}
+        <p style="font-size:13.5px;line-height:1.6;color:rgba(0,0,0,.78);margin-bottom:14px;white-space:pre-wrap">${r.body || ''}</p>
+        <footer style="font-size:11px;color:rgba(0,0,0,.55);letter-spacing:.04em">
+          <span style="font-weight:500;color:rgba(0,0,0,.7)">${r.firstName || 'Client'}</span>${r.fit ? ` · ${r.fit}` : ''} · <span style="color:#1d8055">✓ Achat vérifié</span>
+        </footer>
+      </article>
+    `).join('');
+    section.hidden = false;
+    // CTA pré-remplit pid
+    const cta = document.getElementById('rv-cta');
+    if (cta) cta.href = `/avis?pid=${encodeURIComponent(id)}`;
+  } catch {}
 }
 
 function changeQty(d) {
@@ -1129,7 +1239,7 @@ function addProductToCart(silent) {
   const variant = getVariant();
   const img = p.colors.find(c=>c.name===selectedColor)?.img || p.colors[0]?.img || '';
   const ex = cart.find(i => i.name===p.name && i.variant===variant);
-  if (ex) { ex.qty += qty; } else { cart.push({name:p.name, variant, price:p.price, img, qty}); }
+  if (ex) { ex.qty += qty; } else { cart.push({pid:id, size:selectedSize||'', name:p.name, variant, price:p.price, img, qty}); }
   saveCart(); renderCart();
   if (silent === true) return;
   showToast(`${qty}× ajouté au panier`);
@@ -1302,7 +1412,7 @@ async function stripeCheckout() {
     const res = await fetch('/.netlify/functions/create-checkout',{
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        items: cart.map(i=>({name:i.name,variant:i.variant,price:i.price,qty:i.qty,img:window.location.origin+'/'+i.img})),
+        items: cart.map(i=>({pid:i.pid||'',size:i.size||i.variant||'',name:i.name,variant:i.variant,price:i.price,qty:i.qty,img:window.location.origin+'/'+i.img})),
         successUrl: window.location.origin+'/?commande=ok',
         cancelUrl: window.location.href,
       })

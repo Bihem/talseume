@@ -635,6 +635,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;o
 <meta property="og:image" content="https://talseume.com/images/og-default.jpg"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <link rel="stylesheet" href="/cookies-banner.css">
+<script src="/tracking.js" defer></script>
 </head>
 <body>
 <a href="#main-content" class="skip-link">Aller au contenu</a>
@@ -1491,7 +1492,7 @@ async function stripeCheckout(){
     const res = await fetch('/.netlify/functions/create-checkout',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        items: cart.map(i=>({name:i.name,variant:i.variant,price:i.price,qty:i.qty,img:window.location.origin+'/'+i.img})),
+        items: cart.map(i=>({pid:i.pid||'',size:i.size||i.variant||'',name:i.name,variant:i.variant,price:i.price,qty:i.qty,img:window.location.origin+'/'+i.img})),
         successUrl: window.location.origin+'/?commande=ok',
         cancelUrl: window.location.href,
       })
