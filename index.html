@@ -159,8 +159,13 @@ nav.scrolled .nav-logo img{filter:none}
 /* ══ PRODUCT CARD ══ */
 .pcard{background:transparent;display:block;position:relative;cursor:pointer}
 .pcard-img{position:relative;aspect-ratio:3/4;overflow:hidden;background:#f6f6f6}
-.pcard-img img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform 1.2s cubic-bezier(.16,1,.3,1),opacity .4s}
-.pcard:hover .pcard-img img{transform:scale(1.04)}
+.pcard-img img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform 1.2s cubic-bezier(.16,1,.3,1),opacity .55s ease}
+.pcard-img-hover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:0;pointer-events:none;z-index:1}
+@media(hover:hover) and (pointer:fine){
+  .pcard:hover .pcard-img img:first-child{opacity:0}
+  .pcard:hover .pcard-img .pcard-img-hover{opacity:1}
+}
+.pcard:hover .pcard-img img{transform:scale(1.03)}
 .badge-row{display:none}
 .pcard-label{position:absolute;top:12px;left:12px;z-index:3;background:rgba(10,10,10,.92);color:#fff;font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:5px 10px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 .badge{background:transparent;color:var(--black);font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:0;border:none}
@@ -1485,6 +1490,37 @@ document.querySelectorAll('.pcard').forEach(card => {
   fav.onclick = e => { e.preventDefault(); e.stopPropagation(); toggleWish(pid, fav); };
 });
 renderWishUI();
+
+/* ── PCARD HOVER IMAGE SWAP (desktop only — coloris secondaire au survol) ── */
+const PCARD_HOVER_IMG = {
+  'sweat-talseume-oversize':'images/products/SWEAT-TALSEUME-NOIR-OVERSIZE01.jpg',
+  'tee-shirt-oversize':'images/products/IMG_7520_e3dbdd17-a9be-4adb-b256-4159034c7b0d.jpg',
+  'tshirt-manches-longues':'images/products/tee-shirt-talseume-mancheslongue.jpg',
+  'debardeur-femme':'images/products/debardeur-femme-talseume.jpg',
+  'tshirt-femme':'images/products/tshirt-talseume-femme.jpg?v=rhude'
+};
+document.querySelectorAll('.pcard').forEach(card => {
+  let pid;
+  const link = card.querySelector('a[href*="product.html"]');
+  if (link) {
+    const m = link.href.match(/[?&]id=([^&#]+)/);
+    if (m) pid = decodeURIComponent(m[1]);
+  } else {
+    const oc = card.getAttribute('onclick') || '';
+    const m = oc.match(/id=([^'"&#]+)/);
+    if (m) pid = decodeURIComponent(m[1]);
+  }
+  if (!pid || !PCARD_HOVER_IMG[pid]) return;
+  const wrap = card.querySelector('.pcard-img');
+  if (!wrap || wrap.querySelector('.pcard-img-hover')) return;
+  const hoverImg = document.createElement('img');
+  hoverImg.className = 'pcard-img-hover';
+  hoverImg.src = PCARD_HOVER_IMG[pid];
+  hoverImg.alt = '';
+  hoverImg.loading = 'lazy';
+  hoverImg.decoding = 'async';
+  wrap.appendChild(hoverImg);
+});
 
 /* ── LENIS SMOOTH SCROLL ── */
 const reduceMotion = matchMedia('(prefers-reduced-motion:reduce)').matches;
