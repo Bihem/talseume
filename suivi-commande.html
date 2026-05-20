@@ -7,443 +7,184 @@
 <title>Suivi de commande — TALSEUME</title>
 <meta name="description" content="Suis l'état de ta commande Talseume en quelques secondes."/>
 <style>
-.skip-link{position:absolute;left:-9999px;top:0;z-index:99999;background:#0a0a0a;color:#fff;padding:14px 22px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;text-decoration:none;border:2px solid #fff;outline-offset:2px}
-.skip-link:focus,.skip-link:focus-visible{left:8px;top:8px}
-
 @font-face{font-family:'Suisse Intl';src:url('/fonts/SuisseIntl-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
 @font-face{font-family:'Suisse Intl';src:url('/fonts/SuisseIntl-Light.woff2') format('woff2');font-weight:300;font-display:swap}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--black:#0a0a0a;--off:#faf9f6;--cream:#f4f2ec;--line-l:rgba(0,0,0,.08);--gold:#a8916a;--F:'Suisse Intl','Helvetica Neue',Helvetica,Arial,sans-serif}
-html{background:#fff;overflow-x:hidden;scroll-behavior:smooth}
-body{font-family:var(--F);-webkit-font-smoothing:antialiased;background:#fff;color:var(--black)}
+:root{--black:#0a0a0a;--off:#faf9f6;--line-l:rgba(0,0,0,.08);--ok:#1d8055;--F:'Suisse Intl','Helvetica Neue',Helvetica,Arial,sans-serif}
+html{background:#fff;scroll-behavior:smooth}
+body{font-family:var(--F);-webkit-font-smoothing:antialiased;background:#fff;color:var(--black);min-height:100vh}
 a{color:inherit;text-decoration:none}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
 
-/* ══ NAV (même que product.html) ══ */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;background:#fff;padding:0 56px;display:flex;align-items:center;justify-content:space-between;height:116px;border-bottom:1px solid var(--line-l);transition:height .35s}
-.nav-left,.nav-right{display:flex;align-items:center;gap:30px;flex:1}
-.nav-right{justify-content:flex-end}
-.nav-menu{display:flex;list-style:none;gap:36px;align-items:center}
-.nav-menu>li>a{font-size:11px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;padding:30px 0;color:var(--black);transition:opacity .25s}
-.nav-menu>li>a:hover,.nav-menu>li>a.active{opacity:.55}
-.nav-logo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
-.nav-logo img{height:76px;width:auto}
-.nav-icon{width:38px;height:38px;display:flex;align-items:center;justify-content:center;position:relative;color:var(--black)}
-.nav-icon:hover{opacity:.6}
-.nav-icon svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
-.cart-count{position:absolute;top:4px;right:4px;background:var(--black);color:#fff;width:16px;height:16px;border-radius:50%;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
-.cart-count.show{opacity:1}
-.burger{display:none;flex-direction:column;gap:5px;cursor:pointer}
-.burger span{width:22px;height:1px;background:var(--black)}
-.nav-icon[aria-label="Recherche"]{display:none}
-.nav-icon[aria-label="Compte"]{display:none}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;background:#fff;padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:80px;border-bottom:1px solid var(--line-l)}
+.nav-logo{font-size:14px;font-weight:500;letter-spacing:.32em;text-transform:uppercase}
+.nav-back{font-size:11px;letter-spacing:.22em;text-transform:uppercase;opacity:.6}
+.nav-back:hover{opacity:1}
 
-/* ══ MOBILE MENU ══ */
-.mobile-menu{position:fixed;top:0;left:0;bottom:0;width:min(70vw,300px);background:rgba(255,255,255,.55);backdrop-filter:saturate(1.6) blur(28px);-webkit-backdrop-filter:saturate(1.6) blur(28px);z-index:600;transform:translateX(-100%);transition:transform .4s cubic-bezier(.76,0,.24,1);overflow-y:auto;padding:80px 28px 40px;box-shadow:12px 0 48px rgba(0,0,0,.08)}
-.mobile-menu.open{transform:none}
-.mobile-menu-close{position:absolute;top:24px;right:24px;font-size:32px;font-weight:300;line-height:1}
-.mm-mobile-section{margin-bottom:32px;border-bottom:1px solid var(--line-l);padding-bottom:24px}
-.mm-mobile-section a{display:block;font-size:13px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;padding:22px 0;color:var(--black);border-bottom:1px solid rgba(0,0,0,.06);transition:letter-spacing .4s cubic-bezier(.16,1,.3,1),padding-left .35s cubic-bezier(.16,1,.3,1),color .25s} .mm-mobile-section a:hover,.mm-mobile-section a:active{letter-spacing:.28em;padding-left:8px} .mm-mobile-section a:last-child{border-bottom:none}
+main{padding:130px 24px 80px;max-width:720px;margin:0 auto}
+.eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;opacity:.5;margin-bottom:14px}
+h1{font-size:clamp(36px,6vw,64px);font-weight:300;letter-spacing:-.03em;line-height:1;margin-bottom:24px}
+.lead{font-size:15px;font-weight:300;color:rgba(0,0,0,.7);line-height:1.7;margin-bottom:40px;max-width:520px}
 
-/* ══ PAGE HEAD ══ */
-.page-head{padding:160px 56px 80px;text-align:center;background:#fff;border-bottom:1px solid var(--line-l)}
-.page-eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:rgba(0,0,0,.6);margin-bottom:24px;font-weight:400}
-.page-title{font-size:clamp(48px,8vw,120px);font-weight:300;letter-spacing:-.04em;line-height:1;margin-bottom:24px}
-.page-sub{font-size:15px;font-weight:300;color:rgba(0,0,0,.6);max-width:520px;margin:0 auto;line-height:1.7}
-
-/* ══ CONTACT LAYOUT ══ */
-.contact-wrap{display:grid;grid-template-columns:1fr 1.4fr;gap:80px;padding:100px 56px;max-width:1400px;margin:0 auto}
-@media(max-width:900px){.contact-wrap{grid-template-columns:1fr;gap:60px;padding:60px 24px}}
-
-.contact-info{display:flex;flex-direction:column;gap:48px}
-.info-block .info-eyebrow{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:rgba(0,0,0,.6);margin-bottom:14px;font-weight:400}
-.info-block .info-content{font-size:15px;font-weight:300;line-height:1.7;color:rgba(0,0,0,.85)}
-.info-block .info-content a{border-bottom:1px solid rgba(0,0,0,.15);padding-bottom:1px;transition:border-color .2s}
-.info-block .info-content a:hover{border-color:var(--black)}
-
-.contact-form{display:flex;flex-direction:column;gap:24px}
-.form-eyebrow{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:rgba(0,0,0,.6);margin-bottom:8px;font-weight:400}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-@media(max-width:560px){.form-row{grid-template-columns:1fr}}
-.field{display:flex;flex-direction:column;gap:8px;position:relative}
-.field label{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(0,0,0,.55);font-weight:400}
-.field input,.field select,.field textarea{font-family:inherit;font-size:14px;font-weight:300;border:none;border-bottom:1px solid rgba(0,0,0,.18);background:transparent;padding:10px 0;outline:none;color:var(--black);transition:border-color .2s}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--black)}
-.field textarea{resize:vertical;min-height:120px;line-height:1.6}
-.submit-btn{align-self:flex-start;background:var(--black);color:#fff;font-size:12px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;padding:0 38px;height:56px;transition:opacity .25s,transform .35s;border:none;cursor:pointer;margin-top:14px}
+.lookup{background:#faf9f6;border:1px solid var(--line-l);border-radius:12px;padding:28px}
+.field{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.field label{font-size:10px;letter-spacing:.24em;text-transform:uppercase;opacity:.6}
+.field input{font-family:inherit;font-size:14px;font-weight:300;border:1px solid var(--line-l);background:#fff;padding:14px 16px;border-radius:8px;outline:none}
+.field input:focus{border-color:var(--black)}
+.submit-btn{width:100%;background:var(--black);color:#fff;font-size:12px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;padding:18px;border-radius:10px;transition:opacity .25s}
 .submit-btn:hover{opacity:.88}
-.form-note{font-size:11px;color:rgba(0,0,0,.6);font-weight:300;letter-spacing:.02em;margin-top:8px}
-.form-success{display:none;background:#0a0a0a;color:#fff;padding:18px 22px;margin-top:14px;font-size:13px;font-weight:300;letter-spacing:.02em}
-.form-success.show{display:block;animation:fadeIn .4s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.submit-btn:disabled{opacity:.4;cursor:not-allowed}
 
-/* ══ MAP / BAND ══ */
-.contact-band{background:var(--off);padding:90px 56px;text-align:center}
-.band-eyebrow{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:rgba(0,0,0,.5);margin-bottom:18px;font-weight:400}
-.band-title{font-size:clamp(28px,3.5vw,46px);font-weight:300;letter-spacing:-.02em;line-height:1.2;max-width:780px;margin:0 auto 28px}
-.band-cta{display:inline-block;padding:18px 36px;border:1px solid var(--black);font-size:11px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--black);transition:background .25s,color .25s}
-.band-cta:hover{background:var(--black);color:#fff}
+.feedback{display:none;padding:18px;border-radius:10px;margin-top:18px;font-size:13px;line-height:1.6}
+.feedback.show{display:block}
+.feedback.error{background:#fff0ed;border:1px solid #ff5237;color:#b71c00}
 
-/* ══ FOOTER (copié sur product.html) ══ */
-footer{background:#0a0a0a;color:#fff;padding:80px 48px 30px;position:relative;overflow:hidden;isolation:isolate}
-.footer-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;opacity:.45;filter:grayscale(.4) contrast(1.1)}
-footer::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(10,10,10,.55) 0%,rgba(10,10,10,.88) 60%,rgba(10,10,10,.96) 100%);z-index:-1;pointer-events:none}
-.f-top{display:grid;grid-template-columns:1.8fr repeat(2,1fr);gap:60px;margin-bottom:60px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.1)}
-.f-brand .f-logo{font-size:13px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;margin-bottom:14px}
-.f-brand p{font-size:13px;font-weight:300;color:rgba(255,255,255,.55);line-height:1.7;max-width:300px;margin-bottom:24px}
-.f-socials{display:flex;gap:12px}
-.f-socials a{width:38px;height:38px;border:1px solid rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;transition:.2s}
-.f-socials a:hover{background:#fff;color:var(--black);border-color:#fff}
-.f-socials svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5}
-.f-col h5{font-size:10px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:16px}
-.f-col ul{list-style:none}
-.f-col li{margin-bottom:10px}
-.f-col a{font-size:13px;font-weight:300;color:rgba(255,255,255,.85);transition:color .2s}
-.f-col a:hover{color:var(--gold)}
-.f-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px}
-.f-copy{font-size:11px;font-weight:300;color:rgba(255,255,255,.45);letter-spacing:.08em}
-.f-pay{display:flex;gap:8px;flex-wrap:wrap}
-.f-pay svg{height:22px;width:auto}
-@media(max-width:1024px){.f-top{grid-template-columns:1fr 1fr;gap:32px}}
-@media(max-width:768px){
-  nav{padding:0 16px;height:108px}
-  .nav-menu{display:none}
-  .burger{display:flex}
-  .nav-left{order:1;flex:0 0 auto;margin:0} .nav-cc{display:none}
-  .nav-right{order:2;flex:0 0 auto;gap:6px;justify-content:flex-end}
-  .nav-logo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;margin:0}
-  .nav-logo img{height:72px;width:auto}
-  .page-head{padding:120px 22px 50px}
-  .page-title{font-size:clamp(40px,11vw,64px)}
-  footer{padding:56px 22px 24px}
-  .f-top{grid-template-columns:1fr 1fr;gap:32px;padding-bottom:32px;margin-bottom:32px}
-  .f-brand{grid-column:span 2}
-  footer{padding:56px 24px 24px !important}
-  footer .f-top{display:grid !important;grid-template-columns:1fr 1fr !important;gap:32px !important;align-items:start}
-  footer .f-brand{grid-column:1 / -1 !important;width:100%}
-  footer .f-col{padding:0;min-width:0;text-align:left}
-  footer .f-col h5{margin-bottom:14px}
-  footer .f-col li{margin-bottom:8px}
-  footer .f-col a{font-size:12.5px;line-height:1.4;display:inline-block}
-  .f-bottom{flex-direction:column;align-items:flex-start;gap:14px}
-  .f-pay svg{height:18px}
-}
+.result{display:none;margin-top:40px}
+.result.show{display:block;animation:fade .4s}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-/* ══ PAGE TRANSITIONS ══ */
-@supports (view-transition-name:auto){
-  ::view-transition-old(root){animation:pt-out .45s cubic-bezier(.76,0,.24,1) forwards}
-  ::view-transition-new(root){animation:pt-in .55s cubic-bezier(.76,0,.24,1) .1s both}
-  @keyframes pt-out{to{opacity:0;transform:translateY(-12px) scale(.985);filter:blur(2px)}}
-  @keyframes pt-in{from{opacity:0;transform:translateY(14px) scale(.99)}}
-}
-.magnetic{will-change:transform;transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+.order-head{padding:24px 0;border-bottom:1px solid var(--line-l);margin-bottom:32px}
+.order-head h2{font-size:24px;font-weight:300;letter-spacing:-.02em;margin-bottom:6px}
+.order-head .meta{font-size:13px;color:rgba(0,0,0,.6)}
 
-/* ══ CURSOR PREMIUM ══ */
-@media (hover:hover) and (pointer:fine){
-  *,a,button,input,textarea,select{cursor:none !important}
-  .cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%);mix-blend-mode:difference;will-change:transform}
-  .cursor-dot{width:6px;height:6px;background:#fff;transition:width .25s cubic-bezier(.77,0,.18,1),height .25s cubic-bezier(.77,0,.18,1)}
-  .cursor-ring{width:34px;height:34px;border:1px solid rgba(255,255,255,.55);background:transparent;transition:width .35s cubic-bezier(.77,0,.18,1),height .35s cubic-bezier(.77,0,.18,1),border-color .25s,opacity .25s}
-  body.c-hover .cursor-dot{width:0;height:0}
-  body.c-hover .cursor-ring{width:54px;height:54px;border-color:rgba(255,255,255,.95)}
-  body.c-click .cursor-ring{width:22px;height:22px}
-}
+.timeline{position:relative;padding:8px 0 24px;margin-bottom:32px}
+.step{display:flex;gap:18px;padding:18px 0;align-items:flex-start;position:relative}
+.step::before{content:'';position:absolute;left:11px;top:36px;bottom:-18px;width:1px;background:var(--line-l)}
+.step:last-child::before{display:none}
+.dot{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line-l);background:#fff;flex-shrink:0;position:relative;z-index:1;display:flex;align-items:center;justify-content:center}
+.step.done .dot{background:var(--black);border-color:var(--black)}
+.step.done .dot::after{content:'';width:7px;height:4px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:rotate(-45deg) translate(1px,-1px)}
+.step-body{flex:1;padding-top:1px}
+.step-body .label{font-size:14px;font-weight:500;margin-bottom:4px}
+.step.done .label{color:var(--black)}
+.step:not(.done) .label{color:rgba(0,0,0,.4)}
+.step-body .ts{font-size:12px;color:rgba(0,0,0,.55)}
+.step-body .tracking{font-size:12px;color:var(--black);margin-top:6px}
+.step-body .tracking a{border-bottom:1px solid currentColor}
 
-/* ══ LEGAL PAGE ══ */
-.legal-wrap{max-width:920px;margin:0 auto;padding:80px 56px 120px;font-weight:300;line-height:1.85;color:rgba(0,0,0,.82);font-size:17px}
-@media(max-width:768px){.legal-wrap{padding:60px 24px 80px;font-size:15.5px}}
-.legal-wrap h2{font-size:clamp(24px,2.8vw,34px);font-weight:300;letter-spacing:-.015em;color:var(--black);margin:60px 0 22px}
-.legal-wrap h2:first-child{margin-top:0}
-.legal-wrap h3{font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:var(--black);margin:36px 0 14px}
-.legal-wrap p{margin-bottom:14px}
-.legal-wrap ul{margin:14px 0 18px 22px}
-.legal-wrap li{margin-bottom:8px}
-.legal-wrap strong{font-weight:500;color:var(--black)}
-.legal-wrap a{border-bottom:1px solid rgba(0,0,0,.2);transition:border-color .2s}
-.legal-wrap a:hover{border-color:var(--black)}
-.legal-meta{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:rgba(0,0,0,.6);margin-bottom:40px;display:block}
-.legal-table{width:100%;border-collapse:collapse;margin:18px 0 28px;font-size:15px}
-.legal-table th,.legal-table td{text-align:left;padding:16px 20px;border-bottom:1px solid var(--line-l);vertical-align:top}
-.legal-table th{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:var(--black);background:#fafaf7}
+.items{background:#faf9f6;border:1px solid var(--line-l);border-radius:10px;padding:20px;margin-bottom:24px}
+.items h3{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.55);margin-bottom:14px}
+.items .row{display:flex;justify-content:space-between;padding:8px 0;font-size:13px}
+.items .total{padding-top:12px;margin-top:8px;border-top:1px solid var(--line-l);font-weight:500;font-size:14px}
+
+.actions{display:flex;gap:12px;flex-wrap:wrap}
+.actions a{padding:14px 24px;border:1px solid var(--black);font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;border-radius:99px;transition:.2s}
+.actions a:hover{background:var(--black);color:#fff}
+
+footer{padding:40px 24px;text-align:center;font-size:11px;color:rgba(0,0,0,.5);border-top:1px solid var(--line-l);margin-top:80px}
 </style>
-
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.0.42/dist/lenis.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-<link rel="canonical" href="https://talseume.com/suivi-commande.html"/>
-<meta property="og:type" content="website"/>
-<meta property="og:url" content="https://talseume.com/suivi-commande.html"/>
-<meta property="og:title" content="Suivi de commande — TALSEUME"/>
-<meta property="og:description" content="Suivez votre commande Talseume en temps réel avec votre numéro de commande et email."/>
-<meta property="og:image" content="https://talseume.com/images/og-default.jpg"/>
-<meta name="twitter:card" content="summary_large_image"/>
-<link rel="stylesheet" href="/cookies-banner.css">
 </head>
 <body>
-<a href="#main-content" class="skip-link">Aller au contenu</a>
 
-<!-- CURSOR PREMIUM -->
-<div class="cursor-ring" id="cursorRing"></div>
-<div class="cursor-dot" id="cursorDot"></div>
-
-<!-- NAV -->
 <nav>
-  <div class="nav-left">
-    <div class="burger" onclick="document.getElementById('mobileMenu').classList.add('open')">
-      <span></span><span></span><span></span>
-    </div>
-    <ul class="nav-menu">
-      <li>
-        <a href="/#shop">Boutique</a>
-      </li>
-      <li style="display:none">
-        <button>Mode &amp; Accessoires <span class="caret">▼</span></button>
-        <div class="megamenu">
-          <div class="mm-col">
-            <h4>Nouveautés</h4>
-            <ul>
-              <li><a href="/#new">No Limit 0.27</a></li>
-              <li><a href="/#new">Voir tout</a></li>
-            </ul>
-          </div>
-          <div class="mm-col">
-            <h4>Homme</h4>
-            <ul>
-              <li><a href="/#shop">Sweats à capuche</a></li>
-              <li><a href="/#shop">T-shirts</a></li>
-              <li><a href="/#shop">Manches longues</a></li>
-              <li><a href="/#shop">Vestes</a></li>
-            </ul>
-          </div>
-          <div class="mm-col">
-            <h4>Femme</h4>
-            <ul>
-              <li><a href="/#shop">T-shirts</a></li>
-              <li><a href="/#shop">Débardeurs</a></li>
-              <li><a href="/#shop">Voir tout</a></li>
-            </ul>
-          </div>
-          <div class="mm-feat">
-            <a href="/#new" class="mm-feat-card">
-              <img src="images/products/SWEAT-TALSEUME-ROUGE-A-CAPUCHE.webp" alt="Nouveautés" width="1350" height="1800"/>
-              <span>Nouveautés</span>
-            </a>
-            <a href="/#shop" class="mm-feat-card">
-              <img src="images/products/Jacket-By-TALSEUMENWAR.webp" alt="Vestes" width="1350" height="1800"/>
-              <span>Vestes</span>
-            </a>
-          </div>
-        </div>
-      </li>
-      <li><a href="/contact.html">Contact</a></li>
-      <li><a href="/blog.html">Blog</a></li>
-    </ul>
-  </div>
-  <a href="/" class="nav-logo"><img src="images/talseume-logo.png" alt="TALSEUME" width="600" height="600"/></a>
-  <div class="nav-right">
-    <span class="nav-cc">FR / EUR</span>
-    <button class="nav-icon" aria-label="Recherche">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    </button>
-    <button class="nav-icon" aria-label="Compte">
-      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-    </button>
-    <a href="/favoris.html" class="nav-icon" aria-label="Favoris">
-      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-      <span class="cart-count wish-count">0</span>
-    </a>
-    <button class="nav-icon" onclick="openCart()" aria-label="Panier">
-      <svg viewBox="0 0 24 24"><path d="M4 7h16l-1.6 14H5.6L4 7z"/><path d="M9 7V5a3 3 0 016 0v2"/></svg>
-      <span id="cartCount" class="cart-count">0</span>
-    </button>
-  </div>
+  <a href="/" class="nav-back">← Accueil</a>
+  <a href="/" class="nav-logo">TALSEUME</a>
+  <a href="/contact.html" class="nav-back">Aide</a>
 </nav>
 
-<!-- MOBILE MENU -->
-<div class="mobile-menu" id="mobileMenu">
-  <button class="mobile-menu-close" onclick="document.getElementById('mobileMenu').classList.remove('open')">×</button>
-  <div class="mm-mobile-section">
-    <a href="/#shop">Boutique</a>
-    <a href="/contact.html">Contact</a>
-    <a href="/blog.html">Blog</a>
-  </div>
-</div>
+<main>
+  <div class="eyebrow">Service client</div>
+  <h1>Suivi de commande</h1>
+  <p class="lead">Renseigne ton numéro de commande et l'email utilisé pour voir l'état actuel.</p>
 
-<!-- PAGE HEAD -->
-<section class="page-head" id="main-content" tabindex="-1">
-  <div class="page-eyebrow">Espace client</div>
-  <h1 class="page-title">Suivi de commande</h1>
-  <p class="page-sub">Retrouve l'état de ta commande en quelques secondes.</p>
-</section>
-
-
-
-
-
-<section class="legal-wrap">
-<span class="legal-meta">Espace client</span>
-
-<p>Renseigne ton numéro de commande et l'email utilisé lors de l'achat. Nous te répondons sous 24 h ouvrées avec le statut détaillé de ton colis.</p>
-
-<form name="track-order" method="POST" data-netlify="true" netlify-honeypot="bot-field" style="background:var(--off);padding:32px;border:1px solid var(--line-l);margin:40px 0;display:flex;flex-direction:column;gap:18px">
-  <input type="hidden" name="form-name" value="track-order"/>
-  <p hidden><label>Ne pas remplir&nbsp;: <input name="bot-field"/></label></p>
-  <label style="display:flex;flex-direction:column;gap:8px">
-    <span style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.55);font-weight:500">Numéro de commande</span>
-    <input type="text" name="order_number" required placeholder="TS-XXXX-XXXX" style="padding:14px 16px;border:1px solid var(--line-l);background:#fff;font-family:inherit;font-size:15px;font-weight:300">
-  </label>
-  <label style="display:flex;flex-direction:column;gap:8px">
-    <span style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.55);font-weight:500">Email de commande</span>
-    <input type="email" name="email" required placeholder="toi@exemple.fr" style="padding:14px 16px;border:1px solid var(--line-l);background:#fff;font-family:inherit;font-size:15px;font-weight:300">
-  </label>
-  <label style="display:flex;flex-direction:column;gap:8px">
-    <span style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.55);font-weight:500">Message (optionnel)</span>
-    <textarea name="message" rows="4" placeholder="Question particulière, problème de livraison…" style="padding:14px 16px;border:1px solid var(--line-l);background:#fff;font-family:inherit;font-size:15px;font-weight:300;resize:vertical"></textarea>
-  </label>
-  <button type="submit" style="background:var(--black);color:#fff;border:none;padding:16px 28px;font-family:inherit;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:opacity .2s;align-self:flex-start">Suivre ma commande →</button>
-</form>
-
-<h2>Comment ça marche</h2>
-<ol style="margin:14px 0 18px 22px">
-  <li><strong>Email de confirmation</strong> — Tu reçois un email avec ton numéro de commande dès la validation du paiement.</li>
-  <li><strong>Email d'expédition</strong> — Dès que le colis est confié au transporteur (1 à 2 jours ouvrés), tu reçois le lien de tracking direct (Mondial Relay ou La Poste).</li>
-  <li><strong>Lien de suivi</strong> — Clique sur le lien dans l'email pour voir l'état en temps réel.</li>
-  <li><strong>Pas reçu l'email&nbsp;?</strong> — Vérifie tes spams, puis utilise le formulaire ci-dessus.</li>
-</ol>
-
-<h2>Questions rapides</h2>
-
-<details style="border-bottom:1px solid var(--line-l);padding:20px 0"><summary style="cursor:pointer;font-weight:500;list-style:none;font-size:17px">Je n'ai pas reçu mon email de confirmation</summary><p style="margin-top:12px">Vérifie tes spams. Si rien, contacte-nous avec l'email utilisé et nous renvoyons la confirmation.</p></details>
-
-<details style="border-bottom:1px solid var(--line-l);padding:20px 0"><summary style="cursor:pointer;font-weight:500;list-style:none;font-size:17px">Mon colis est en retard</summary><p style="margin-top:12px">Au-delà des délais annoncés en <a href="/livraison-retours.html">Livraison &amp; Retours</a>, écris-nous, on ouvre une enquête transporteur sous 24 h.</p></details>
-
-<details style="border-bottom:1px solid var(--line-l);padding:20px 0"><summary style="cursor:pointer;font-weight:500;list-style:none;font-size:17px">Je veux modifier mon adresse de livraison</summary><p style="margin-top:12px">Possible uniquement si la commande n'est pas encore expédiée. Contacte-nous le plus vite possible à <a href="mailto:contact@talseume.com">contact@talseume.com</a>.</p></details>
-
-<h2>Contact direct</h2>
-<p>Si tu préfères, écris-nous à <a href="mailto:contact@talseume.com">contact@talseume.com</a>. Réponse sous 24 à 48 h ouvrées.</p>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <img class="footer-bg" src="https://images.unsplash.com/photo-1539389004540-770367e1bccb?w=2000&q=80&auto=format&fit=crop" alt="" aria-hidden="true" loading="lazy"/>
-  <div class="f-top">
-    <div class="f-brand">
-      <div class="f-logo">Talseume</div>
-      <p>Streetwear éco-responsable né à Paris. Coton bio GOTS, matériaux recyclés, fabriqué pour durer.</p>
-      <div class="f-socials">
-        <a href="https://www.instagram.com/talseumeclothing/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-        </a>
-        <a href="mailto:contact@talseume.com" aria-label="Email">
-          <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
-        </a>
-        <a href="https://www.tiktok.com/@talseumeclothing" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
-          <svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg>
-        </a>
-      </div>
+  <form id="lookup" class="lookup" novalidate>
+    <div class="field">
+      <label for="orderId">Numéro de commande (cs_…)</label>
+      <input id="orderId" required placeholder="cs_live_abc123…"/>
     </div>
-    <div class="f-col">
-      <h5>Aide</h5>
-      <ul>
-        <li><a href="livraison-retours.html">Livraison &amp; Retours</a></li>
-        <li><a href="suivi-commande.html" aria-current="page">Suivi de commande</a></li>
-        <li><a href="guide-tailles.html">Guide des tailles</a></li>
-        <li><a href="faq.html">FAQ</a></li>
-      </ul>
+    <div class="field">
+      <label for="email">Email utilisé</label>
+      <input id="email" type="email" required placeholder="toi@exemple.fr"/>
     </div>
-    <div class="f-col">
-      <h5>Légal</h5>
-      <ul>
-        <li><a href="mentions-legales.html">Mentions légales</a></li>
-        <li><a href="cgv.html">CGV</a></li>
-        <li><a href="confidentialite.html">Politique de confidentialité</a></li>
-        <li><a href="cookies.html">Cookies</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="f-bottom">
-    <span class="f-copy">©2026 Talseume — Tous droits réservés</span>
-  </div>
-</footer>
+    <button type="submit" class="submit-btn" id="submit">Voir ma commande</button>
+    <div class="feedback" id="feedback"></div>
+  </form>
+
+  <section class="result" id="result"></section>
+</main>
+
+<footer>© Talseume · <a href="/" style="border-bottom:1px solid currentColor">talseume.com</a></footer>
 
 <script>
-/* ── LENIS + GSAP ── */
-const reduceMotion = matchMedia('(prefers-reduced-motion:reduce)').matches;
-if (!reduceMotion && typeof Lenis !== 'undefined' && !matchMedia('(hover:none) and (pointer:coarse)').matches) {
-  const lenis = new Lenis({duration:1.15, easing:t=>Math.min(1, 1.001 - Math.pow(2,-10*t)), smoothWheel:true});
-  if (typeof gsap !== 'undefined') {
-    gsap.ticker.add(time => lenis.raf(time*1000));
-    gsap.ticker.lagSmoothing(0);
-    if (typeof ScrollTrigger !== 'undefined') {
-      gsap.registerPlugin(ScrollTrigger);
-      lenis.on('scroll', ScrollTrigger.update);
+const fmtEur = n => (Math.round((n||0)*100)/100).toFixed(2).replace('.',',') + ' €';
+const fmtDate = ts => ts ? new Date(ts).toLocaleDateString('fr-FR', { day:'2-digit', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '—';
+
+const q = new URLSearchParams(location.search);
+if (q.get('cmd')) document.getElementById('orderId').value = q.get('cmd');
+if (q.get('email')) document.getElementById('email').value = q.get('email');
+
+document.getElementById('lookup').addEventListener('submit', async e => {
+  e.preventDefault();
+  const orderId = document.getElementById('orderId').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const fb = document.getElementById('feedback');
+  const btn = document.getElementById('submit');
+  const result = document.getElementById('result');
+  fb.className = 'feedback';
+  result.className = 'result';
+  result.innerHTML = '';
+  btn.disabled = true; btn.textContent = 'Recherche…';
+
+  try {
+    const res = await fetch(`/.netlify/functions/order-tracking?orderId=${encodeURIComponent(orderId)}&email=${encodeURIComponent(email)}`);
+    const data = await res.json();
+    if (!res.ok) {
+      const msg = { order_not_found: 'Commande introuvable.', email_mismatch: 'L\'email ne correspond pas.' }[data.error] || 'Erreur · réessaye.';
+      fb.className = 'feedback show error'; fb.textContent = msg;
+      return;
     }
-  } else {
-    function raf(time){ lenis.raf(time); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
+    render(data);
+  } catch {
+    fb.className = 'feedback show error'; fb.textContent = 'Erreur réseau.';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Voir ma commande';
   }
-}
-if (!reduceMotion && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-  gsap.fromTo('.page-eyebrow,.page-title,.page-sub', {y:30,opacity:0}, {y:0,opacity:1,duration:1,ease:'power3.out',stagger:.15,delay:.1});
-  gsap.utils.toArray('.info-block').forEach(el => gsap.fromTo(el, {y:30,opacity:0}, {y:0,opacity:1,duration:.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 88%'}}));
-  gsap.fromTo('.band-eyebrow,.band-title,.band-cta', {y:30,opacity:0}, {y:0,opacity:1,duration:.9,ease:'power3.out',stagger:.12,scrollTrigger:{trigger:'.contact-band',start:'top 80%'}});
+});
+
+function render(d) {
+  const result = document.getElementById('result');
+  const steps = (d.timeline || []).map(s => `
+    <div class="step ${s.done ? 'done' : ''}">
+      <div class="dot"></div>
+      <div class="step-body">
+        <div class="label">${s.label}</div>
+        ${s.ts ? `<div class="ts">${fmtDate(s.ts)}</div>` : ''}
+        ${s.tracking ? `<div class="tracking">Suivi <strong>${s.carrier || ''}</strong> · <code>${s.tracking}</code></div>` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  const items = (d.items || []).map(i => `<div class="row"><span>${i.title} <span style="opacity:.5">×${i.qty}</span></span><span>${fmtEur(i.price * i.qty)}</span></div>`).join('');
+
+  result.innerHTML = `
+    <div class="order-head">
+      <h2>Commande #${d.orderNum}</h2>
+      <div class="meta">Bonjour ${d.customer.name?.split(' ')[0] || ''} — voici l'état de ta commande.</div>
+    </div>
+
+    <div class="timeline">${steps}</div>
+
+    <div class="items">
+      <h3>Détail</h3>
+      ${items}
+      <div class="row total"><span>Total</span><span>${fmtEur(d.amount)}</span></div>
+    </div>
+
+    <div class="actions">
+      <a href="/retour?cmd=${d.return ? d.return.orderId : encodeURIComponent(d.return?.orderId || '')}${!d.return ? '' : ''}">Faire un retour</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+  `;
+  // Fix l'URL retour (passe l'orderId réel)
+  const orderId = document.getElementById('orderId').value.trim();
+  result.querySelector('.actions a').setAttribute('href', `/retour?cmd=${encodeURIComponent(orderId)}`);
+  result.className = 'result show';
+  result.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-/* ── PAGE TRANSITIONS ── */
-if (document.startViewTransition) {
-  document.addEventListener('click', e => {
-    const a = e.target.closest('a[href]');
-    if (!a) return;
-    const url = new URL(a.href, location.href);
-    if (url.origin !== location.origin) return;
-    if (a.target === '_blank' || a.hasAttribute('download')) return;
-    if (url.pathname === location.pathname && url.hash) return;
-    e.preventDefault();
-    document.startViewTransition(() => { location.href = a.href; });
-  });
-}
-
-/* ── MAGNETIC ── */
-if (!reduceMotion && matchMedia('(hover:hover) and (pointer:fine)').matches) {
-  document.querySelectorAll('.submit-btn, .band-cta, .nav-icon, .magnetic').forEach(btn => {
-    btn.classList.add('magnetic');
-    btn.addEventListener('mousemove', e => {
-      const r = btn.getBoundingClientRect();
-      const x = e.clientX - r.left - r.width/2;
-      const y = e.clientY - r.top - r.height/2;
-      btn.style.transform = `translate(${x*.22}px,${y*.32}px)`;
-    });
-    btn.addEventListener('mouseleave', () => btn.style.transform = '');
-  });
-}
-
-/* ── CURSOR PREMIUM ── */
-(function(){
-  if (!matchMedia('(hover:hover) and (pointer:fine)').matches) return;
-  const dot = document.getElementById('cursorDot');
-  const ring = document.getElementById('cursorRing');
-  if (!dot || !ring) return;
-  let mx = innerWidth/2, my = innerHeight/2, rx = mx, ry = my;
-  addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`; });
-  (function tick(){ rx += (mx-rx)*.18; ry += (my-ry)*.18; ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`; requestAnimationFrame(tick); })();
-  const hoverSel = 'a,button,[onclick],.nav-icon,input,textarea,select,label,.magnetic';
-  document.body.addEventListener('mouseover', e => { if (e.target.closest(hoverSel)) document.body.classList.add('c-hover'); });
-  document.body.addEventListener('mouseout', e => { if (e.target.closest(hoverSel)) document.body.classList.remove('c-hover'); });
-  addEventListener('mousedown', () => document.body.classList.add('c-click'));
-  addEventListener('mouseup', () => document.body.classList.remove('c-click'));
-  addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
-  addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
-})();
-
-/* ── WISHLIST COUNT ── */
-(function(){
-  const wl = JSON.parse(localStorage.getItem('tls-wishlist') || '[]');
-  document.querySelectorAll('.wish-count').forEach(el => {
-    el.textContent = wl.length;
-    el.classList.toggle('show', wl.length > 0);
-  });
-})();
+// Auto-load si ?cmd & ?email
+if (q.get('cmd') && q.get('email')) document.getElementById('lookup').dispatchEvent(new Event('submit'));
 </script>
-<script src="/cookies-banner.js" defer></script>
+
 </body>
 </html>

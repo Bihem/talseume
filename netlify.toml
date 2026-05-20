@@ -2,6 +2,32 @@
   publish = "."
   functions = "netlify/functions"
 
+# ── Routes propres ────────────────────────────────────────────────
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "/.netlify/functions/sitemap-xml"
+  status = 200
+
+[[redirects]]
+  from = "/retour"
+  to = "/retour.html"
+  status = 200
+
+[[redirects]]
+  from = "/avis"
+  to = "/avis.html"
+  status = 200
+
+[[redirects]]
+  from = "/suivi"
+  to = "/suivi-commande.html"
+  status = 200
+
+[[redirects]]
+  from = "/collection/*"
+  to = "/collection.html?slug=:splat"
+  status = 200
+
 # ── Sécurité globale ──────────────────────────────────────────────
 [[headers]]
   for = "/*"

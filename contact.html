@@ -448,14 +448,33 @@ if (!reduceMotion && matchMedia('(hover:hover) and (pointer:fine)').matches) {
 function submitContact(e){
   e.preventDefault();
   const f = e.target;
+  // Bloque les bots qui ont rempli le honeypot
+  if (f.elements['bot-field']?.value) return false;
+
+  const payload = {
+    name: f.elements['name'].value.trim(),
+    email: f.elements['email'].value.trim(),
+    subject: f.elements['subject'].value,
+    message: f.elements['message'].value.trim(),
+    category: f.elements['subject'].value || 'general'
+  };
+
+  const s = document.getElementById('formSuccess');
+
+  // 1. Ticket dans l'admin (support-tickets) — non bloquant
+  fetch('/.netlify/functions/support-tickets', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+  }).catch(() => {});
+
+  // 2. Netlify Forms (backup, garde la liste consolidée)
   const data = new FormData(f);
   fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams(data).toString()})
     .then(() => {
-      document.getElementById('formSuccess').classList.add('show');
+      s.textContent = 'Message envoyé. On revient vers toi sous 24-48h.';
+      s.classList.add('show');
       setTimeout(() => f.reset(), 300);
     })
-    .catch(err => {
-      const s = document.getElementById('formSuccess');
+    .catch(() => {
       s.textContent = 'Erreur — réessaye ou écris-nous directement à contact@talseume.com.';
       s.classList.add('show');
     });

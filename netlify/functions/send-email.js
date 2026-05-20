@@ -40,8 +40,48 @@ const TEMPLATES = {
     html: emailLayout(`
       <h1 style="font-size:24px;margin:0 0 16px;font-weight:500;letter-spacing:-.01em">Comment c'est passé ${ctx.firstName || ''} ?</h1>
       <p style="margin:0 0 16px">Tu as reçu ta commande Talseume il y a quelques jours. Ton retour compte énormément pour moi — bons et moins bons.</p>
-      <p style="margin:0 0 16px">Réponds à ce mail en 3 lignes : <strong>la pièce, la coupe, l'expérience d'achat</strong>. Si tu veux poster une photo sur Insta avec @talseumeclothing, je repost.</p>
+      <p style="margin:0 0 16px">Laisse ton avis ici : <a href="https://talseume.com/avis?cmd=${ctx.orderNum}" style="color:#0A0A0A;border-bottom:1px solid #0A0A0A">talseume.com/avis</a> — 30 secondes, ça m'aide énormément.</p>
       <p style="margin:0 0 16px;color:#666;font-size:13px">Merci de ton soutien aux premières heures du projet.</p>
+    `)
+  }),
+  refund_notification: (ctx) => ({
+    subject: `Remboursement confirmé · commande #${ctx.orderNum}`,
+    html: emailLayout(`
+      <h1 style="font-size:24px;margin:0 0 16px;font-weight:500;letter-spacing:-.01em">Remboursement effectué</h1>
+      <p style="margin:0 0 16px">Ta commande <strong>#${ctx.orderNum}</strong> a été remboursée${ctx.fullRefund ? ' intégralement' : ' partiellement'} : <strong>${fmtEur(ctx.refundAmount)}</strong>.</p>
+      <p style="margin:0 0 16px">Le montant apparaît sur ton moyen de paiement sous 5 à 10 jours ouvrés selon ta banque.</p>
+      <p style="margin:0 0 8px;color:#666;font-size:13px">Une question ? Réponds à ce mail.</p>
+    `)
+  }),
+  return_received: (ctx) => ({
+    subject: `Ton retour est arrivé · commande #${ctx.orderNum}`,
+    html: emailLayout(`
+      <h1 style="font-size:24px;margin:0 0 16px;font-weight:500;letter-spacing:-.01em">Bien reçu</h1>
+      <p style="margin:0 0 16px">J'ai réceptionné ton colis retour pour la commande <strong>#${ctx.orderNum}</strong>. Je contrôle l'état et te recontacte sous 48h.</p>
+      <p style="margin:0 0 16px;color:#666;font-size:13px">Si tu as choisi un échange, je prépare la nouvelle taille. Sinon le remboursement part dès validation.</p>
+    `)
+  }),
+  return_accepted: (ctx) => ({
+    subject: `Demande de retour acceptée · #${ctx.orderNum}`,
+    html: emailLayout(`
+      <h1 style="font-size:24px;margin:0 0 16px;font-weight:500;letter-spacing:-.01em">Retour accepté</h1>
+      <p style="margin:0 0 16px">Ta demande pour la commande <strong>#${ctx.orderNum}</strong> est validée. Renvoie le colis à l'adresse ci-dessous sous 14 jours :</p>
+      <p style="margin:0 0 16px;padding:14px;background:#f6f6f6;border-radius:8px;font-size:13px">
+        Talseume — Retours<br>
+        44c Allée Robillard<br>
+        93320 Les Pavillons-sous-Bois<br>
+        France
+      </p>
+      <p style="margin:0 0 16px;color:#666;font-size:13px">Garde le numéro de suivi. Les frais de retour sont à ta charge sauf produit défectueux.</p>
+    `)
+  }),
+  restock_available: (ctx) => ({
+    subject: `${ctx.productTitle || 'Ton article'} est de nouveau dispo`,
+    html: emailLayout(`
+      <h1 style="font-size:24px;margin:0 0 16px;font-weight:500;letter-spacing:-.01em">Bonne nouvelle</h1>
+      <p style="margin:0 0 16px"><strong>${ctx.productTitle}</strong>${ctx.size ? ` taille <strong>${ctx.size}</strong>` : ''} est revenu en stock.</p>
+      <p style="margin:0 0 16px">Les stocks sont limités — file directement sur la fiche produit :</p>
+      <p style="margin:0 0 16px"><a href="${ctx.productUrl}" style="display:inline-block;background:#0A0A0A;color:#fff;padding:14px 28px;text-decoration:none;font-size:13px;letter-spacing:.18em;text-transform:uppercase">Acheter</a></p>
     `)
   })
 };
@@ -102,11 +142,26 @@ exports.handler = async (event) => {
 
   let body;
   try { body = JSON.parse(event.body || '{}'); } catch { return { statusCode: 400, headers: H, body: JSON.stringify({ error: 'invalid_json' }) }; }
-  const { template, orderId, tracking } = body;
+  const { template, orderId, tracking, refundAmount, fullRefund, to, productTitle, productUrl, size, firstName: rawFirst } = body;
 
   if (!template || !TEMPLATES[template]) {
     return { statusCode: 400, headers: H, body: JSON.stringify({ error: 'template_unknown', allowed: Object.keys(TEMPLATES) }) };
   }
+
+  // Templates standalone (sans orderId Stripe) : restock_available
+  if (template === 'restock_available') {
+    if (!to || !productTitle || !productUrl) {
+      return { statusCode: 400, headers: H, body: JSON.stringify({ error: 'restock_requires_to_productTitle_productUrl' }) };
+    }
+    const ctx = { productTitle, productUrl, size: size || null, firstName: rawFirst || '' };
+    const { subject, html } = TEMPLATES[template](ctx);
+    if (!process.env.BREVO_API_KEY) {
+      return { statusCode: 200, headers: H, body: JSON.stringify({ sent: false, configured: false, preview: { to, subject } }) };
+    }
+    await brevoSend({ sender: BRAND_FROM, to: [{ email: to }], subject, htmlContent: html, replyTo: BRAND_FROM });
+    return { statusCode: 200, headers: H, body: JSON.stringify({ sent: true, to, template }) };
+  }
+
   if (!orderId) return { statusCode: 400, headers: H, body: JSON.stringify({ error: 'orderId_required' }) };
 
   try {
@@ -125,7 +180,9 @@ exports.handler = async (event) => {
         qty: li.quantity,
         price: ((li.amount_subtotal || 0) / li.quantity) / 100
       })),
-      tracking: tracking || null
+      tracking: tracking || null,
+      refundAmount: refundAmount || 0,
+      fullRefund: fullRefund === true || fullRefund === undefined
     };
 
     const { subject, html } = TEMPLATES[template](ctx);

@@ -7,7 +7,15 @@
 const https = require('https');
 const { validateAdminToken } = require('./admin-auth');
 
-const ALLOWED_FILES = ['drops','calendar','client-notes','products-stock','products-overrides','recent-events'];
+const ALLOWED_FILES = [
+  'drops','calendar','client-notes',
+  'products-stock','products-overrides',
+  'recent-events','webhook-logs',
+  'invoice-counter','invoice-ledger',
+  'returns','restock-alerts',
+  'collections','reviews',
+  'support-tickets','tracking-config','shipments'
+];
 
 const CORS = {
   'Access-Control-Allow-Origin': 'https://talseume.com',

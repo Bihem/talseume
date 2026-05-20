@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="theme-color" content="#0a0a0a"/>
+<title>Collection — TALSEUME</title>
+<meta name="description" content="Découvre la collection Talseume."/>
+<style>
+@font-face{font-family:'Suisse Intl';src:url('/fonts/SuisseIntl-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Suisse Intl';src:url('/fonts/SuisseIntl-Light.woff2') format('woff2');font-weight:300;font-display:swap}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--black:#0a0a0a;--off:#faf9f6;--line-l:rgba(0,0,0,.08);--F:'Suisse Intl','Helvetica Neue',Helvetica,Arial,sans-serif}
+html{background:#fff}
+body{font-family:var(--F);-webkit-font-smoothing:antialiased;background:#fff;color:var(--black);min-height:100vh}
+a{color:inherit;text-decoration:none}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:500;background:#fff;padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:80px;border-bottom:1px solid var(--line-l)}
+.nav-logo{font-size:14px;font-weight:500;letter-spacing:.32em;text-transform:uppercase}
+.nav-back{font-size:11px;letter-spacing:.22em;text-transform:uppercase;opacity:.6}
+
+.hero{padding:160px 24px 60px;text-align:center;border-bottom:1px solid var(--line-l)}
+.eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;opacity:.5;margin-bottom:14px}
+h1{font-size:clamp(48px,10vw,140px);font-weight:300;letter-spacing:-.04em;line-height:.95}
+.lead{margin:24px auto 0;max-width:560px;font-size:15px;color:rgba(0,0,0,.7);line-height:1.7}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:40px 24px;padding:60px 24px;max-width:1400px;margin:0 auto}
+.pcard{position:relative}
+.pcard .img{aspect-ratio:3/4;background:#f6f6f6;border-radius:4px;overflow:hidden;margin-bottom:14px}
+.pcard .img img{width:100%;height:100%;object-fit:cover;transition:opacity .3s}
+.pcard:hover .img img{opacity:.85}
+.pcard .name{font-size:13px;font-weight:400;letter-spacing:.04em;margin-bottom:4px}
+.pcard .price{font-size:13px;color:rgba(0,0,0,.6)}
+
+.empty{padding:120px 24px;text-align:center;color:rgba(0,0,0,.5);font-size:14px}
+
+footer{padding:60px 24px;text-align:center;font-size:11px;color:rgba(0,0,0,.5);border-top:1px solid var(--line-l);margin-top:60px}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-back">← Accueil</a>
+  <a href="/" class="nav-logo">TALSEUME</a>
+  <a href="/contact.html" class="nav-back">Contact</a>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow" id="eyebrow">Collection</div>
+  <h1 id="title">Chargement…</h1>
+  <p class="lead" id="lead"></p>
+</section>
+
+<section id="grid" class="grid"></section>
+<section id="empty" class="empty" hidden>Collection introuvable ou vide.</section>
+
+<footer>© Talseume · <a href="/" style="border-bottom:1px solid currentColor">talseume.com</a></footer>
+
+<script>
+const fmtEur = n => (Math.round((n||0)*100)/100).toFixed(2).replace('.',',') + ' €';
+
+const PRODUCT_NAMES = {
+  'sweat-talseume-oversize': 'Sweat Talseume Oversize',
+  'sweat-bikelife': 'Sweat Bikelife',
+  'tee-shirt-oversize': 'T-shirt Oversize',
+  'tshirt-manches-longues': 'T-shirt Manches Longues',
+  'veste-coach': 'Veste Coach',
+  'debardeur-femme': 'Débardeur Femme',
+  'tshirt-femme': 'T-shirt Femme',
+  'cagoule': 'Cagoule',
+  'sport-beanie': 'Sport Beanie',
+  'casquette-trucker': 'Casquette Trucker',
+  'talseume-bag': 'Talseume Bag'
+};
+
+async function load() {
+  const slug = new URLSearchParams(location.search).get('slug') || location.pathname.split('/').pop();
+  try {
+    // Fetch collections via admin-data nécessite token admin — on lit le fichier statique
+    const res = await fetch('/data/collections.json', { cache: 'no-store' });
+    const data = await res.json();
+    const col = (data.collections || []).find(c => c.slug === slug);
+    if (!col) { return showEmpty(); }
+
+    document.title = `${col.title} — TALSEUME`;
+    document.querySelector('meta[name="description"]').content = col.description || `Collection ${col.title}`;
+    document.getElementById('title').textContent = col.title;
+    document.getElementById('lead').textContent = col.description || '';
+
+    // Charge overrides pour prix
+    let overrides = {};
+    try {
+      const o = await fetch('/data/products-overrides.json', { cache: 'no-store' });
+      const od = await o.json();
+      overrides = od.overrides || {};
+    } catch {}
+
+    const grid = document.getElementById('grid');
+    const pids = col.products || [];
+    if (!pids.length) return showEmpty();
+
+    grid.innerHTML = pids.map(pid => {
+      const o = overrides[pid] || {};
+      const name = o.title || PRODUCT_NAMES[pid] || pid;
+      const price = o.price;
+      return `<a class="pcard" href="/product.html?id=${pid}">
+        <div class="img"><img src="/images/products/${pid}/01.webp" alt="${name}" loading="lazy" onerror="this.src='/images/products/${pid}/01.jpg'"/></div>
+        <div class="name">${name}</div>
+        <div class="price">${price ? fmtEur(price) : ''}</div>
+      </a>`;
+    }).join('');
+  } catch (e) {
+    showEmpty();
+  }
+}
+
+function showEmpty() {
+  document.getElementById('grid').hidden = true;
+  document.getElementById('empty').hidden = false;
+  document.getElementById('title').textContent = 'Collection';
+}
+
+load();
+</script>
+
+</body>
+</html>

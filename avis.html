@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="theme-color" content="#0a0a0a"/>
+<title>Laisse ton avis — TALSEUME</title>
+<meta name="description" content="Note ton expérience et aide la communauté."/>
+<style>
+@font-face{font-family:'Suisse Intl';src:url('/fonts/SuisseIntl-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Suisse Intl';src:url('/fonts/SuisseIntl-Light.woff2') format('woff2');font-weight:300;font-display:swap}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--black:#0a0a0a;--off:#faf9f6;--line-l:rgba(0,0,0,.08);--gold:#a8916a;--F:'Suisse Intl','Helvetica Neue',Helvetica,Arial,sans-serif}
+html{background:#fff}
+body{font-family:var(--F);-webkit-font-smoothing:antialiased;background:#fff;color:var(--black);min-height:100vh}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:500;background:#fff;padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:80px;border-bottom:1px solid var(--line-l)}
+.nav-logo{font-size:14px;font-weight:500;letter-spacing:.32em;text-transform:uppercase}
+.nav-back{font-size:11px;letter-spacing:.22em;text-transform:uppercase;opacity:.6}
+
+main{padding:130px 24px 80px;max-width:620px;margin:0 auto}
+.eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;opacity:.5;margin-bottom:14px}
+h1{font-size:clamp(36px,6vw,56px);font-weight:300;letter-spacing:-.03em;line-height:1;margin-bottom:24px}
+.lead{font-size:15px;color:rgba(0,0,0,.7);line-height:1.7;margin-bottom:40px}
+
+.card{background:#faf9f6;border:1px solid var(--line-l);border-radius:12px;padding:28px;margin-bottom:18px}
+.card h2{font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;margin-bottom:18px}
+
+.field{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.field label{font-size:10px;letter-spacing:.24em;text-transform:uppercase;opacity:.6}
+.field input,.field select,.field textarea{font-family:inherit;font-size:14px;border:1px solid var(--line-l);background:#fff;padding:14px 16px;border-radius:8px;outline:none;color:var(--black);font-weight:300}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--black)}
+.field textarea{resize:vertical;min-height:120px;line-height:1.6}
+
+.stars{display:flex;gap:8px;font-size:32px;color:rgba(0,0,0,.18);cursor:pointer;user-select:none}
+.stars span{transition:color .15s,transform .2s}
+.stars span:hover{transform:scale(1.1)}
+.stars span.active{color:var(--gold)}
+
+.submit-btn{width:100%;background:var(--black);color:#fff;font-size:12px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;padding:18px;border-radius:10px}
+.submit-btn:disabled{opacity:.4;cursor:not-allowed}
+
+.feedback{display:none;padding:18px;border-radius:10px;margin-top:18px;font-size:13px;line-height:1.6}
+.feedback.show{display:block}
+.feedback.error{background:#fff0ed;border:1px solid #ff5237;color:#b71c00}
+.feedback.success{background:var(--black);color:#fff}
+
+footer{padding:40px 24px;text-align:center;font-size:11px;color:rgba(0,0,0,.5);border-top:1px solid var(--line-l);margin-top:80px}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-back">← Accueil</a>
+  <a href="/" class="nav-logo">TALSEUME</a>
+  <a href="/suivi-commande.html" class="nav-back">Suivi</a>
+</nav>
+
+<main>
+  <div class="eyebrow">Avis client</div>
+  <h1>Ton retour compte</h1>
+  <p class="lead">Tu as reçu ta commande ? Note ton expérience — ça aide les prochains.</p>
+
+  <form id="form" novalidate>
+    <div class="card">
+      <h2>Ta commande</h2>
+      <div class="field">
+        <label>Numéro de commande</label>
+        <input id="orderId" required placeholder="cs_live_…"/>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input id="email" type="email" required/>
+      </div>
+      <div class="field">
+        <label>Référence article (pid)</label>
+        <input id="pid" required placeholder="ex: tee-rhude-noir"/>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Ton avis</h2>
+      <div class="field">
+        <label>Note</label>
+        <div class="stars" id="stars" role="radiogroup" aria-label="Note sur 5">
+          <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+        </div>
+        <input type="hidden" id="rating" required/>
+      </div>
+      <div class="field">
+        <label>Titre</label>
+        <input id="title" maxlength="100" placeholder="Ex : Coupe parfaite"/>
+      </div>
+      <div class="field">
+        <label>Commentaire</label>
+        <textarea id="body" maxlength="1500" placeholder="Coupe, matière, livraison… ce que tu as aimé ou pas."></textarea>
+      </div>
+      <div class="field">
+        <label>Taille commandée vs réalité</label>
+        <select id="fit">
+          <option value="">—</option>
+          <option>Taille petit</option>
+          <option>Taille parfait</option>
+          <option>Taille grand</option>
+        </select>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn" id="submit">Publier mon avis</button>
+    <div class="feedback" id="feedback"></div>
+  </form>
+</main>
+
+<footer>© Talseume · <a href="/" style="border-bottom:1px solid currentColor">talseume.com</a></footer>
+
+<script>
+const stars = document.getElementById('stars');
+const rating = document.getElementById('rating');
+stars.addEventListener('click', e => {
+  const v = e.target.dataset.v;
+  if (!v) return;
+  rating.value = v;
+  [...stars.children].forEach((s, i) => s.classList.toggle('active', i < +v));
+});
+
+const q = new URLSearchParams(location.search);
+if (q.get('cmd')) document.getElementById('orderId').value = q.get('cmd');
+if (q.get('email')) document.getElementById('email').value = q.get('email');
+if (q.get('pid')) document.getElementById('pid').value = q.get('pid');
+
+document.getElementById('form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const fb = document.getElementById('feedback');
+  const btn = document.getElementById('submit');
+  fb.className = 'feedback';
+  if (!rating.value) { fb.className = 'feedback show error'; fb.textContent = 'Donne une note de 1 à 5 étoiles.'; return; }
+
+  const payload = {
+    orderId: document.getElementById('orderId').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    pid: document.getElementById('pid').value.trim(),
+    rating: +rating.value,
+    title: document.getElementById('title').value.trim(),
+    body: document.getElementById('body').value.trim(),
+    fit: document.getElementById('fit').value || null
+  };
+  btn.disabled = true; btn.textContent = 'Envoi…';
+  try {
+    const res = await fetch('/.netlify/functions/reviews', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      const msg = {
+        order_not_found: 'Commande introuvable.',
+        email_mismatch: 'Email ne correspond pas.',
+        order_not_paid: 'Cette commande n\'est pas finalisée.',
+        already_reviewed: 'Tu as déjà laissé un avis pour cet article.'
+      }[data.error] || data.error || 'Erreur · réessaye.';
+      fb.className = 'feedback show error'; fb.textContent = msg;
+    } else {
+      fb.className = 'feedback show success';
+      fb.textContent = 'Merci ! Ton avis sera publié après vérification.';
+      document.getElementById('form').reset();
+      [...stars.children].forEach(s => s.classList.remove('active'));
+    }
+  } catch {
+    fb.className = 'feedback show error'; fb.textContent = 'Erreur réseau.';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Publier mon avis';
+  }
+});
+</script>
+
+</body>
+</html>

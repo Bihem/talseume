@@ -3,6 +3,8 @@
 // Franchise TVA art. 293 B → "TVA non applicable".
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const https = require('https');
+const crypto = require('crypto');
 const { PDFDocument, StandardFonts, rgb } = require('pdf-lib');
 const { validateAdminToken } = require('./admin-auth');
 
@@ -28,6 +30,58 @@ const SELLER = {
 
 const centsToEur = n => (n || 0) / 100;
 const fmtEur = n => (Math.round(n * 100) / 100).toFixed(2).replace('.', ',') + ' €';
+
+// ────────────────────────────────────────────────────────────────────────────
+// Numérotation séquentielle TS-YYYY-NNNNN persistée sur GitHub.
+// /data/invoice-counter.json : { year: 2026, lastNumber: 0 }
+// /data/invoice-ledger.json  : { ledger: { <stripeSessionId>: "TS-2026-00001", ... } }
+// Si la commande est re-facturée, on retourne le numéro déjà attribué (jamais 2 numéros pour 1 commande).
+// ────────────────────────────────────────────────────────────────────────────
+function signInternalToken() {
+  const exp = Date.now() + 60_000;
+  const payload = `admin:${exp}`;
+  const sig = crypto.createHmac('sha256', process.env.ADMIN_SECRET || 'change-me').update(payload).digest('hex');
+  return Buffer.from(`${payload}:${sig}`).toString('base64');
+}
+function callOwn(path, payload, method = 'POST') {
+  const token = signInternalToken();
+  const body = payload ? JSON.stringify(payload) : null;
+  return new Promise(resolve => {
+    const opts = { hostname: 'talseume.com', path, method, headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } };
+    if (body) opts.headers['Content-Length'] = Buffer.byteLength(body);
+    const req = https.request(opts, res => {
+      let buf = '';
+      res.on('data', c => buf += c);
+      res.on('end', () => { try { resolve({ status: res.statusCode, body: JSON.parse(buf) }); } catch { resolve({ status: res.statusCode, body: buf }); } });
+    });
+    req.on('error', e => resolve({ error: e.message }));
+    if (body) req.write(body);
+    req.end();
+  });
+}
+const getFile = (f) => callOwn(`/.netlify/functions/admin-data?file=${f}`, null, 'GET');
+const putFile = (f, data, message) => callOwn(`/.netlify/functions/admin-data?file=${f}`, { data, message }, 'PUT');
+
+async function assignInvoiceNumber(sessionId) {
+  // 1. Check ledger
+  const ledgerRes = await getFile('invoice-ledger');
+  const ledger = (ledgerRes.body && ledgerRes.body.data && ledgerRes.body.data.ledger) || {};
+  if (ledger[sessionId]) return ledger[sessionId];
+
+  // 2. Lire compteur, incrémenter, écrire compteur + ledger
+  const counterRes = await getFile('invoice-counter');
+  const year = new Date().getFullYear();
+  let counter = (counterRes.body && counterRes.body.data) || { year, lastNumber: 0 };
+  if (counter.year !== year) counter = { year, lastNumber: 0 };
+  counter.lastNumber += 1;
+  const padded = String(counter.lastNumber).padStart(5, '0');
+  const invoiceNum = `TS-${year}-${padded}`;
+  ledger[sessionId] = invoiceNum;
+
+  await putFile('invoice-counter', counter, `invoice: assign ${invoiceNum}`);
+  await putFile('invoice-ledger', { ledger }, `invoice ledger: + ${invoiceNum}`);
+  return invoiceNum;
+}
 
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: H };
@@ -56,6 +110,11 @@ exports.handler = async (event) => {
     const orderDate = new Date(s.created * 1000);
     const dateStr = orderDate.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
 
+    // Numéro de facture séquentiel persisté (réutilisé si déjà attribué)
+    let invoiceNum;
+    try { invoiceNum = await assignInvoiceNumber(s.id); }
+    catch (e) { invoiceNum = `TS-${new Date().getFullYear()}-${orderNum}`; } // fallback non-séquentiel si GitHub HS
+
     // ── PDF ──
     const pdf = await PDFDocument.create();
     const page = pdf.addPage([595.28, 841.89]); // A4
@@ -76,8 +135,9 @@ exports.handler = async (event) => {
     text('TALSEUME', 40, y, { bold: true, size: 22 });
     text('Original Clothing', 40, y - 18, { size: 9, color: grey });
     text('Facture', W - 40 - 60, y, { bold: true, size: 16 });
-    text(`N° ${orderNum}`, W - 40 - 100, y - 18, { size: 10, color: grey });
-    text(dateStr, W - 40 - 100, y - 32, { size: 9, color: grey });
+    text(`N° ${invoiceNum}`, W - 40 - 130, y - 18, { size: 10, color: grey });
+    text(dateStr, W - 40 - 130, y - 32, { size: 9, color: grey });
+    text(`Commande #${orderNum}`, W - 40 - 130, y - 46, { size: 8, color: grey });
     y -= 60;
     hr(y);
     y -= 20;
@@ -158,7 +218,7 @@ exports.handler = async (event) => {
       statusCode: 200,
       headers: Object.assign({}, H, {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `inline; filename="facture-talseume-${orderNum}.pdf"`
+        'Content-Disposition': `inline; filename="${invoiceNum}.pdf"`
       }),
       body: Buffer.from(pdfBytes).toString('base64'),
       isBase64Encoded: true
