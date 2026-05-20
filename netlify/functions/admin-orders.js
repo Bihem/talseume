@@ -150,6 +150,52 @@ exports.handler = async (ev) => {
       return { statusCode: 200, headers: H, body: JSON.stringify(customers) };
     }
 
+    if (action === 'abandoned') {
+      // Stripe Checkout sessions non payées avec données capturées (email ou contenu).
+      // On expand line_items pour avoir le détail panier.
+      const sessions = await stripe.checkout.sessions.list({ limit: 100, expand: ['data.line_items'] });
+      const abandoned = sessions.data
+        .filter(s => s.payment_status === 'unpaid')
+        .map(s => {
+          const email = s.customer_details?.email || s.customer_email || '';
+          const name = s.customer_details?.name || '';
+          const items = (s.line_items?.data || []).map(li => ({
+            title: li.description || li.price?.product?.name || 'Article',
+            quantity: li.quantity,
+            amount: centsToEur(li.amount_subtotal)
+          }));
+          const itemsCount = items.reduce((sum, i) => sum + i.quantity, 0);
+          return {
+            id: s.id,
+            order_number: s.id.slice(-8).toUpperCase(),
+            created_at: new Date(s.created * 1000).toISOString(),
+            expires_at: s.expires_at ? new Date(s.expires_at * 1000).toISOString() : null,
+            status: s.status, // open / expired / complete (mais ici payment_status=unpaid)
+            total_amount: centsToEur(s.amount_total),
+            email,
+            name,
+            items,
+            items_count: itemsCount,
+            has_email: !!email,
+            recovery_url: s.recovery?.url || null,
+            url: s.url || null // session URL — l'utilisateur peut y retourner s'il revient
+          };
+        })
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      // Counters utiles côté UI
+      const withEmail = abandoned.filter(a => a.has_email).length;
+      const potentialRevenue = abandoned.reduce((sum, a) => sum + a.total_amount, 0);
+      return {
+        statusCode: 200, headers: H,
+        body: JSON.stringify({
+          total: abandoned.length,
+          withEmail,
+          potentialRevenue,
+          carts: abandoned
+        })
+      };
+    }
+
     return { statusCode: 400, headers: H, body: JSON.stringify({ error: 'Action inconnue' }) };
   } catch (err) {
     return { statusCode: 500, headers: H, body: JSON.stringify({ error: err.message }) };

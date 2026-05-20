@@ -397,6 +397,11 @@ tbody tr:hover td{background:var(--bg);cursor:pointer}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3 8-8"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
         Commandes
       </div>
+      <div class="nav-item" data-nav="abandoned" onclick="nav('abandoned',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+        Paniers abandonnés
+        <span class="nav-badge" id="ab-badge" style="display:none"></span>
+      </div>
       <div class="nav-item" data-nav="clients" onclick="nav('clients',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
         Clients
@@ -573,6 +578,41 @@ tbody tr:hover td{background:var(--bg);cursor:pointer}
           <table>
             <thead><tr><th>Commande</th><th>Client</th><th>Montant</th><th>Paiement</th><th>Date</th></tr></thead>
             <tbody id="ord-body"><tr><td colspan="5"><div class="loader" style="padding:40px;text-align:center;color:var(--text-2);font-size:12px">Chargement...</div></td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ───── PANIERS ABANDONNÉS ───── -->
+      <section id="s-abandoned" class="section">
+        <div class="s-head">
+          <div>
+            <h1 class="s-title">Paniers abandonnés</h1>
+            <div class="s-sub">Sessions Stripe Checkout démarrées mais non payées</div>
+          </div>
+          <div class="s-actions">
+            <a href="https://dashboard.stripe.com/settings/checkout" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">↗ Config recovery emails Stripe</a>
+          </div>
+        </div>
+
+        <div class="kpi-grid" id="ab-kpis" style="margin-bottom:18px">
+          <div class="kpi"><div class="kpi-lbl">Paniers abandonnés</div><div class="kpi-val tabnum" id="ab-total">—</div><div class="kpi-trend neutral">en attente de paiement</div></div>
+          <div class="kpi"><div class="kpi-lbl">Avec email capturé</div><div class="kpi-val tabnum" id="ab-with-email">—</div><div class="kpi-trend neutral">relançables manuellement</div></div>
+          <div class="kpi"><div class="kpi-lbl">CA potentiel</div><div class="kpi-val tabnum" id="ab-potential">—</div><div class="kpi-trend neutral">si conversion 100%</div></div>
+          <div class="kpi"><div class="kpi-lbl">Conversion estimée</div><div class="kpi-val tabnum" id="ab-conv">—</div><div class="kpi-trend neutral">payés / démarrés</div></div>
+        </div>
+
+        <div class="tbl-wrap">
+          <div class="tbl-hd">
+            <div class="tbl-filters" id="ab-filters">
+              <button class="ftab active" onclick="filterAbandoned('all',this)">Tous</button>
+              <button class="ftab" onclick="filterAbandoned('with-email',this)">Avec email</button>
+              <button class="ftab" onclick="filterAbandoned('today',this)">Aujourd'hui</button>
+            </div>
+            <div class="card-meta tabnum" id="ab-count">— paniers</div>
+          </div>
+          <table>
+            <thead><tr><th>Email</th><th>Articles</th><th>Montant</th><th>Démarré il y a</th><th>Statut</th></tr></thead>
+            <tbody id="ab-body"><tr><td colspan="5"><div style="padding:40px;text-align:center;color:var(--text-2);font-size:12px">Chargement...</div></td></tr></tbody>
           </table>
         </div>
       </section>
@@ -830,8 +870,8 @@ function toast(msg, kind){
 }
 
 /* ── NAV ── */
-const SECTIONS = ['dashboard','drops','products','orders','clients','newsletter','calendar','analytics','settings'];
-const SECTION_LBL = {dashboard:'Dashboard',drops:'Drops',products:'Produits',orders:'Commandes',clients:'Clients',newsletter:'Newsletter',calendar:'Calendrier',analytics:'Analytiques',settings:'Paramètres'};
+const SECTIONS = ['dashboard','drops','products','orders','abandoned','clients','newsletter','calendar','analytics','settings'];
+const SECTION_LBL = {dashboard:'Dashboard',drops:'Drops',products:'Produits',orders:'Commandes',abandoned:'Paniers abandonnés',clients:'Clients',newsletter:'Newsletter',calendar:'Calendrier',analytics:'Analytiques',settings:'Paramètres'};
 function nav(id, el){
   if (!SECTIONS.includes(id)) return;
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -844,6 +884,7 @@ function nav(id, el){
   if (id === 'drops') renderDrops();
   if (id === 'products') renderProducts();
   if (id === 'orders') loadOrders();
+  if (id === 'abandoned') loadAbandoned();
   if (id === 'clients') loadClients();
   if (id === 'newsletter') loadNewsletter();
   if (id === 'calendar') renderCalendar();
@@ -1007,6 +1048,16 @@ async function loadDashboard(){
       document.getElementById('kpi-subs-t').textContent = j.configured ? `${count} confirmés` : 'Non branché';
     }
   } catch(e) { console.warn('nl:', e); }
+
+  // Abandoned carts count → badge sidebar
+  try {
+    const r = await adminFetch(`${ORDERS_API}?action=abandoned`);
+    if (r.ok) {
+      const j = await r.json();
+      const badge = document.getElementById('ab-badge');
+      if (badge && j.total > 0) { badge.textContent = j.total; badge.style.display = 'inline-block'; }
+    }
+  } catch(e) { console.warn('abandoned count:', e); }
 
   // Activity (derniers orders + activité drops)
   try {
@@ -1461,6 +1512,110 @@ async function refundOrder(id){
     state.orders = null;
     loadOrders();
   } catch(e) { toast('Erreur: ' + e.message, 'err'); }
+}
+
+/* ──────────────────────────────────────────────
+   PANIERS ABANDONNÉS
+   ────────────────────────────────────────────── */
+let abandonedAll = [];
+let abandonedFilter = 'all';
+async function loadAbandoned(){
+  try {
+    const r = await adminFetch(`${ORDERS_API}?action=abandoned`);
+    if (!r.ok) throw new Error('abandoned ' + r.status);
+    const j = await r.json();
+    abandonedAll = j.carts || [];
+    state.abandoned = j;
+    document.getElementById('ab-total').textContent = j.total || 0;
+    document.getElementById('ab-with-email').textContent = j.withEmail || 0;
+    document.getElementById('ab-potential').textContent = eur(j.potentialRevenue || 0);
+    // Conversion rate = paid / (paid + abandoned)
+    const paidCount = state.stats?.total?.count || 0;
+    const conv = (paidCount + j.total) > 0 ? (paidCount / (paidCount + j.total) * 100) : 0;
+    document.getElementById('ab-conv').textContent = conv.toFixed(1) + '%';
+    // Badge sidebar
+    const badge = document.getElementById('ab-badge');
+    if (badge && j.total > 0) { badge.textContent = j.total; badge.style.display = 'inline-block'; }
+    renderAbandonedTable();
+  } catch(e) {
+    document.getElementById('ab-body').innerHTML = `<tr><td colspan="5" style="padding:40px;text-align:center;color:var(--err)">Erreur: ${e.message}</td></tr>`;
+  }
+}
+function filterAbandoned(f, btn){
+  abandonedFilter = f;
+  document.querySelectorAll('#ab-filters .ftab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAbandonedTable();
+}
+function timeAgo(iso){
+  const diff = Date.now() - new Date(iso).getTime();
+  const mn = Math.floor(diff / 60000);
+  if (mn < 60) return mn + ' min';
+  const h = Math.floor(mn / 60);
+  if (h < 24) return h + ' h';
+  const d = Math.floor(h / 24);
+  return d + ' j';
+}
+function renderAbandonedTable(){
+  let list = abandonedAll;
+  if (abandonedFilter === 'with-email') list = list.filter(a => a.has_email);
+  if (abandonedFilter === 'today') {
+    const todayStart = new Date(); todayStart.setHours(0,0,0,0);
+    list = list.filter(a => new Date(a.created_at) >= todayStart);
+  }
+  document.getElementById('ab-count').textContent = `${list.length} panier${list.length>1?'s':''}`;
+  if (list.length === 0) {
+    document.getElementById('ab-body').innerHTML = `<tr><td colspan="5"><div class="empty"><div class="empty-line"></div><div class="empty-title">Aucun panier dans ce filtre</div><div class="empty-sub">Les checkouts non finalisés apparaîtront ici en temps réel.</div></div></td></tr>`;
+    return;
+  }
+  document.getElementById('ab-body').innerHTML = list.map(a => {
+    const expired = a.expires_at && new Date(a.expires_at) < new Date();
+    return `<tr onclick="openAbandoned('${a.id}')">
+      <td>${a.email ? `<strong>${a.email}</strong>${a.name ? `<br><span style="font-size:11px;color:var(--text-2)">${a.name}</span>`:''}` : '<span style="color:var(--text-2);font-style:italic">Anonyme</span>'}</td>
+      <td><span class="tabnum">${a.items_count}</span> <span style="color:var(--text-2);font-size:11px">${a.items.map(i=>i.title.slice(0,30)).join(', ').slice(0,60)}${a.items.length>0?'...':''}</span></td>
+      <td class="tabnum">${eur(a.total_amount)}</td>
+      <td class="tabnum"><span style="color:var(--text-2)">${timeAgo(a.created_at)}</span></td>
+      <td>${expired ? '<span class="badge err"><span class="badge-dot"></span>Expirée</span>' : '<span class="badge warn"><span class="badge-dot"></span>Ouvert</span>'}</td>
+    </tr>`;
+  }).join('');
+}
+function openAbandoned(id){
+  const a = abandonedAll.find(x => x.id === id);
+  if (!a) return;
+  const itemsHtml = a.items.map(i => `<div class="detail-row"><span class="lbl">${i.title}</span><span class="val tabnum">${i.quantity}× ${eur(i.amount/i.quantity)}</span></div>`).join('');
+  const mailtoBody = encodeURIComponent(`Bonjour${a.name ? ' ' + a.name.split(' ')[0] : ''},\n\nTu as démarré une commande sur talseume.com il y a ${timeAgo(a.created_at)} pour ${eur(a.total_amount)} mais elle n'a pas été finalisée.\n\nProblème de paiement ? Question sur le produit ? Réponds à ce mail, on est là.\n\nSi tu veux reprendre où tu en étais :\n${a.url || 'https://talseume.com/'}\n\n— Talseume`);
+  const mailto = a.email ? `mailto:${a.email}?subject=${encodeURIComponent('Ton panier Talseume t\'attend')}&body=${mailtoBody}` : null;
+  openModal(`
+    <div class="modal-hd">
+      <div>
+        <div class="modal-title">Panier ${a.order_number}</div>
+        <div style="font-size:12px;color:var(--text-2);margin-top:4px">${fmtDate(a.created_at)} · ${fmtTime(a.created_at)} · il y a ${timeAgo(a.created_at)}</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="mb">
+      <div class="mb-title">Client</div>
+      ${a.email
+        ? `<div class="detail-row"><span class="lbl">Email</span><span class="val"><strong>${a.email}</strong></span></div>${a.name ? `<div class="detail-row"><span class="lbl">Nom</span><span class="val">${a.name}</span></div>` : ''}`
+        : '<div style="font-size:13px;color:var(--text-2)">Anonyme — n\'a pas saisi d\'email avant d\'abandonner</div>'
+      }
+    </div>
+    <div class="mb">
+      <div class="mb-title">Panier (${a.items_count} article${a.items_count>1?'s':''})</div>
+      ${itemsHtml || '<div style="font-size:12px;color:var(--text-2)">Pas de détail panier</div>'}
+      <div class="detail-row" style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px"><span class="lbl">Total</span><span class="val tabnum" style="font-weight:700">${eur(a.total_amount)}</span></div>
+    </div>
+    <div class="mb">
+      <div class="mb-title">Statut</div>
+      <div class="detail-row"><span class="lbl">Session Stripe</span><span class="val">${a.status}</span></div>
+      ${a.expires_at ? `<div class="detail-row"><span class="lbl">Expire</span><span class="val tabnum">${fmtDate(a.expires_at)} ${fmtTime(a.expires_at)}</span></div>` : ''}
+    </div>
+    <div class="modal-foot">
+      ${mailto ? `<a class="btn btn-accent" href="${mailto}">Relancer par email</a>` : '<span style="font-size:12px;color:var(--text-2)">Pas d\'email — relance impossible</span>'}
+      ${a.url ? `<a class="btn btn-ghost" href="${a.url}" target="_blank" rel="noopener">↗ Voir la session</a>` : ''}
+      <a class="btn btn-ghost" href="https://dashboard.stripe.com/payments/${a.id}" target="_blank" rel="noopener">↗ Stripe</a>
+    </div>
+  `);
 }
 
 /* ──────────────────────────────────────────────
