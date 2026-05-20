@@ -1,4 +1,91 @@
 {
-  "stock": {},
-  "thresholds": {}
+  "stock": {
+    "sweat-talseume-oversize": {
+      "S": 8,
+      "M": 15,
+      "L": 15,
+      "XL": 10,
+      "XXXL": 5
+    },
+    "tee-shirt-oversize": {
+      "XS": 5,
+      "S": 12,
+      "M": 20,
+      "L": 20,
+      "XL": 8
+    },
+    "sweat-bikelife": {
+      "2XS": 3,
+      "S": 8,
+      "M": 12,
+      "L": 12,
+      "XL": 8,
+      "2XL": 5,
+      "3XL": 3
+    },
+    "tshirt-manches-longues": {
+      "XS": 4,
+      "S": 10,
+      "M": 15,
+      "L": 15,
+      "XL": 8,
+      "XXL": 4
+    },
+    "veste-coach": {
+      "S": 5,
+      "M": 10,
+      "L": 10,
+      "XL": 7,
+      "XXL": 3
+    },
+    "veste-coach-ultra": {
+      "XS": 0,
+      "S": 0,
+      "M": 0,
+      "L": 0
+    },
+    "debardeur-femme": {
+      "XS": 5,
+      "S": 12,
+      "M": 15,
+      "L": 12,
+      "XL": 8,
+      "2XL": 5,
+      "3XL": 3
+    },
+    "tshirt-femme": {
+      "XS": 5,
+      "S": 12,
+      "M": 15,
+      "L": 12,
+      "XL": 6,
+      "2XL": 3,
+      "3XL": 2
+    },
+    "cagoule": {
+      "_": 30
+    },
+    "sport-beanie": {
+      "_": 50
+    },
+    "casquette-trucker": {
+      "_": 40
+    },
+    "talseume-bag": {
+      "_": 25
+    }
+  },
+  "thresholds": {
+    "sweat-talseume-oversize": 5,
+    "tee-shirt-oversize": 5,
+    "sweat-bikelife": 4,
+    "tshirt-manches-longues": 4,
+    "veste-coach": 3,
+    "debardeur-femme": 4,
+    "tshirt-femme": 4,
+    "cagoule": 5,
+    "sport-beanie": 8,
+    "casquette-trucker": 6,
+    "talseume-bag": 4
+  }
 }
