@@ -7,8 +7,48 @@
       "launchDate": "2026-04-15",
       "cover": "images/lookbook/rooftop-paris-sweat-bleu.webp",
       "brief": "Drop SS26 fondateur — collection bike life rooftop Paris. Coton bio GOTS, matériaux recyclés.",
-      "products": ["sweat-talseume-oversize","sweat-bikelife","tee-shirt-oversize","tshirt-manches-longues","veste-coach","debardeur-femme","tshirt-femme","cagoule","sport-beanie","casquette-trucker","talseume-bag"],
-      "checklist": { "design": true, "prototype": true, "photos": true, "copy": true, "klaviyo": false },
+      "products": [
+        "sweat-talseume-oversize",
+        "sweat-bikelife",
+        "tee-shirt-oversize",
+        "tshirt-manches-longues",
+        "veste-coach",
+        "debardeur-femme",
+        "tshirt-femme",
+        "cagoule",
+        "sport-beanie",
+        "casquette-trucker",
+        "talseume-bag"
+      ],
+      "checklist": {
+        "design": true,
+        "prototype": true,
+        "photos": true,
+        "copy": true,
+        "klaviyo": false
+      },
+      "performance": null
+    },
+    {
+      "id": "drop-ss26-underground-028",
+      "name": "SS26 — Underground 0.28",
+      "status": "pre-drop",
+      "launchDate": "2026-06-20",
+      "cover": "images/lookbook/01-sweat-noir.webp",
+      "brief": "Capsule late-spring 0.28 — palette monochrome, coupes oversize, exclusivité Clan TS. Inspirations : tunnel underground Paris, club culture, late-night ride.",
+      "products": [
+        "sweat-talseume-oversize",
+        "tee-shirt-oversize",
+        "veste-coach",
+        "cagoule"
+      ],
+      "checklist": {
+        "design": true,
+        "prototype": false,
+        "photos": false,
+        "copy": false,
+        "klaviyo": false
+      },
       "performance": null
     }
   ]
