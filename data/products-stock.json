@@ -1,0 +1,12 @@
+{
+  "stock": {
+    "sweat-talseume-oversize": {
+      "S": 3,
+      "M": 10,
+      "L": 0,
+      "XL": 5,
+      "XXXL": 2
+    }
+  },
+  "thresholds": {}
+}
