@@ -53,7 +53,9 @@ exports.handler = async (event) => {
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
   let stripeEvent;
   try {
-    if (secret && sig) {
+    if (secret) {
+      // Secret posé → signature obligatoire (sinon refus)
+      if (!sig) return { statusCode: 400, headers: H, body: JSON.stringify({ error: 'signature_required' }) };
       stripeEvent = stripe.webhooks.constructEvent(event.body, sig, secret);
     } else {
       // Mode dormant : pas de secret = on parse en confiance (à n'utiliser qu'en test)
