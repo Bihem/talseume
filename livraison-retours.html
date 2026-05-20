@@ -370,7 +370,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     <div class="f-col">
       <h5>Aide</h5>
       <ul>
-        <li><a href="livraison-retours.html">Livraison &amp; Retours</a></li>
+        <li><a href="livraison-retours.html" aria-current="page">Livraison &amp; Retours</a></li>
         <li><a href="suivi-commande.html">Suivi de commande</a></li>
         <li><a href="guide-tailles.html">Guide des tailles</a></li>
         <li><a href="faq.html">FAQ</a></li>
@@ -459,16 +459,6 @@ if (!reduceMotion && matchMedia('(hover:hover) and (pointer:fine)').matches) {
   addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
   addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
 })();
-
-/* ── SUBMIT FORM (placeholder, à brancher sur Netlify Forms ou Function) ── */
-function submitContact(e){
-  e.preventDefault();
-  const f = e.target;
-  // TODO: brancher sur Netlify Forms / Function / Resend
-  document.getElementById('formSuccess').classList.add('show');
-  setTimeout(() => f.reset(), 300);
-  return false;
-}
 
 /* ── WISHLIST COUNT ── */
 (function(){

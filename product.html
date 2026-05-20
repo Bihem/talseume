@@ -159,6 +159,8 @@ nav.nav-hidden{transform:translateY(-100%)}
 
 /* ══ RELATED ══ */
 .related{padding:120px 56px 100px;background:#fff}
+.recently-viewed{padding:60px 56px 100px;background:#fff;border-top:1px solid var(--line-l)}
+@media(max-width:768px){.recently-viewed{padding:60px 24px 60px}}
 .related-head{margin-bottom:44px}
 .related-eyebrow{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:rgba(0,0,0,.6);margin-bottom:18px;font-weight:400}
 .related-title{font-size:clamp(24px,3.2vw,42px);font-weight:300;letter-spacing:-.025em;line-height:1.05}
@@ -489,7 +491,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 </div>
 
 <!-- PRODUCT LAYOUT -->
-<div class="product-page">
+<div class="product-page" id="main-content" tabindex="-1">
   <div class="prod-img-side">
     <div class="prod-thumbs" id="prod-thumbs"></div>
     <div class="prod-main-img-wrap">
@@ -576,12 +578,21 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 </div>
 
 <!-- RELATED -->
-<section class="related" id="main-content" tabindex="-1">
+<section class="related">
   <div class="related-head">
     <div class="related-eyebrow">Compléter le look</div>
     <h2 class="related-title">Vous aimerez aussi</h2>
   </div>
   <div class="related-grid" id="related-grid"></div>
+</section>
+
+<!-- RECENTLY VIEWED -->
+<section class="recently-viewed" id="recentlyViewed" style="display:none">
+  <div class="related-head">
+    <div class="related-eyebrow">Récemment vus</div>
+    <h2 class="related-title">Tu as regardé</h2>
+  </div>
+  <div class="related-grid" id="recent-grid"></div>
 </section>
 
 <!-- FOOTER -->
@@ -990,6 +1001,34 @@ function renderRelated(){
       </div>
     </a>`).join('');
 }
+
+/* ── RECENTLY VIEWED — track in localStorage, render section below related ── */
+(function trackRecentlyViewed(){
+  const KEY = 'tls-recent';
+  let list;
+  try { list = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch { list = []; }
+  if (!Array.isArray(list)) list = [];
+  // Remove current id if present, prepend it
+  list = list.filter(x => x !== id);
+  list.unshift(id);
+  // Cap at 8
+  list = list.slice(0, 8);
+  localStorage.setItem(KEY, JSON.stringify(list));
+  // Render others (exclude current)
+  const others = list.filter(x => x !== id && PRODUCTS[x]).slice(0, 4);
+  if (others.length === 0) return;
+  document.getElementById('recentlyViewed').style.display = '';
+  document.getElementById('recent-grid').innerHTML = others.map(k => {
+    const r = PRODUCTS[k];
+    return `<a class="pcard" href="product.html?id=${k}">
+      <div class="pcard-img"><img src="${r.colors[0].img}" alt="${r.name}" loading="lazy"/></div>
+      <div class="pcard-info">
+        <div class="pcard-name">${r.name}</div>
+        <div class="pcard-price">${r.price.toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div>
+      </div>
+    </a>`;
+  }).join('');
+})();
 
 function selectColor(name) {
   selectedColor = name;

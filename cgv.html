@@ -288,7 +288,10 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 <p>Les présentes Conditions Générales de Vente (ci-après « CGV ») régissent l'intégralité des ventes conclues entre <strong>Talseume</strong>, marque exploitée par <strong>BOUZANGA Mes reves</strong>, entrepreneur individuel (EI) sous le nom commercial <strong>Dikenga design</strong>, dont le siège est situé 44c Allée Robillard, 93320 Les Pavillons-sous-Bois — immatriculé au RCS Bobigny sous le numéro 519&nbsp;495&nbsp;758, ci-après dénommé « le Vendeur », et toute personne physique majeure non commerçante (« le Client » ou « le Consommateur ») effectuant un achat sur le site talseume.com.</p>
 <p>Toute commande emporte acceptation pleine, entière et sans réserve des présentes CGV par le Client. Le Vendeur se réserve le droit de modifier les CGV à tout moment ; la version applicable est celle en vigueur à la date de validation de la commande, archivée par le Vendeur. Les CGV sont accessibles en permanence sur le site.</p>
 
-<h2>Article 2 — Produits</h2>
+<h2>Article 2 — Capacité juridique du Client</h2>
+<p>Le Client déclare être âgé d'au moins <strong>18 ans</strong> et disposer de la pleine capacité juridique pour passer commande sur le site. Le mineur ne peut commander qu'avec l'autorisation et sous la responsabilité d'un représentant légal majeur, qui s'engage à respecter les présentes CGV. Toute commande passée par un mineur sans cette autorisation pourra être annulée par le Vendeur.</p>
+
+<h2>Article 2 bis — Produits</h2>
 <p>Les caractéristiques essentielles des produits proposés (composition, taille, coloris, prix, photos) sont décrites sur chaque fiche produit. Les visuels sont fournis à titre indicatif&nbsp;: malgré nos efforts pour assurer leur fidélité, de légères variations de teinte peuvent apparaître selon le calibrage de votre écran.</p>
 <p>Les produits sont proposés dans la limite des stocks disponibles. En cas d'indisponibilité après passation de commande, le Client en est informé sans délai et bénéficie d'un remboursement intégral.</p>
 
@@ -396,7 +399,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       <h5>Légal</h5>
       <ul>
         <li><a href="mentions-legales.html">Mentions légales</a></li>
-        <li><a href="cgv.html">CGV</a></li>
+        <li><a href="cgv.html" aria-current="page">CGV</a></li>
         <li><a href="confidentialite.html">Politique de confidentialité</a></li>
         <li><a href="cookies.html">Cookies</a></li>
       </ul>
@@ -475,16 +478,6 @@ if (!reduceMotion && matchMedia('(hover:hover) and (pointer:fine)').matches) {
   addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
   addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
 })();
-
-/* ── SUBMIT FORM (placeholder, à brancher sur Netlify Forms ou Function) ── */
-function submitContact(e){
-  e.preventDefault();
-  const f = e.target;
-  // TODO: brancher sur Netlify Forms / Function / Resend
-  document.getElementById('formSuccess').classList.add('show');
-  setTimeout(() => f.reset(), 300);
-  return false;
-}
 
 /* ── WISHLIST COUNT ── */
 (function(){

@@ -390,7 +390,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <li><a href="mentions-legales.html">Mentions légales</a></li>
         <li><a href="cgv.html">CGV</a></li>
         <li><a href="confidentialite.html">Politique de confidentialité</a></li>
-        <li><a href="cookies.html">Cookies</a></li>
+        <li><a href="cookies.html" aria-current="page">Cookies</a></li>
       </ul>
     </div>
   </div>
@@ -468,15 +468,6 @@ if (!reduceMotion && matchMedia('(hover:hover) and (pointer:fine)').matches) {
   addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
 })();
 
-/* ── SUBMIT FORM (placeholder, à brancher sur Netlify Forms ou Function) ── */
-function submitContact(e){
-  e.preventDefault();
-  const f = e.target;
-  // TODO: brancher sur Netlify Forms / Function / Resend
-  document.getElementById('formSuccess').classList.add('show');
-  setTimeout(() => f.reset(), 300);
-  return false;
-}
 </script>
 <script src="/cookies-banner.js" defer></script>
 </body>

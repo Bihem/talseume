@@ -405,7 +405,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       <ul>
         <li><a href="mentions-legales.html">Mentions légales</a></li>
         <li><a href="cgv.html">CGV</a></li>
-        <li><a href="confidentialite.html">Politique de confidentialité</a></li>
+        <li><a href="confidentialite.html" aria-current="page">Politique de confidentialité</a></li>
         <li><a href="cookies.html">Cookies</a></li>
       </ul>
     </div>
@@ -483,16 +483,6 @@ if (!reduceMotion && matchMedia('(hover:hover) and (pointer:fine)').matches) {
   addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
   addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
 })();
-
-/* ── SUBMIT FORM (placeholder, à brancher sur Netlify Forms ou Function) ── */
-function submitContact(e){
-  e.preventDefault();
-  const f = e.target;
-  // TODO: brancher sur Netlify Forms / Function / Resend
-  document.getElementById('formSuccess').classList.add('show');
-  setTimeout(() => f.reset(), 300);
-  return false;
-}
 
 /* ── WISHLIST COUNT ── */
 (function(){
