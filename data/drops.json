@@ -28,28 +28,6 @@
         "klaviyo": false
       },
       "performance": null
-    },
-    {
-      "id": "drop-ss26-underground-028",
-      "name": "SS26 — Underground 0.28",
-      "status": "pre-drop",
-      "launchDate": "2026-06-20",
-      "cover": "images/lookbook/01-sweat-noir.webp",
-      "brief": "Capsule late-spring 0.28 — palette monochrome, coupes oversize, exclusivité Clan TS. Inspirations : tunnel underground Paris, club culture, late-night ride.",
-      "products": [
-        "sweat-talseume-oversize",
-        "tee-shirt-oversize",
-        "veste-coach",
-        "cagoule"
-      ],
-      "checklist": {
-        "design": true,
-        "prototype": false,
-        "photos": false,
-        "copy": false,
-        "klaviyo": false
-      },
-      "performance": null
     }
   ]
 }
